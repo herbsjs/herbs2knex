@@ -33,7 +33,7 @@ describe('Persist an Entity', () => {
         return {
             async query(sql, values) {
                 this.sql = sql
-                this.values = values[0]
+                this.values = values
                 return true
             }
         }
@@ -60,7 +60,7 @@ describe('Persist an Entity', () => {
         //then
         assert.deepStrictEqual(dbDriver.sql, 
             "INSERT INTO aTable (id, string_test, boolean_test) VALUES ($1, $2, $3) ON CONFLICT (id) DO UPDATE SET string_test = EXCLUDED.string_test, boolean_test = EXCLUDED.boolean_test")
-        assert.deepStrictEqual(dbDriver.values, [[1, 'test', true]])
+        assert.deepStrictEqual(dbDriver.values, [1, 'test', true])
         assert.deepStrictEqual(ret, true)
     })
 })
