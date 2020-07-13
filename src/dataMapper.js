@@ -4,9 +4,9 @@ const dependency = { convention: Convention }
 
 module.exports = class DataMapper {
 
-    static getFrom(entity, options = {}) {
+    static getFrom(entity, entityIDs, options = {}) {
         const di = Object.assign({}, dependency, options.injection)
-        const convetion = di.convention
+        const convention = di.convention
 
         function getDataParser(type) {
             const originalType = type
@@ -14,27 +14,33 @@ module.exports = class DataMapper {
             // if (Array.isArray(originalType))
             //     parser = (v) =>
             //         v.map((_) => getDataParser(originalType[0])(_))
-            if ((originalType === Date) || (!convetion.isScalarType(originalType)))
+            if ((originalType === Date) || (!convention.isScalarType(originalType)))
                 parser = (v) =>
                     v
             return parser
         }
 
-        const mapper2entity = {
+        const schema = entity.prototype.meta.schema
+        const entityFields = Object.keys(schema)
+        const entity2table = {
             load(data) { this.tableData = data },
+            // toEntityField: (tableFieldName) => convention.toEntityField(tableFieldName),
+            toTableField: (entityFieldName) => convention.toTableField(entityFieldName),
+            getTableIDs: () => entityIDs.map(i => convention.toTableField(i)),
+            getEntityFields: () => entityFields,
+            getTableFields: () => entityFields.map(e => convention.toTableField(e)),
+            getValuesFromEntity: (instance) => entityFields.map(e => instance[e])
         }
 
-        const schema = entity.prototype.meta.schema
-        const fields = Object.keys(schema)
-        for (const entityName of fields) {
-            const parseData = getDataParser(schema[entityName].type)
-            const tableName = convetion.entityToTableField(entityName)
-            Object.defineProperty(mapper2entity, entityName, {
+        for (const entityField of entityFields) {
+            const parseData = getDataParser(schema[entityField].type)
+            const tableField = convention.toTableField(entityField)
+            Object.defineProperty(entity2table, entityField, {
                 get: function () {
-                    return parseData(this.tableData[tableName])
+                    return parseData(this.tableData[tableField])
                 }
             })
         }
-        return mapper2entity
+        return entity2table
     }
 }

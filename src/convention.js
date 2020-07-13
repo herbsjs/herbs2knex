@@ -4,8 +4,8 @@ module.exports = class Convention {
         return string.replace(/([A-Z])/g, "_$1").toLowerCase();
     }
 
-    static entityToTableField(name) {
-        return this.camelToSnake(name)
+    static toTableField(entityField) {
+        return this.camelToSnake(entityField)
     }
 
     static isScalarType(type) {

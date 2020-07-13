@@ -2,7 +2,7 @@ const { entity, field } = require('gotu')
 const Repository = require('../../src/repository')
 const assert = require('assert')
 
-describe('Query Get by IDs', () => {
+describe('Persist an Entity', () => {
 
     const givenAnEntity = () => {
         return entity('A entity', {
@@ -10,6 +10,15 @@ describe('Query Get by IDs', () => {
             stringTest: field(String),
             booleanTest: field(Boolean)
         })
+    }
+
+    const givenAnModifiedEntity = () => {
+        const anEntity = givenAnEntity()
+        const anEntityInstance = new anEntity()
+        anEntityInstance.id = 1
+        anEntityInstance.stringTest = "test"
+        anEntityInstance.booleanTest = true
+        return anEntityInstance
     }
 
     const givenAnRepositoryClass = (options) => {
@@ -25,18 +34,14 @@ describe('Query Get by IDs', () => {
             async query(sql, values) {
                 this.sql = sql
                 this.values = values[0]
-                return { rows: ret }
+                return true
             }
         }
     }
 
-    it('should return entities', async () => {
+    it('should persist entities', async () => {
         //given
-        const rowsFromDb = [
-            {id: 1, string_test: "john", boolean_test: true},
-            {id: 2, string_test: "clare", boolean_test: false}
-        ]
-        const dbDriver = givenADbDriver(rowsFromDb)
+        const dbDriver = givenADbDriver()
         const anEntity = givenAnEntity()
         const ItemRepository = givenAnRepositoryClass({
             entity: anEntity,
@@ -44,16 +49,18 @@ describe('Query Get by IDs', () => {
             ids: ['id'],
             dbDriver
         })
+        const aModifiedInstance = givenAnModifiedEntity()
+
         const injection = {}
         const itemRepo = new ItemRepository(injection)
 
         //when
-        const ret = await itemRepo.getByIDs([1])
+        const ret = await itemRepo.persist(aModifiedInstance)
 
         //then
-        assert.deepStrictEqual(dbDriver.sql, "SELECT id, string_test, boolean_test FROM aTable WHERE id = ANY ($1)")
-        assert.deepStrictEqual(dbDriver.values, [1])
-        assert.deepStrictEqual(ret[0].toJSON(), {id: 1, stringTest: 'john', booleanTest: true})
-        assert.deepStrictEqual(ret[1].toJSON(), {id: 2, stringTest: 'clare', booleanTest: false})
+        assert.deepStrictEqual(dbDriver.sql, 
+            "INSERT INTO aTable (id, string_test, boolean_test) VALUES ($1, $2, $3) ON CONFLICT (id) DO UPDATE SET string_test = EXCLUDED.string_test, boolean_test = EXCLUDED.boolean_test")
+        assert.deepStrictEqual(dbDriver.values, [[1, 'test', true]])
+        assert.deepStrictEqual(ret, true)
     })
 })

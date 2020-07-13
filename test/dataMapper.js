@@ -51,6 +51,30 @@ describe('Data Mapper', () => {
             assert.deepStrictEqual(dataMapper.fieldName, false)
 
         })
+
+        it('should convert an entity field to the table string convetion', () => {
+            //given
+            const entity = givenAnEntity()
+            const dataMapper = DataMapper.getFrom(entity)
+
+            //when
+            const toEntity = dataMapper.toTableField('fieldName')
+
+            //then
+            assert.deepStrictEqual(toEntity, 'field_name')
+        })
+
+        it('should retrieve table ID from entity', () => {
+            //given
+            const entity = givenAnEntity()
+            const dataMapper = DataMapper.getFrom(entity, ['idField'])
+
+            //when
+            const toEntity = dataMapper.getTableIDs()
+
+            //then
+            assert.deepStrictEqual(toEntity, ['id_field'])
+        })
     })
 
     describe('Complex Entity - Multiple Types', () => {
@@ -68,11 +92,11 @@ describe('Data Mapper', () => {
                 objectTest: field(Object),
                 // TODO
                 // arrayTest: field(Array),
-                numbersTest:field([Number]),
-                stringsTest:field([String]),
-                booleansTest:field([Boolean]),
-                datesTest:field([Date]),
-                objectsTest:field([Object]),
+                numbersTest: field([Number]),
+                stringsTest: field([String]),
+                booleansTest: field([Boolean]),
+                datesTest: field([Date]),
+                objectsTest: field([Object]),
                 // arraysTest:field([Array]),
             })
         }
@@ -100,7 +124,7 @@ describe('Data Mapper', () => {
 
             //when
             const dataMapper = DataMapper.getFrom(entity)
-            const data = samples.map(i => { return { [i[0]]: i[2] } }).reduce((obj, i) => Object.assign(obj, i) )
+            const data = samples.map(i => { return { [i[0]]: i[2] } }).reduce((obj, i) => Object.assign(obj, i))
             dataMapper.load(data)
 
             //then
