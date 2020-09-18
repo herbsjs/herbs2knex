@@ -67,4 +67,19 @@ module.exports = class Repository {
             throw error
         }
     }
+
+    async update(entityInstance) {
+        const dataMapper = this.dataMapper
+        const tableFields = dataMapper.getTableFields()
+        const values = dataMapper.getValuesFromEntity(entityInstance)
+        const placeholders = values.map((e, i) => `$${i + 1}`)
+        const updateFields = tableFields.map((f, i) => `${f} = ${placeholders[i]}`)
+        const sql = `UPDATE ${this.tableQualifiedName} SET ${updateFields.join(', ')} WHERE ${updateFields.join(', ')}`
+
+        const ret = await this.query(sql, values)
+
+        console.log(ret)
+        return ret
+
+    }
 }
