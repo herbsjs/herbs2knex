@@ -1,5 +1,6 @@
 const Convention = require('./convention')
 const DataMapper = require('./dataMapper')
+const Utils = require('./util')
 
 const dependency = { convention: Convention }
 
@@ -21,7 +22,6 @@ module.exports = class Repository {
         const entity = this.entity
         this.dataMapper = DataMapper.getFrom(entity)
     }
-
 
     async findByID(ids) {
         const dataMapper = this.dataMapper
@@ -57,6 +57,35 @@ module.exports = class Repository {
         const ret = await this.query(sql, values)
         return true
     }
+    
+    async update(tableQualifiedName, conditions, tableFields) {
+        const dataMapper = this.dataMapper
+        const args = Object.keys(tableFields)
+        const placeholders = args.map((e, i) => `${e} = $${i + 1}`)
+        const updateFields = placeholders.join(', ')
+        const len = Object.keys(tableFields).length
+
+        let sql = `UPDATE ${this.tableQualifiedName} SET ${updateFields} `
+        
+        if (!Utils.isObjEmpty(conditions)) {
+            const keys = Object.keys(conditions);
+            const condFields = keys.map((k, i) => `${k} = $${i + 1 + len}`);
+            const condPlaceholders = condFields.join(" AND ");
+        
+            sql += `WHERE ${condPlaceholders} RETURNING *`;
+          } 
+
+        const values = [];
+        Object.keys(tableFields).forEach(key => {
+            values.push(tableFields[key]);
+        });
+        Object.keys(conditions).forEach(key => {
+            values.push(conditions[key]);
+        });
+
+        const ret = await this.query(sql, values)
+        return true
+    }
 
     async query(sql, values) {
         try {
@@ -66,20 +95,5 @@ module.exports = class Repository {
             console.error(error)
             throw error
         }
-    }
-
-    async update(entityInstance) {
-        const dataMapper = this.dataMapper
-        const tableFields = dataMapper.getTableFields()
-        const values = dataMapper.getValuesFromEntity(entityInstance)
-        const placeholders = values.map((e, i) => `$${i + 1}`)
-        const updateFields = tableFields.map((f, i) => `${f} = ${placeholders[i]}`)
-        const sql = `UPDATE ${this.tableQualifiedName} SET ${updateFields.join(', ')} WHERE ${updateFields.join(', ')}`
-
-        const ret = await this.query(sql, values)
-
-        console.log(ret)
-        return ret
-
     }
 }

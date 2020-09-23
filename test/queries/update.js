@@ -12,15 +12,6 @@ describe('Update an Entity', () => {
         })
     }
 
-    const givenAnUpdatedEntity = () => {
-        const anEntity = givenAnEntity()
-        const anEntityInstance = new anEntity()
-        anEntityInstance.id = 1
-        anEntityInstance.stringTest = "Mike"
-        anEntityInstance.booleanTest = true
-        return anEntityInstance
-    }
-
     const givenAnRepositoryClass = (options) => {
         return class ItemRepositoryBase extends Repository {
             constructor() {
@@ -33,8 +24,8 @@ describe('Update an Entity', () => {
         return {
             async query(sql, values) {
                 this.sql = sql
-                this.values = values[0][0]
-                return {row: ret}
+                this.values = values
+                return true
             }
         }
     }
@@ -45,6 +36,14 @@ describe('Update an Entity', () => {
             { id: 1, string_test: "john", boolean_test: true },
             { id: 2, string_test: "clare", boolean_test: false }
         ]
+        
+        const tableFields = {
+            id: 1,
+            string_test: 'mike',
+            boolean_test: false
+        };
+
+        const conditions = { id: 1 }
 
         const dbDriver = givenADbDriver(rowsFromDb)
         const anEntity = givenAnEntity()
@@ -55,20 +54,16 @@ describe('Update an Entity', () => {
             dbDriver
         })
         
-        const anUpdatedInstance = givenAnUpdatedEntity()
-
         const injection = {}
         const itemRepo = new ItemRepository(injection)
 
         //when
-        const ret = await itemRepo.update(anUpdatedInstance)
-        console.log(ret)
+        const ret = await itemRepo.update(itemRepo.table, conditions, tableFields)
 
         //then
-        assert.deepStrictEqual(dbDriver.sql, "UPDATE aTable SET id = $1, string_test = $2, boolean_test = $3 WHERE id = $1, string_test = $2, boolean_test = $3")
-        assert.deepStrictEqual(dbDriver.values, [1, 'Mike', true])
-        assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'Mike', booleanTest: true })
-        assert.deepStrictEqual(ret[1].toJSON(), { id: 1, stringTest: 'clare', booleanTest: false })
+        assert.deepStrictEqual(dbDriver.sql, "UPDATE aTable SET id = $1, string_test = $2, boolean_test = $3 WHERE id = $4 RETURNING *")
+        assert.deepStrictEqual(dbDriver.values, [1, 'mike', false, 1])
+        assert.deepStrictEqual(ret, true)
     })
 
 })
