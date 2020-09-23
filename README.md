@@ -90,7 +90,7 @@ Features:
 Retrieving and Persist:
 - [X] persist (upsert)
 - [ ] insert
-- [ ] update
+- [X] update
 - [X] find (ID)
     - [ ] deal with entities / tables with multiples IDs
 - [ ] find by (any field)

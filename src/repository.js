@@ -59,7 +59,6 @@ module.exports = class Repository {
     }
     
     async update(tableQualifiedName, conditions, tableFields) {
-        const dataMapper = this.dataMapper
         const args = Object.keys(tableFields)
         const placeholders = args.map((e, i) => `${e} = $${i + 1}`)
         const updateFields = placeholders.join(', ')
@@ -68,20 +67,20 @@ module.exports = class Repository {
         let sql = `UPDATE ${this.tableQualifiedName} SET ${updateFields} `
         
         if (!Utils.isObjEmpty(conditions)) {
-            const keys = Object.keys(conditions);
-            const condFields = keys.map((k, i) => `${k} = $${i + 1 + len}`);
-            const condPlaceholders = condFields.join(" AND ");
+            const keys = Object.keys(conditions)
+            const condFields = keys.map((k, i) => `${k} = $${i + 1 + len}`)
+            const condPlaceholders = condFields.join(" AND ")
         
-            sql += `WHERE ${condPlaceholders} RETURNING *`;
+            sql += `WHERE ${condPlaceholders} RETURNING *`
           } 
 
-        const values = [];
+        const values = []
         Object.keys(tableFields).forEach(key => {
-            values.push(tableFields[key]);
-        });
+            values.push(tableFields[key])
+        })
         Object.keys(conditions).forEach(key => {
-            values.push(conditions[key]);
-        });
+            values.push(conditions[key])
+        })
 
         const ret = await this.query(sql, values)
         return true

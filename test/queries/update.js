@@ -41,7 +41,7 @@ describe('Update an Entity', () => {
             id: 1,
             string_test: 'mike',
             boolean_test: false
-        };
+        }
 
         const conditions = { id: 1 }
 
