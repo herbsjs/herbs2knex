@@ -77,6 +77,30 @@ An `upsert`.
 
 TODO: Example
 
+### `delete`
+Delete records.
+
+Example:
+```javascript
+const { Repository } = require('herbs2pg')
+
+class ItemRepository extends Repository {
+    constructor() {
+        super({
+            entity: anEntity,
+            table: 'aTable',
+            ids: ['id'],
+            dbDriver
+        })
+    }
+}
+
+const conditions = { id: 1 , name: "john" }
+
+const itemRepo = new ItemRepository()
+const ret = await itemRepo.delete(itemRepo.table, conditions)
+```
+
 ## TODO
 
 - [ ] Allow only scalar types for queries (don't allow entity / object types)
@@ -91,6 +115,7 @@ Retrieving and Persist:
 - [X] persist (upsert)
 - [ ] insert
 - [ ] update
+- [X] delete
 - [X] find (ID)
     - [ ] deal with entities / tables with multiples IDs
 - [ ] find by (any field)
