@@ -58,6 +58,22 @@ module.exports = class Repository {
         return true
     }
 
+    async delete(tableQualifiedName, conditions) {
+        const keys = Object.keys(conditions)
+        const condFields = keys.map((k, i) => `${k} = $${i + 1}`)
+        const condPlaceholders = condFields.join(" AND ")
+    
+        let sql = `DELETE FROM ${this.tableQualifiedName} WHERE ${condPlaceholders}`
+
+        const values = []
+        Object.keys(conditions).forEach(key => {
+            values.push(conditions[key])
+        })
+
+        const ret = await this.query(sql, values)
+        return true
+    }
+
     async query(sql, values) {
         try {
             console.info("[SQL]", sql, " [VALUES]", values.toString())
