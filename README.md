@@ -77,6 +77,37 @@ An `upsert`.
 
 TODO: Example
 
+### `update`
+Update record accordingly to conditions and passing in new data.
+
+Example:
+```javascript
+const { Repository } = require('herbs2pg')
+
+class ItemRepository extends Repository {
+    constructor() {
+        super({
+            entity: anEntity,
+            table: 'aTable',
+            ids: ['id'],
+            dbDriver
+        })
+    }
+}
+
+const tableFields = {
+            id: 1,
+            string_test: 'mike',
+            boolean_test: false
+        }
+
+const conditions = { id: 1 }
+
+const itemRepo = new ItemRepository()
+const ret = await itemRepo.update(itemRepo.table, conditions, tableFields )
+```
+
+
 ## TODO
 
 - [ ] Allow only scalar types for queries (don't allow entity / object types)
