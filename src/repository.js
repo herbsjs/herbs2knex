@@ -1,6 +1,6 @@
 const Convention = require('./convention')
 const DataMapper = require('./dataMapper')
-const Knex = require('knex');
+const Knex = require('knex')
 
 const dependency = { convention: Convention, knex: Knex }
 
@@ -14,7 +14,7 @@ module.exports = class Repository {
         this.tableQualifiedName = this.schema ? `${this.schema}.${this.table}` : `${this.table}`
         this.entity = options.entity
         this.entityIDs = options.ids
-        this.runner = di.knex(options.dbConfig);
+        this.runner = di.knex(options.dbConfig)
         this.dataMapper = DataMapper.getFrom(this.entity, this.entityIDs)
     }
 
@@ -28,9 +28,9 @@ module.exports = class Repository {
         const tableIDs = dataMapper.getTableIDs()
         const tableFields = dataMapper.getTableFields()
 
-        const runner = this.runner(this.table);
+        const runner = this.runner(this.table)
         const parsedValue = Array.isArray(ids) ? ids : [ids]
-        const ret = await runner.select(tableFields).whereIn(tableIDs[0],parsedValue);
+        const ret = await runner.select(tableFields).whereIn(tableIDs[0],parsedValue)
         
         const entities = []
 
@@ -44,7 +44,7 @@ module.exports = class Repository {
     }
 
     async insert(entityInstance){
-        const runner = this.runner(this.table);
+        const runner = this.runner(this.table)
         const ret = await runner.insert(entityInstance)
         return true
     }
@@ -72,7 +72,7 @@ module.exports = class Repository {
     async query(sql, values) {
         try {
             console.info("[SQL]", sql, " [VALUES]", values.toString())
-            const runner = this.runner;
+            const runner = this.runner
             return await runner.raw(sql, values)
         } catch (error) {
             console.error(error)

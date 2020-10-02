@@ -29,8 +29,8 @@ describe('Persist an Entity', () => {
         }
     }
 
-    let querySQL;
-    let quetyValues;
+    let querySQL
+    let quetyValues
 
     const knex = () => ({
         raw: (sql, values) => { 
