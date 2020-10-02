@@ -14,45 +14,44 @@ describe('Query Find by ID', () => {
 
     const givenAnRepositoryClass = (options) => {
         return class ItemRepositoryBase extends Repository {
-            constructor() {
+            constructor(options) {
                 super(options)
             }
         }
     }
 
-    const givenADbDriver = (ret) => {
-        return {
-            async query(sql, values) {
-                this.sql = sql
-                this.values = values[0][0]
-                return { rows: ret }
-            }
-        }
+    const returnData = [
+        { id: 1, string_test: "john", boolean_test: true },
+        { id: 2, string_test: "clare", boolean_test: false }
+    ]
+
+    const knex = () => {
+        return  () => ({
+            select: (columns) => ({
+                    whereIn: (column, values) => {
+                        return returnData
+                    }
+            })
+        })
     }
 
     it('should return entities', async () => {
         //given
-        const rowsFromDb = [
-            { id: 1, string_test: "john", boolean_test: true },
-            { id: 2, string_test: "clare", boolean_test: false }
-        ]
-        const dbDriver = givenADbDriver(rowsFromDb)
         const anEntity = givenAnEntity()
-        const ItemRepository = givenAnRepositoryClass({
+        const injection = { knex }
+        const ItemRepository = givenAnRepositoryClass()
+        const itemRepo = new ItemRepository({ 
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbDriver
+            dbConfig: {},
+            injection
         })
-        const injection = {}
-        const itemRepo = new ItemRepository(injection)
 
         //when
         const ret = await itemRepo.findByID(1)
-
+        
         //then
-        assert.deepStrictEqual(dbDriver.sql, "SELECT id, string_test, boolean_test FROM aTable WHERE id = ANY ($1);")
-        assert.deepStrictEqual(dbDriver.values, 1)
         assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true })
         assert.deepStrictEqual(ret[1].toJSON(), { id: 2, stringTest: 'clare', booleanTest: false })
     })

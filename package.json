@@ -32,7 +32,8 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2pg#readme",
   "dependencies": {
-    "gotu": "^1.0.6"
+    "gotu": "^1.0.6",
+    "knex": "^0.21.6"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

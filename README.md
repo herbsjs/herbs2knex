@@ -20,7 +20,7 @@ class ItemRepository extends Repository {
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbDriver
+            dbConfig
         })
     }
 }
@@ -36,7 +36,7 @@ Repository config:
 
 `ids` - The primary keys of the table
 
-`dbDriver` - A object that respondes to `.query(sql, values)`. Usually `pg.Pool`.
+`dbConfig` - A object with database configuration
 
 ### Repository vs ORM
 
@@ -52,7 +52,7 @@ class ItemRepository extends Repository {
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbDriver
+            dbConfig
         })
     }
 
@@ -89,7 +89,7 @@ Features:
 
 Retrieving and Persist:
 - [X] persist (upsert)
-- [ ] insert
+- [X] insert
 - [ ] update
 - [X] find (ID)
     - [ ] deal with entities / tables with multiples IDs

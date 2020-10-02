@@ -23,44 +23,46 @@ describe('Persist an Entity', () => {
 
     const givenAnRepositoryClass = (options) => {
         return class ItemRepositoryBase extends Repository {
-            constructor() {
+            constructor(options) {
                 super(options)
             }
         }
     }
 
-    const givenADbDriver = (ret) => {
-        return {
-            async query(sql, values) {
-                this.sql = sql
-                this.values = values
-                return true
-            }
-        }
-    }
+    let querySQL;
+    let quetyValues;
+
+    const knex = () => ({
+        raw: (sql, values) => { 
+            querySQL = sql
+            quetyValues = values
+            return true
+         }
+    })
+
 
     it('should persist entities', async () => {
         //given
-        const dbDriver = givenADbDriver()
         const anEntity = givenAnEntity()
-        const ItemRepository = givenAnRepositoryClass({
+        const ItemRepository = givenAnRepositoryClass()
+        const aModifiedInstance = givenAnModifiedEntity()
+
+        const injection = { knex }
+        const itemRepo = new ItemRepository({
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbDriver
+            dbConfig: {},
+            injection
         })
-        const aModifiedInstance = givenAnModifiedEntity()
-
-        const injection = {}
-        const itemRepo = new ItemRepository(injection)
 
         //when
         const ret = await itemRepo.persist(aModifiedInstance)
-
+        
         //then
-        assert.deepStrictEqual(dbDriver.sql, 
-            "INSERT INTO aTable (id, string_test, boolean_test) VALUES ($1, $2, $3) ON CONFLICT (id) DO UPDATE SET string_test = EXCLUDED.string_test, boolean_test = EXCLUDED.boolean_test")
-        assert.deepStrictEqual(dbDriver.values, [1, 'test', true])
+        assert.deepStrictEqual(querySQL, 
+            "INSERT INTO aTable (id, string_test, boolean_test) VALUES (?, ?, ?) ON CONFLICT (id) DO UPDATE SET string_test = EXCLUDED.string_test, boolean_test = EXCLUDED.boolean_test")
+        assert.deepStrictEqual(quetyValues, [1, 'test', true])
         assert.deepStrictEqual(ret, true)
     })
 })
