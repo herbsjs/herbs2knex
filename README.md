@@ -1,18 +1,14 @@
-<p align="center"><img src="https://raw.githubusercontent.com/herbsjs/herbs2pg/master/docs/logo.png" height="220"></p>
+# herbs2knex
 
-![Node.js CI](https://github.com/herbsjs/herbs2pg/workflows/Node.js%20CI/badge.svg?branch=master)[![codecov](https://codecov.io/gh/herbsjs/herbs2pg/branch/master/graph/badge.svg)](https://codecov.io/gh/herbsjs/herbs2pg)
-
-# herbs2pg
-
-herbs2pg creates postgresql repositories based on herbs entities (gotu)
+herbs2knex creates postgresql repositories based on herbs entities (gotu)
 
 ### Installing
-    $ npm install herbs2pg
+    $ npm install herbs2knex
 
 ### Using
 
 ```javascript
-const { Repository } = require('herbs2pg')
+const { Repository } = require('herbs2knex')
 
 class ItemRepository extends Repository {
     constructor() {
@@ -90,10 +86,10 @@ Features:
 Retrieving and Persist:
 - [X] persist (upsert)
 - [X] insert
-- [ ] update
+- [X] update
 - [X] find (ID)
     - [ ] deal with entities / tables with multiples IDs
-- [ ] find by (any field)
+- [X] find by (any field)
 - [ ] find with a iterator for batchs
 - [ ] find with pages
 - [ ] first

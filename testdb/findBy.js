@@ -4,7 +4,7 @@ const db = require('./db')
 const config = require('./config')
 const assert = require('assert')
 
-describe('Query Find by ID', () => {
+describe('Query Find By', () => {
 
     const table = 'test_repository'
     const schema = 'herbs2knex_testdb'
@@ -24,7 +24,7 @@ describe('Query Find by ID', () => {
 
     after(async () => {
         const sql = `
-        DROP SCHEMA IF EXISTS ${schema} CASCADE;
+            DROP SCHEMA IF EXISTS ${schema} CASCADE;
         `
         await db.query(sql)
     })
@@ -59,8 +59,9 @@ describe('Query Find by ID', () => {
         await db.query(`INSERT INTO ${schema}.${table} (id, string_test, boolean_test) VALUES (10, 'marie', true)`)
         const itemRepo = new ItemRepository(injection)
 
+
         //when
-        const ret = await itemRepo.findByID(10)
+        const ret = await itemRepo.findBy({ string_test: ["marie"] })
 
         //then
         assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })
