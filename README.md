@@ -1,18 +1,14 @@
-<p align="center"><img src="https://raw.githubusercontent.com/herbsjs/herbs2pg/master/docs/logo.png" height="220"></p>
+# gotu2knex
 
-![Node.js CI](https://github.com/herbsjs/herbs2pg/workflows/Node.js%20CI/badge.svg?branch=master)[![codecov](https://codecov.io/gh/herbsjs/herbs2pg/branch/master/graph/badge.svg)](https://codecov.io/gh/herbsjs/herbs2pg)
-
-# herbs2pg
-
-herbs2pg creates postgresql repositories based on herbs entities (gotu)
+gotu2knex creates postgresql repositories based on herbs entities (gotu)
 
 ### Installing
-    $ npm install herbs2pg
+    $ npm install gotu2knex
 
 ### Using
 
 ```javascript
-const { Repository } = require('herbs2pg')
+const { Repository } = require('gotu2knex')
 
 class ItemRepository extends Repository {
     constructor() {
@@ -20,7 +16,7 @@ class ItemRepository extends Repository {
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbDriver
+            dbConfig
         })
     }
 }
@@ -36,7 +32,7 @@ Repository config:
 
 `ids` - The primary keys of the table
 
-`dbDriver` - A object that respondes to `.query(sql, values)`. Usually `pg.Pool`.
+`dbConfig` - A object with database configuration
 
 ### Repository vs ORM
 
@@ -52,7 +48,7 @@ class ItemRepository extends Repository {
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbDriver
+            dbConfig
         })
     }
 
@@ -70,12 +66,37 @@ const ret = await itemRepo.getExcludedItemFromLastWeek()
 ### `findByID`
 Find by ID
 
-TODO: Example
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.findByID(10)
+
+### `findBy`
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.findBy({ string_test: ["marie"] })
 
 ### `persist`
 An `upsert`.
 
-TODO: Example
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.persist(aModifiedInstance);
+
+### `update`
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.update(aModifiedInstance);
+
+### `insert`
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.insert(aModifiedInstance);
+
+### `runner`
+A `knex` implementation to that repository / table
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.runner.select();
+    const ret = await itemRepo.runner.select().first();
+    const ret = await itemRepo.runner.select().last();
 
 ## TODO
 
@@ -86,16 +107,18 @@ Features:
 - [ ] Be able to change the conventions (injection)
 - [ ] Exclude / ignore fields on a sql statement
 - [ ] Awareness of created/updated at/by fields
+- [X] Plug-and-play knex
+- [X] Easy access knex structure
 
 Retrieving and Persist:
 - [X] persist (upsert)
-- [ ] insert
-- [ ] update
+- [X] insert
+- [X] update
 - [X] find (ID)
     - [ ] deal with entities / tables with multiples IDs
-- [ ] find by (any field)
+- [X] find by (any field)
 - [ ] find with a iterator for batchs
 - [ ] find with pages
-- [ ] first
-- [ ] last
+- [X] first
+- [X] last
 

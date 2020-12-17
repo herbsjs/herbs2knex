@@ -1,7 +1,7 @@
 module.exports = class Convention {
 
     static camelToSnake(string) {
-        return string.replace(/([A-Z])/g, "_$1").toLowerCase();
+        return string.replace(/([A-Z])/g, "_$1").toLowerCase()
     }
 
     static toTableField(entityField) {

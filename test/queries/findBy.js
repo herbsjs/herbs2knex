@@ -2,7 +2,7 @@ const { entity, field } = require('gotu')
 const Repository = require('../../src/repository')
 const assert = require('assert')
 
-describe('Query Find by ID', () => {
+describe('Query Find By', () => {
 
     const givenAnEntity = () => {
         return entity('A entity', {
@@ -49,10 +49,57 @@ describe('Query Find by ID', () => {
         })
 
         //when
-        const ret = await itemRepo.findByID(1)
-        
+        const ret = await itemRepo.findBy({ string_test: ["john"] })
+
         //then
         assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true })
         assert.deepStrictEqual(ret[1].toJSON(), { id: 2, stringTest: 'clare', booleanTest: false })
+    })
+
+    
+    it('should return error because a wrong search', async () => {
+        //given
+        const anEntity = givenAnEntity()
+        const injection = { knex }
+        const ItemRepository = givenAnRepositoryClass()
+        const itemRepo = new ItemRepository({ 
+            entity: anEntity,
+            table: 'aTable',
+            ids: ['id'],
+            dbConfig: {},
+            injection
+        })
+
+        try{
+            //when
+            const ret = await itemRepo.findBy("wrong")
+            throw "wrong value"
+        }catch(error){
+            //then
+            assert.deepStrictEqual(error, "search term is invalid")
+        }
+    })
+    
+    it('should return error because a type search', async () => {
+        //given
+        const anEntity = givenAnEntity()
+        const injection = { knex }
+        const ItemRepository = givenAnRepositoryClass()
+        const itemRepo = new ItemRepository({ 
+            entity: anEntity,
+            table: 'aTable',
+            ids: ['id'],
+            dbConfig: {},
+            injection
+        })
+
+        try{
+            //when
+            const ret = await itemRepo.findBy({ wrong : { wrong: "wrong" }})
+            throw "wrong value"
+        }catch(error){
+            //then
+            assert.deepStrictEqual(error, "search value is invalid")
+        }
     })
 })

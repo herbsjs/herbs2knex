@@ -29,6 +29,7 @@ module.exports = class DataMapper {
             getTableIDs: () => entityIDs.map(i => convention.toTableField(i)),
             getEntityFields: () => entityFields,
             getTableFields: () => entityFields.map(e => convention.toTableField(e)),
+            getTableFieldsWithValue: (instance) => entityFields.map(e => ({ [convention.toTableField(e)] : instance[e] })).reduce((x, y) => ({...x, ...y})),
             getValuesFromEntity: (instance) => entityFields.map(e => instance[e])
         }
 
