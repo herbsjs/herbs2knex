@@ -15,7 +15,8 @@ module.exports = class Repository {
       : `${this.table}`;
     this.entity = options.entity;
     this.entityIDs = options.ids;
-    this.runner = di.knex(options.dbConfig);
+    this.run = di.knex(options.dbConfig);
+    this.runner = di.knex(options.dbConfig)(this.tableQualifiedName);
     this.dataMapper = DataMapper.getFrom(this.entity, this.entityIDs);
   }
 
@@ -29,9 +30,8 @@ module.exports = class Repository {
     const tableIDs = dataMapper.getTableIDs();
     const tableFields = dataMapper.getTableFields();
 
-    const runner = this.runner(this.tableQualifiedName);
     const parsedValue = Array.isArray(ids) ? ids : [ids];
-    const ret = await runner
+    const ret = await this.runner
       .select(tableFields)
       .whereIn(tableIDs[0], parsedValue);
 
@@ -65,9 +65,8 @@ module.exports = class Repository {
     )
       throw "search value is invalid";
 
-    const runner = this.runner(this.tableQualifiedName);
 
-    const ret = await runner
+    const ret = await this.runner
       .select(tableFields)
       .whereIn(searchTerm, searchValue);
 
@@ -85,43 +84,31 @@ module.exports = class Repository {
   async insert(entityInstance) {
     const dataMapper = this.dataMapper;
     const tableFields = dataMapper.getTableFieldsWithValue(entityInstance);
-    const runner = this.runner(this.tableQualifiedName);
-    await runner.insert(tableFields);
+    await this.runner.insert(tableFields);
     return true
   }
 
   async persist(entityInstance) {
-    const dataMapper = this.dataMapper;
-    const tableIDs = dataMapper.getTableIDs();
-    const tableFields = dataMapper.getTableFields();
-    const values = dataMapper.getValuesFromEntity(entityInstance);
-    const placeholders = values.map(() => `?`).join(", ");
-    const updateFields = tableFields
-      .filter((f) => !tableIDs.includes(f))
-      .map((f) => `${f} = EXCLUDED.${f}`);
-    let sql = `INSERT INTO ${this.tableQualifiedName} (${tableFields.join(
-      ", "
-    )}) VALUES (${placeholders}) `;
-    sql += `ON CONFLICT (${tableIDs.join(", ")}) DO `;
-    sql += `UPDATE SET `;
-    sql += `${updateFields.join(", ")}`;
-
-    const ret = await this.query(sql, values);
-    return true;
+    const updated = await this.update(entityInstance);
+    if(updated) return true
+    
+    await this.insert(entityInstance);
+    return true
   }
 
   async update(entityInstance) {
     const dataMapper = this.dataMapper;
+    const tableIDs = dataMapper.getTableIDs();
     const tableFields = dataMapper.getTableFieldsWithValue(entityInstance);
 
-    const runner = this.runner(this.tableQualifiedName);
-    return await runner.update(tableFields);
+    const ret = await this.runner.where(tableIDs[0], entityInstance[tableIDs[0]]).update(tableFields);
+    return ret === 1
   }
 
   async query(sql, values) {
     try {
       console.info("[SQL]", sql, " [VALUES]", values.toString());
-      const runner = this.runner;
+      const runner = this.run;
       return await runner.raw(sql, values);
     } catch (error) {
       console.error(error);

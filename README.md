@@ -66,12 +66,37 @@ const ret = await itemRepo.getExcludedItemFromLastWeek()
 ### `findByID`
 Find by ID
 
-TODO: Example
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.findByID(10)
+
+### `findBy`
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.findBy({ string_test: ["marie"] })
 
 ### `persist`
 An `upsert`.
 
-TODO: Example
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.persist(aModifiedInstance);
+
+### `update`
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.update(aModifiedInstance);
+
+### `insert`
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.insert(aModifiedInstance);
+
+### `runner`
+A `knex` implementation to that repository / table
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.runner.select();
+    const ret = await itemRepo.runner.select().first();
+    const ret = await itemRepo.runner.select().last();
 
 ## TODO
 
@@ -82,6 +107,8 @@ Features:
 - [ ] Be able to change the conventions (injection)
 - [ ] Exclude / ignore fields on a sql statement
 - [ ] Awareness of created/updated at/by fields
+- [X] Plug-and-play knex
+- [X] Easy access knex structure
 
 Retrieving and Persist:
 - [X] persist (upsert)
@@ -92,6 +119,6 @@ Retrieving and Persist:
 - [X] find by (any field)
 - [ ] find with a iterator for batchs
 - [ ] find with pages
-- [ ] first
-- [ ] last
+- [X] first
+- [X] last
 

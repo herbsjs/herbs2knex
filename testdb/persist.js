@@ -19,7 +19,7 @@ describe('Persist Entity', () => {
             string_test TEXT,
             boolean_test BOOL,
             PRIMARY KEY (id)
-        )`
+        );`
         await db.query(sql)
     })
 
@@ -70,7 +70,6 @@ describe('Persist Entity', () => {
             })
             const aModifiedInstance = givenAnModifiedEntity()
             /* clean table for this ID */
-            await db.query(`DELETE FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
 
             const injection = {}
             const itemRepo = new ItemRepository(injection)

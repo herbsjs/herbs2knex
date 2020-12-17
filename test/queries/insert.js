@@ -36,7 +36,7 @@ describe("Insert an Entity", () => {
       injection,
     });
 
-    anEntity.id = 1;
+    anEntity.id = 2;
     anEntity.stringTest = "test";
     anEntity.booleanTest = true;
 

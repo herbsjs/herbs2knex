@@ -80,7 +80,7 @@ describe('Persist Entity', () => {
 
             //then
             const retDB = await db.query(`SELECT string_test FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
-            assert.deepStrictEqual(ret, 1)
+            assert.deepStrictEqual(ret, true)
             assert.deepStrictEqual(retDB.rows[0].string_test, "updated")
         })
     })

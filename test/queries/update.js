@@ -20,7 +20,7 @@ describe("Update an Entity", () => {
   };
 
   const knex = () => {
-    return () => ({ update: (columns) => true });
+    return () => ({ where: (columns) => ({ update: (columns) => 1 }) });
   };
 
   it("should update an entity", async () => {
