@@ -1,14 +1,14 @@
-# herbs2knex
+# gotu2knex
 
-herbs2knex creates postgresql repositories based on herbs entities (gotu)
+gotu2knex creates postgresql repositories based on herbs entities (gotu)
 
 ### Installing
-    $ npm install herbs2knex
+    $ npm install gotu2knex
 
 ### Using
 
 ```javascript
-const { Repository } = require('herbs2knex')
+const { Repository } = require('gotu2knex')
 
 class ItemRepository extends Repository {
     constructor() {

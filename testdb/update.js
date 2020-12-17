@@ -7,7 +7,7 @@ const assert = require('assert')
 describe('Persist Entity', () => {
 
     const table = 'test_repository'
-    const schema = 'herbs2knex_testdb'
+    const schema = 'gotu2knex_testdb'
 
     before(async () => {
         const sql = `
