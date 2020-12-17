@@ -20,7 +20,7 @@ describe('Persist Entity', () => {
             boolean_test BOOL,
             PRIMARY KEY (id)
         );
-        INSERT INTO ${schema}.${table} values (1, 'created', true)`;
+        INSERT INTO ${schema}.${table} values (1, 'created', true)`
         await db.query(sql)
     })
 

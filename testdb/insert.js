@@ -19,7 +19,7 @@ describe('Persist Entity', () => {
             string_test TEXT,
             boolean_test BOOL,
             PRIMARY KEY (id)
-        )`;
+        )`
         await db.query(sql)
     })
 
