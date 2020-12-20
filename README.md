@@ -85,6 +85,11 @@ An `upsert`.
     const itemRepo = new ItemRepository(injection)
     const ret = await itemRepo.update(aModifiedInstance);
 
+### `delete`
+
+    const itemRepo = new ItemRepository(injection)
+    const ret = await itemRepo.delete(aModifiedInstance);
+
 ### `insert`
 
     const itemRepo = new ItemRepository(injection)
@@ -114,6 +119,7 @@ Retrieving and Persist:
 - [X] persist (upsert)
 - [X] insert
 - [X] update
+- [X] delete
 - [X] find (ID)
     - [ ] deal with entities / tables with multiples IDs
 - [X] find by (any field)
