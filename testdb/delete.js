@@ -75,13 +75,12 @@ describe('Delete an Entity', () => {
             const itemRepo = new ItemRepository(injection)
 
             //when
-            aModifiedInstance.stringTest = "delete"
             const ret = await itemRepo.delete(aModifiedInstance)
 
             //then
             const retDB = await db.query(`SELECT string_test FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
             assert.deepStrictEqual(ret, true)
-            assert.deepStrictEqual(retDB.rows[0].string_test, "delete")
+            assert.deepStrictEqual(retDB.rows.length, 0)
         })
     })
 })
