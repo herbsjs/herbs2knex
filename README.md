@@ -66,42 +66,54 @@ const ret = await itemRepo.getExcludedItemFromLastWeek()
 ### `findByID`
 Find by ID
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.findByID(10)
-
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.findByID(10)
+```
 ### `findBy`
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.findBy({ string_test: ["marie"] })
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.findBy({ string_test: ["marie"] })
+```
 
 ### `persist`
 An `upsert`.
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.persist(aModifiedInstance);
-
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.persist(aModifiedInstance);
+```
 ### `update`
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.update(aModifiedInstance);
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.update(aModifiedInstance);
+```
 
 ### `delete`
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.delete(aModifiedInstance);
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.delete(aModifiedInstance);
+```
 
 ### `insert`
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.insert(aModifiedInstance);
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.insert(aModifiedInstance);
+```
 
 ### `runner`
 A `knex` implementation to that repository / table
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.runner.select();
-    const ret = await itemRepo.runner.select().first();
-    const ret = await itemRepo.runner.select().last();
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.runner.select();
+const ret = await itemRepo.runner.select().first();
+const ret = await itemRepo.runner.select().last();
+```
 
 ## TODO
 
