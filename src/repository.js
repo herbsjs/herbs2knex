@@ -50,6 +50,7 @@ module.exports = class Repository {
     const dataMapper = this.dataMapper
     const tableFields = dataMapper.getTableFields()
 
+    const searchTermTableField = dataMapper.toTableField(Object.keys(search)[0])
     const searchTerm = Object.keys(search)[0]
     if (!searchTerm || searchTerm === "0") throw "search term is invalid"
 
@@ -68,7 +69,7 @@ module.exports = class Repository {
 
     const ret = await this.runner
       .select(tableFields)
-      .whereIn(searchTerm, searchValue)
+      .whereIn(searchTermTableField, searchValue)
 
     const entities = []
 

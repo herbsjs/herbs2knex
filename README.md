@@ -72,9 +72,10 @@ const ret = await itemRepo.findByID(10)
 ```
 ### `findBy`
 
+
 ```javascript
 const itemRepo = new ItemRepository(injection)
-const ret = await itemRepo.findBy({ string_test: ["marie"] })
+const ret = await itemRepo.findBy({ stringTest: ["marie"] })
 ```
 
 ### `persist`
