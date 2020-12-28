@@ -66,37 +66,55 @@ const ret = await itemRepo.getExcludedItemFromLastWeek()
 ### `findByID`
 Find by ID
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.findByID(10)
-
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.findByID(10)
+```
 ### `findBy`
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.findBy({ stringTest: ["marie"] })
+
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.findBy({ stringTest: ["marie"] })
+```
 
 ### `persist`
 An `upsert`.
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.persist(aModifiedInstance);
-
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.persist(aModifiedInstance);
+```
 ### `update`
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.update(aModifiedInstance);
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.update(aModifiedInstance);
+```
+
+### `delete`
+
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.delete(aModifiedInstance);
+```
 
 ### `insert`
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.insert(aModifiedInstance);
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.insert(aModifiedInstance);
+```
 
 ### `runner`
 A `knex` implementation to that repository / table
 
-    const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.runner.select();
-    const ret = await itemRepo.runner.select().first();
-    const ret = await itemRepo.runner.select().last();
+```javascript
+const itemRepo = new ItemRepository(injection)
+const ret = await itemRepo.runner.select();
+const ret = await itemRepo.runner.select().first();
+const ret = await itemRepo.runner.select().last();
+```
 
 ## TODO
 
@@ -114,6 +132,7 @@ Retrieving and Persist:
 - [X] persist (upsert)
 - [X] insert
 - [X] update
+- [X] delete
 - [X] find (ID)
     - [ ] deal with entities / tables with multiples IDs
 - [X] find by (any field)

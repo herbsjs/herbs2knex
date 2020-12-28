@@ -106,6 +106,14 @@ module.exports = class Repository {
     return ret === 1
   }
 
+  async delete(entityInstance) {
+    const dataMapper = this.dataMapper
+    const tableIDs = dataMapper.getTableIDs()
+
+    const ret = await this.runner.where(tableIDs[0], entityInstance[tableIDs[0]]).delete()
+    return ret === 1
+  }
+
   async query(sql, values) {
     try {
       console.info("[SQL]", sql, " [VALUES]", values.toString())
