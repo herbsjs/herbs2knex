@@ -61,7 +61,7 @@ describe('Query Find By', () => {
 
 
         //when
-        const ret = await itemRepo.findBy({ string_test: ["marie"] })
+        const ret = await itemRepo.findBy({ stringTest: ["marie"] })
 
         //then
         assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })

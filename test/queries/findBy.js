@@ -35,7 +35,7 @@ describe('Query Find By', () => {
         })
     }
 
-    it('should return entities', async () => {
+    it('should return entities using table field', async () => {
         //given
         const anEntity = givenAnEntity()
         const injection = { knex }
@@ -50,6 +50,27 @@ describe('Query Find By', () => {
 
         //when
         const ret = await itemRepo.findBy({ string_test: ["john"] })
+
+        //then
+        assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true })
+        assert.deepStrictEqual(ret[1].toJSON(), { id: 2, stringTest: 'clare', booleanTest: false })
+    })
+
+    it('should return entities using entity field', async () => {
+        //given
+        const anEntity = givenAnEntity()
+        const injection = { knex }
+        const ItemRepository = givenAnRepositoryClass()
+        const itemRepo = new ItemRepository({ 
+            entity: anEntity,
+            table: 'aTable',
+            ids: ['id'],
+            dbConfig: {},
+            injection
+        })
+
+        //when
+        const ret = await itemRepo.findBy({ stringTest: ["john"] })
 
         //then
         assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true })

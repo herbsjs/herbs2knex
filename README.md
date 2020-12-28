@@ -72,7 +72,7 @@ Find by ID
 ### `findBy`
 
     const itemRepo = new ItemRepository(injection)
-    const ret = await itemRepo.findBy({ string_test: ["marie"] })
+    const ret = await itemRepo.findBy({ stringTest: ["marie"] })
 
 ### `persist`
 An `upsert`.
