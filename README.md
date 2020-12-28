@@ -106,14 +106,13 @@ const itemRepo = new ItemRepository(injection)
 const ret = await itemRepo.insert(aModifiedInstance);
 ```
 
-### `runner`
+### `where`
 A `knex` implementation to that repository / table
 
 ```javascript
 const itemRepo = new ItemRepository(injection)
-const ret = await itemRepo.runner.select();
-const ret = await itemRepo.runner.select().first();
-const ret = await itemRepo.runner.select().last();
+const ret = await itemRepo.where({ stringTest: "marie" })
+const ret = await itemRepo.where({ stringTest: "marie" }, { first: true })
 ```
 
 ## TODO
