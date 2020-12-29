@@ -32,7 +32,7 @@
                 "999999",
                 "--colors",
                 "--recursive",
-                "${workspaceFolder}/testdb"
+                "${workspaceFolder}/testdb/mssql"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [

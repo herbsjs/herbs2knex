@@ -116,12 +116,10 @@ module.exports = class Repository {
 
   async query(sql, values) {
     try {
-      console.info("[SQL]", sql, " [VALUES]", values.toString())
       const runner = this.run
       return await runner.raw(sql, values)
     } catch (error) {
-      console.error(error)
-      throw error
+       throw error
     }
   }
 }
