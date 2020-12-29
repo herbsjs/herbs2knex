@@ -25,7 +25,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "DB Tests",
+            "name": "DB Tests mssql",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
                 "--timeout",
@@ -33,6 +33,25 @@
                 "--colors",
                 "--recursive",
                 "${workspaceFolder}/testdb/mssql"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ]
+        }
+        ,
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "DB Tests pg",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "--timeout",
+                "999999",
+                "--colors",
+                "--recursive",
+                "${workspaceFolder}/testdb/pg"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [
