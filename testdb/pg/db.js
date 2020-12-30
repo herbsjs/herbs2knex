@@ -1,5 +1,5 @@
 const { Pool } = require('pg')
-const config = require('./config')
+const config = require('../config')
 
 module.exports = new Pool({
   user: config.connection.user,
