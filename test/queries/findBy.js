@@ -5,10 +5,14 @@ const assert = require('assert')
 describe('Query Find By', () => {
 
     const givenAnEntity = () => {
+        const ParentEntity = entity('A Parent Entity', {})
+
         return entity('A entity', {
             id: field(Number),
             stringTest: field(String),
-            booleanTest: field(Boolean)
+            booleanTest: field(Boolean),
+            entityTest: field(ParentEntity),
+            entitiesTest: field([ParentEntity]),
         })
     }
 
@@ -20,105 +24,111 @@ describe('Query Find By', () => {
         }
     }
 
-    const returnData = [
-        { id: 1, string_test: "john", boolean_test: true },
-        { id: 2, string_test: "clare", boolean_test: false }
-    ]
-
-    const knex = () => {
-        return  () => ({
-            select: (columns) => ({
-                    whereIn: (column, values) => {
-                        return returnData
+    const knex = (ret, spy = {}) => (
+        () => ({
+            select: (s) => {
+                spy.select = s
+                return {
+                    whereIn: (w, v) => {
+                        spy.where = w
+                        spy.value = v
+                        return ret
                     }
-            })
+                }
+            }
         })
-    }
+    )
 
     it('should return entities using table field', async () => {
         //given
+        let spy = {}
+        const retFromDeb = [
+            { id: 1, string_test: "john", boolean_test: true },
+            { id: 2, string_test: "clare", boolean_test: false }
+        ]
         const anEntity = givenAnEntity()
-        const injection = { knex }
         const ItemRepository = givenAnRepositoryClass()
-        const itemRepo = new ItemRepository({ 
+        const itemRepo = new ItemRepository({
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbConfig: {},
-            injection
-        })
-
-        //when
-        const ret = await itemRepo.findBy({ string_test: ["john"] })
-
-        //then
-        assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true })
-        assert.deepStrictEqual(ret[1].toJSON(), { id: 2, stringTest: 'clare', booleanTest: false })
-    })
-
-    it('should return entities using entity field', async () => {
-        //given
-        const anEntity = givenAnEntity()
-        const injection = { knex }
-        const ItemRepository = givenAnRepositoryClass()
-        const itemRepo = new ItemRepository({ 
-            entity: anEntity,
-            table: 'aTable',
-            ids: ['id'],
-            dbConfig: {},
-            injection
+            knex: knex(retFromDeb, spy)
         })
 
         //when
         const ret = await itemRepo.findBy({ stringTest: ["john"] })
 
         //then
-        assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true })
-        assert.deepStrictEqual(ret[1].toJSON(), { id: 2, stringTest: 'clare', booleanTest: false })
+        assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true, entityTest: undefined, entitiesTest: undefined })
+        assert.deepStrictEqual(ret[1].toJSON(), { id: 2, stringTest: 'clare', booleanTest: false, entityTest: undefined, entitiesTest: undefined })
     })
 
-    
-    it('should return error because a wrong search', async () => {
+    it('should return entities using foreing key', async () => {
         //given
+        let spy = {}
+        const retFromDeb = [
+            { id: 1, string_test: "john", boolean_test: true },
+            { id: 2, string_test: "clare", boolean_test: false }
+        ]
         const anEntity = givenAnEntity()
-        const injection = { knex }
         const ItemRepository = givenAnRepositoryClass()
-        const itemRepo = new ItemRepository({ 
+        const itemRepo = new ItemRepository({
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbConfig: {},
-            injection
+            foreignKeys: [{ fkField: String }],
+            knex: knex(retFromDeb, spy)
         })
 
-        try{
+        //when
+        const ret = await itemRepo.findBy({ fkField: 1 })
+
+        //then
+        assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true, entityTest: undefined, entitiesTest: undefined })
+        assert.deepStrictEqual(ret[1].toJSON(), { id: 2, stringTest: 'clare', booleanTest: false, entityTest: undefined, entitiesTest: undefined })
+        assert.deepStrictEqual(spy.select, ['id', 'string_test', 'boolean_test', 'fk_field'])
+        assert.deepStrictEqual(spy.where, 'fk_field')
+        assert.deepStrictEqual(spy.value, [1])
+    })
+
+
+    it('should return error because a wrong search', async () => {
+        //given
+        const anEntity = givenAnEntity()
+        const ItemRepository = givenAnRepositoryClass()
+        const itemRepo = new ItemRepository({
+            entity: anEntity,
+            table: 'aTable',
+            ids: ['id'],
+            knex
+        })
+
+        try {
             //when
             const ret = await itemRepo.findBy("wrong")
             throw "wrong value"
-        }catch(error){
+        } catch (error) {
             //then
             assert.deepStrictEqual(error, "search term is invalid")
         }
     })
-    
+
     it('should return error because a type search', async () => {
         //given
         const anEntity = givenAnEntity()
-        const injection = { knex }
         const ItemRepository = givenAnRepositoryClass()
-        const itemRepo = new ItemRepository({ 
+        const itemRepo = new ItemRepository({
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            dbConfig: {},
-            injection
+            knex
         })
 
-        try{
+        try {
             //when
-            const ret = await itemRepo.findBy({ wrong : { wrong: "wrong" }})
+            const ret = await itemRepo.findBy({ wrong: { wrong: "wrong" } })
             throw "wrong value"
-        }catch(error){
+        } catch (error) {
             //then
             assert.deepStrictEqual(error, "search value is invalid")
         }

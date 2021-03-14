@@ -32,19 +32,19 @@
   "author": "Enderson Costa",
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
-  "dependencies": {
-    "gotu": "^1.0.6",
-    "knex": "^0.21.6"
+  "peerDependencies": {
+    "gotu": "^1.0.x",
+    "knex": "^0.x"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "mocha": "^8.0.1",
+    "mocha": "^8.3.2",
     "nyc": "^15.1.0",
-    "prettier": "^2.0.5",
     "pg": "^8.3.0",
-    "dotenv": "^8.2.0"
+    "prettier": "^2.0.5"
   }
 }
