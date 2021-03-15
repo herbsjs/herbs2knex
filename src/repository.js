@@ -1,8 +1,7 @@
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
-const Knex = require("knex")
 
-const dependency = { convention: Convention, knex: Knex }
+const dependency = { convention: Convention }
 
 module.exports = class Repository {
   constructor(options) {
@@ -15,20 +14,21 @@ module.exports = class Repository {
       : `${this.table}`
     this.entity = options.entity
     this.entityIDs = options.ids
-    this.run = di.knex(options.dbConfig)
-    this.runner = di.knex(options.dbConfig)(this.tableQualifiedName)
-    this.dataMapper = DataMapper.getFrom(this.entity, this.entityIDs)
+    this.foreignKeys = options.foreignKeys
+    this.knex = options.knex
+    this.runner = this.knex(this.tableQualifiedName)
+    this.proxy = DataMapper.getProxyFrom(this.entity, this.entityIDs, this.foreignKeys)
   }
 
   mapFields() {
     const entity = this.entity
-    this.dataMapper = DataMapper.getFrom(entity)
+    this.proxy = DataMapper.getProxyFrom(entity)
   }
 
   async findByID(ids) {
-    const dataMapper = this.dataMapper
-    const tableIDs = dataMapper.getTableIDs()
-    const tableFields = dataMapper.getTableFields()
+    const proxy = this.proxy
+    const tableIDs = proxy._mapper.getTableIDs()
+    const tableFields = proxy._mapper.getTableFields()
 
     const parsedValue = Array.isArray(ids) ? ids : [ids]
     const ret = await this.runner
@@ -39,18 +39,22 @@ module.exports = class Repository {
 
     for (const row of ret) {
       if (row === undefined) continue
-      this.dataMapper.load(row)
-      entities.push(this.entity.fromJSON(this.dataMapper))
+      this.proxy._mapper.load(row)
+      entities.push(
+        this.entity.fromJSON(this.proxy, { allowExtraKeys: true })
+      )
     }
 
     return entities
   }
 
   async findBy(search) {
-    const dataMapper = this.dataMapper
-    const tableFields = dataMapper.getTableFields()
+    const proxy = this.proxy
+    const tableFields = proxy._mapper.getTableFields()
 
-    const searchTermTableField = dataMapper.toTableField(Object.keys(search)[0])
+    const searchTermTableField = proxy._mapper.toTableField(
+      Object.keys(search)[0]
+    )
     const searchTerm = Object.keys(search)[0]
     if (!searchTerm || searchTerm === "0") throw "search term is invalid"
 
@@ -66,7 +70,6 @@ module.exports = class Repository {
     )
       throw "search value is invalid"
 
-
     const ret = await this.runner
       .select(tableFields)
       .whereIn(searchTermTableField, searchValue)
@@ -75,51 +78,47 @@ module.exports = class Repository {
 
     for (const row of ret) {
       if (row === undefined) continue
-      this.dataMapper.load(row)
-      entities.push(this.entity.fromJSON(this.dataMapper))
+      this.proxy._mapper.load(row)
+      entities.push(
+        this.entity.fromJSON(this.proxy)
+      )
     }
 
     return entities
   }
 
   async insert(entityInstance) {
-    const dataMapper = this.dataMapper
-    const tableFields = dataMapper.getTableFieldsWithValue(entityInstance)
-    await this.runner.insert(tableFields)
-    return true
-  }
-
-  async persist(entityInstance) {
-    const updated = await this.update(entityInstance)
-    if(updated) return true
-    
-    await this.insert(entityInstance)
-    return true
+    const proxy = this.proxy
+    const fields = proxy._mapper.getTableFields(entityInstance)
+    const payload = proxy._mapper.getTableFieldsWithValue(entityInstance)
+    const ret = await this.runner
+      .returning(fields)
+      .insert(payload)
+    this.proxy._mapper.load(ret[0])
+    return this.entity.fromJSON(this.proxy)
   }
 
   async update(entityInstance) {
-    const dataMapper = this.dataMapper
-    const tableIDs = dataMapper.getTableIDs()
-    const tableFields = dataMapper.getTableFieldsWithValue(entityInstance)
+    const proxy = this.proxy
+    const tableIDs = proxy._mapper.getTableIDs()
+    const fields = proxy._mapper.getTableFields(entityInstance)
+    const payload = proxy._mapper.getTableFieldsWithValue(entityInstance)
 
-    const ret = await this.runner.where(tableIDs[0], entityInstance[tableIDs[0]]).update(tableFields)
-    return ret === 1
+    const ret = await this.runner
+      .where(tableIDs[0], entityInstance[tableIDs[0]])
+      .returning(fields)
+      .update(payload)
+    this.proxy._mapper.load(ret[0])
+    return this.entity.fromJSON(this.proxy)
   }
 
   async delete(entityInstance) {
-    const dataMapper = this.dataMapper
-    const tableIDs = dataMapper.getTableIDs()
+    const proxy = this.proxy
+    const tableIDs = proxy._mapper.getTableIDs()
 
-    const ret = await this.runner.where(tableIDs[0], entityInstance[tableIDs[0]]).delete()
+    const ret = await this.runner
+      .where(tableIDs[0], entityInstance[tableIDs[0]])
+      .delete()
     return ret === 1
-  }
-
-  async query(sql, values) {
-    try {
-      const runner = this.run
-      return await runner.raw(sql, values)
-    } catch (error) {
-       throw error
-    }
   }
 }

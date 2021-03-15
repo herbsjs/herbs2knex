@@ -19,21 +19,21 @@ describe("Delete an Entity", () => {
     }
   }
 
-  const knex = () => {
-    return () => ({ where: (columns) => ({ delete: (columns) => 1 }) })
-  }
+  const knex = () => ({
+    where: (columns) =>
+      ({ delete: (columns) => 1 })
+  })
+
 
   it("should delete an entity", async () => {
     //given
     const anEntity = givenAnEntity()
-    const injection = { knex }
     const ItemRepository = givenAnRepositoryClass()
     const itemRepo = new ItemRepository({
       entity: anEntity,
       table: "aTable",
       ids: ["id"],
-      dbConfig: {},
-      injection,
+      knex
     })
 
     anEntity.id = 1

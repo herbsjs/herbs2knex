@@ -8,7 +8,7 @@ describe('Data Mapper', () => {
 
         const givenAnEntity = () => {
             return entity('A entity', {
-                id: field(Number),
+                idField: field(Number),
                 field1: field(Boolean),
                 fieldName: field(Boolean)
             })
@@ -22,7 +22,7 @@ describe('Data Mapper', () => {
             const dataMapper = DataMapper.getFrom(entity)
 
             //then
-            assert.deepStrictEqual(dataMapper.data, undefined)
+            assert.deepStrictEqual(proxy._mapper.data, undefined)
         })
 
         it('should load data from DB', () => {
@@ -31,10 +31,10 @@ describe('Data Mapper', () => {
             const dataMapper = DataMapper.getFrom(entity)
 
             //when
-            dataMapper.load({ id: 1, field1: true, field_name: false })
+            proxy._mapper.load({ id_field: 1, field1: true, field_name: false })
 
             //then
-            assert.deepStrictEqual(dataMapper.tableData, { id: 1, field1: true, field_name: false })
+            assert.deepStrictEqual(proxy._mapper.payload, { id_field: 1, field1: true, field_name: false })
         })
 
         it('should convert data from table to entity', () => {
@@ -43,12 +43,12 @@ describe('Data Mapper', () => {
 
             //when
             const dataMapper = DataMapper.getFrom(entity)
-            dataMapper.load({ id: 1, field1: true, field_name: false })
+            proxy._mapper.load({ id_field: 1, field1: true, field_name: false })
 
             //then
-            assert.deepStrictEqual(dataMapper.id, 1)
-            assert.deepStrictEqual(dataMapper.field1, true)
-            assert.deepStrictEqual(dataMapper.fieldName, false)
+            assert.deepStrictEqual(proxy._mapper.idField, 1)
+            assert.deepStrictEqual(proxy._mapper.field1, true)
+            assert.deepStrictEqual(proxy._mapper.fieldName, false)
 
         })
 
@@ -58,7 +58,7 @@ describe('Data Mapper', () => {
             const dataMapper = DataMapper.getFrom(entity)
 
             //when
-            const toEntity = dataMapper.toTableField('fieldName')
+            const toEntity = proxy._mapper.toTableField('fieldName')
 
             //then
             assert.deepStrictEqual(toEntity, 'field_name')
@@ -70,7 +70,7 @@ describe('Data Mapper', () => {
             const dataMapper = DataMapper.getFrom(entity, ['idField'])
 
             //when
-            const toEntity = dataMapper.getTableIDs()
+            const toEntity = proxy._mapper.getTableIDs()
 
             //then
             assert.deepStrictEqual(toEntity, ['id_field'])
@@ -80,6 +80,8 @@ describe('Data Mapper', () => {
     describe('Complex Entity - Multiple Types', () => {
 
         const givenAnComplexEntity = () => {
+            const ParentEntity = entity('A parent entity', {})
+            
             return entity('A entity', {
                 id: field(Number),
                 name: field(String, {
@@ -90,6 +92,7 @@ describe('Data Mapper', () => {
                 booleanTest: field(Boolean),
                 dateTest: field(Date),
                 objectTest: field(Object),
+                entityTest: field(ParentEntity),
                 // TODO
                 // arrayTest: field(Array),
                 numbersTest: field([Number]),
@@ -98,6 +101,7 @@ describe('Data Mapper', () => {
                 datesTest: field([Date]),
                 objectsTest: field([Object]),
                 // arraysTest:field([Array]),
+                entitiesTest: field([ParentEntity]),
             })
         }
 
@@ -125,7 +129,7 @@ describe('Data Mapper', () => {
             //when
             const dataMapper = DataMapper.getFrom(entity)
             const data = samples.map(i => { return { [i[0]]: i[2] } }).reduce((obj, i) => Object.assign(obj, i))
-            dataMapper.load(data)
+            proxy._mapper.load(data)
 
             //then
             samples.map(i => {
