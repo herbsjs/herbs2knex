@@ -1,33 +1,50 @@
 const { entity, field } = require('gotu')
-const Repository = require('../src/repository')
+const Repository = require('../../src/repository')
 const db = require('./db')
-const config = require('./config')
+const config = require('../config')
 const assert = require('assert')
+let pool = {}
 
 describe('Persist Entity', () => {
 
     const table = 'test_repository'
-    const schema = 'herbs2knex_testdb'
+    const database = 'herbs2knex_testdb'
 
     before(async () => {
-        const sql = `
-        DROP SCHEMA IF EXISTS ${schema} CASCADE;
-        CREATE SCHEMA ${schema};
-        DROP TABLE IF EXISTS ${schema}.${table} CASCADE; 
-        CREATE TABLE ${schema}.${table} (
+       
+        pool = await db
+
+        sql = `
+        DROP DATABASE IF EXISTS ${database}`
+
+        await pool.query(sql)
+
+        sql = `CREATE DATABASE ${database}`
+        
+        await pool.query(sql)
+
+        sql = `
+        CREATE TABLE ${database}..${table} (
             id INT,
-            string_test TEXT,
-            boolean_test BOOL,
+            string_test VARCHAR(400),
+            boolean_test BIT,
             PRIMARY KEY (id)
-        );`
-        await db.query(sql)
+        )`
+
+        await pool.query(sql)
+
     })
 
     after(async () => {
-        const sql = `
-        DROP SCHEMA IF EXISTS ${schema} CASCADE;
+     
+        let sql = `alter database ${database} set single_user with rollback immediate`
+        await pool.query(sql)
+
+        sql = `
+        DROP DATABASE IF EXISTS ${database};
         `
-        await db.query(sql)
+        await pool.query(sql)
+
     })
 
     const givenAnRepositoryClass = (options) => {
@@ -64,7 +81,7 @@ describe('Persist Entity', () => {
             const ItemRepository = givenAnRepositoryClass({
                 entity: anEntity,
                 table,
-                schema,
+                database,
                 ids: ['id'],
                 dbConfig: config
             })
@@ -78,9 +95,9 @@ describe('Persist Entity', () => {
             const ret = await itemRepo.persist(aModifiedInstance)
 
             //then
-            const retDB = await db.query(`SELECT id FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
+            const retDB = await pool.query(`SELECT id FROM ${database}..${table} WHERE id = ${aModifiedInstance.id}`)
             assert.deepStrictEqual(ret, true)
-            assert.deepStrictEqual(retDB.rows[0].id, 1)
+            assert.deepStrictEqual(retDB.recordset[0].id, 1)
         })
 
         it('should update an existing item', async () => {
@@ -90,13 +107,13 @@ describe('Persist Entity', () => {
             const ItemRepository = givenAnRepositoryClass({
                 entity: anEntity,
                 table,
-                schema,
+                database,
                 ids: ['id'],
                 dbConfig: config
             })
             const aModifiedInstance = givenAnModifiedEntity()
             /* clean table for this ID */
-            await db.query(`DELETE FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
+            await pool.query(`DELETE FROM ${database}..${table} WHERE id = ${aModifiedInstance.id}`)
 
             const injection = {}
             const itemRepo = new ItemRepository(injection)
@@ -107,9 +124,9 @@ describe('Persist Entity', () => {
             const ret = await itemRepo.persist(aModifiedInstance)
 
             //then
-            const retDB = await db.query(`SELECT string_test FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
+            const retDB = await pool.query(`SELECT string_test FROM ${database}..${table} WHERE id = ${aModifiedInstance.id}`)
             assert.deepStrictEqual(ret, true)
-            assert.deepStrictEqual(retDB.rows[0].string_test, "updated")
+            assert.deepStrictEqual(retDB.recordset[0].string_test, "updated")
         })
     })
 })

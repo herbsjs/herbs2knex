@@ -1,10 +1,10 @@
 const { entity, field } = require('gotu')
-const Repository = require('../src/repository')
+const Repository = require('../../src/repository')
 const db = require('./db')
-const config = require('./config')
+const config = require('../config')
 const assert = require('assert')
 
-describe('Persist Entity', () => {
+describe('Delete an Entity', () => {
 
     const table = 'test_repository'
     const schema = 'herbs2knex_testdb'
@@ -19,7 +19,8 @@ describe('Persist Entity', () => {
             string_test TEXT,
             boolean_test BOOL,
             PRIMARY KEY (id)
-        )`
+        );
+        INSERT INTO ${schema}.${table} values (1, 'created', true)`
         await db.query(sql)
     })
 
@@ -57,7 +58,7 @@ describe('Persist Entity', () => {
             return anEntityInstance
         }
 
-        it('should insert a new item', async () => {
+        it('should delete an existing item', async () => {
 
             //given
             const anEntity = givenAnEntity()
@@ -74,12 +75,12 @@ describe('Persist Entity', () => {
             const itemRepo = new ItemRepository(injection)
 
             //when
-            const ret = await itemRepo.insert(aModifiedInstance)
+            const ret = await itemRepo.delete(aModifiedInstance)
 
             //then
             const retDB = await db.query(`SELECT string_test FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
             assert.deepStrictEqual(ret, true)
-            assert.deepStrictEqual(retDB.rows[0].string_test, "test")
+            assert.deepStrictEqual(retDB.rows.length, 0)
         })
     })
 })
