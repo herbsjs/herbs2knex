@@ -1,10 +1,12 @@
 {
-  "name": "herbs2pg",
+  "name": "herbs2knex",
   "version": "1.0.6",
   "description": "Domain entities javascript library.",
-  "main": "./src/herbs2pg.js",
+  "main": "./src/herbs2knex.js",
   "scripts": {
-    "test": "mocha --timeout 999999 --colors --recursive ./test"
+    "test": "mocha --timeout 999999 --colors --recursive ./test",
+    "testdb-pg": "mocha --timeout 999999 --colors --recursive ./testdb/pg",
+    "testdb-mssql": "mocha --timeout 999999 --colors --recursive ./testdb/mssql"
   },
   "directories": {
     "lib": "src",
@@ -13,10 +15,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/herbsjs/herbs2pg.git"
+    "url": "https://github.com/herbsjs/herbs2knex.git"
   },
   "bugs": {
-    "url": "https://github.com/herbsjs/herbs2pg/issues/"
+    "url": "https://github.com/herbsjs/herbs2knex/issues/"
   },
   "engines": {
     "node": ">= 12.3.0"
@@ -28,21 +30,28 @@
     "DDD",
     "clean architecture"
   ],
-  "author": "David Lojudice Sb",
+  "author": "Enderson Costa",
   "license": "MIT",
-  "homepage": "https://github.com/herbsjs/herbs2pg#readme",
+  "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "gotu": "^1.0.6"
+    "gotu": "^1.0.9",
+    "knex": "^0.21.15"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "mocha": "^8.0.1",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.16.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.1.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "mocha": "^8.2.1",
     "nyc": "^15.1.0",
-    "prettier": "^2.0.5",
-    "pg": "^8.3.0",
+    "prettier": "^2.2.1",
+    "pg": "^8.5.1",
+    "mssql": "^6.3.0",
     "dotenv": "^8.2.0"
   }
 }

@@ -1,46 +1,94 @@
 const Convention = require('./convention')
-
+const { entity } = require('gotu')
 const dependency = { convention: Convention }
 
 module.exports = class DataMapper {
 
-    static getFrom(entity, entityIDs, options = {}) {
+    static getProxyFrom(entityInstance, entityIDs = [], foreignKeys = [], options = {}) {
         const di = Object.assign({}, dependency, options.injection)
         const convention = di.convention
 
-        function getDataParser(type) {
-            const originalType = type
-            let parser = originalType
-            // if (Array.isArray(originalType))
-            //     parser = (v) =>
-            //         v.map((_) => getDataParser(originalType[0])(_))
-            if ((originalType === Date) || (!convention.isScalarType(originalType)))
-                parser = (v) =>
-                    v
-            return parser
+        function getDataParser(type, isArray) {
+            if (isArray) {
+                const parser = getDataParser(type, false)
+                const arrayFunc = function (v) {
+                    return v.map((_) => parser(_))
+                }
+                return arrayFunc
+            }
+
+            if ((type === Date) || (!convention.isScalarType(type)))
+                return (x) => x
+
+            return type
         }
 
-        const schema = entity.prototype.meta.schema
-        const entityFields = Object.keys(schema)
-        const entity2table = {
-            load(data) { this.tableData = data },
-            // toEntityField: (tableFieldName) => convention.toEntityField(tableFieldName),
-            toTableField: (entityFieldName) => convention.toTableField(entityFieldName),
-            getTableIDs: () => entityIDs.map(i => convention.toTableField(i)),
-            getEntityFields: () => entityFields,
-            getTableFields: () => entityFields.map(e => convention.toTableField(e)),
-            getValuesFromEntity: (instance) => entityFields.map(e => instance[e])
+        function fieldType(type) {
+            if (Array.isArray(type)) return fieldType(type[0])
+            return type
         }
 
-        for (const entityField of entityFields) {
-            const parseData = getDataParser(schema[entityField].type)
-            const tableField = convention.toTableField(entityField)
-            Object.defineProperty(entity2table, entityField, {
+        const schema = entityInstance.prototype.meta.schema
+
+        const fields = Object.keys(schema)
+            .map((field) => {
+                const isArray = Array.isArray(schema[field].type)
+                const type = fieldType(schema[field].type)
+                const isEntity = entity.isEntity(type)
+                const nameDb = convention.toTableField(field)
+                const isID = entityIDs.includes(field)
+                return { name: field, type, isEntity, nameDb, isArray, isID }
+            })
+        const fkFields = foreignKeys.flatMap((fks) => {
+            return Object.keys(fks).map((field) => {
+                const isArray = Array.isArray(fks[field])
+                const type = fieldType(fks[field])
+                const isEntity = entity.isEntity(type)
+                const nameDb = convention.toTableField(field)
+                return { name: field, type, isEntity, nameDb, isArray, isFk: true }
+            })
+        })
+        const allFields = fields.concat(fkFields)
+
+        const proxy = {}
+
+        Object.defineProperty(proxy, '_mapper', {
+            enumerable: false,
+            value: {
+                load(payload) { this.payload = payload },
+
+                toTableField: (entityFieldName) =>
+                    convention.toTableField(entityFieldName),
+
+                getTableIDs: () =>
+                    allFields.filter((i) => i.isID).map(i => convention.toTableField(i.name)),
+
+                getTableFields: () =>
+                    allFields
+                        .filter((i) => !i.isEntity)
+                        .map((i) => i.nameDb),
+
+                getTableFieldsWithValue:
+                    (instance) =>
+                        allFields
+                            .filter((i) => !i.isEntity)
+                            .map(i => ({ [i.nameDb]: instance[i.name] }))
+                            .reduce((x, y) => ({ ...x, ...y })),
+
+            }
+        })
+
+        for (const field of allFields) {
+            const parser = getDataParser(field.type, field.isArray)
+            const nameDb = field.nameDb
+            Object.defineProperty(proxy, field.name, {
+                enumerable: true,
                 get: function () {
-                    return parseData(this.tableData[tableField])
+                    if (field.isEntity) return undefined
+                    return parser(this._mapper.payload[nameDb])
                 }
             })
         }
-        return entity2table
+        return proxy
     }
 }
