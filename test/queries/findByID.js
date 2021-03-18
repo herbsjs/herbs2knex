@@ -66,7 +66,7 @@ describe('Query Find by ID', () => {
         assert.deepStrictEqual(spy.value, [1])
     })
 
-    it.only('should return entities instances with foreing key', async () => {
+    it('should return entities instances with foreing key', async () => {
         //given
         let spy = {}
         const retFromDeb = [

@@ -9,18 +9,25 @@ module.exports = class DataMapper {
         const convention = di.convention
 
         function getDataParser(type, isArray) {
+            function arrayDataParser(value, parser) {
+                if (value === null) return null
+                return value.map((i) => parser(i))
+            }
+
+            function dataParser(value, parser) {
+                if (value === null) return null
+                return parser(value)
+            }
+
             if (isArray) {
                 const parser = getDataParser(type, false)
-                const arrayFunc = function (v) {
-                    return v.map((_) => parser(_))
-                }
-                return arrayFunc
+                return (value) => arrayDataParser(value, parser) 
             }
 
             if ((type === Date) || (!convention.isScalarType(type)))
                 return (x) => x
 
-            return type
+            return (value) => dataParser(value, type)
         }
 
         function fieldType(type) {
@@ -39,6 +46,7 @@ module.exports = class DataMapper {
                 const isID = entityIDs.includes(field)
                 return { name: field, type, isEntity, nameDb, isArray, isID }
             })
+
         const fkFields = foreignKeys.flatMap((fks) => {
             return Object.keys(fks).map((field) => {
                 const isArray = Array.isArray(fks[field])
@@ -48,6 +56,7 @@ module.exports = class DataMapper {
                 return { name: field, type, isEntity, nameDb, isArray, isFk: true }
             })
         })
+
         const allFields = fields.concat(fkFields)
 
         const proxy = {}

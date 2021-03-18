@@ -19,7 +19,7 @@ describe('Data Mapper', () => {
             const entity = givenAnEntity()
 
             //when
-            const dataMapper = DataMapper.getFrom(entity)
+            const proxy = DataMapper.getProxyFrom(entity)
 
             //then
             assert.deepStrictEqual(proxy._mapper.data, undefined)
@@ -28,7 +28,7 @@ describe('Data Mapper', () => {
         it('should load data from DB', () => {
             //given
             const entity = givenAnEntity()
-            const dataMapper = DataMapper.getFrom(entity)
+            const proxy = DataMapper.getProxyFrom(entity)
 
             //when
             proxy._mapper.load({ id_field: 1, field1: true, field_name: false })
@@ -42,20 +42,20 @@ describe('Data Mapper', () => {
             const entity = givenAnEntity()
 
             //when
-            const dataMapper = DataMapper.getFrom(entity)
+            const proxy = DataMapper.getProxyFrom(entity)
             proxy._mapper.load({ id_field: 1, field1: true, field_name: false })
 
             //then
-            assert.deepStrictEqual(proxy._mapper.idField, 1)
-            assert.deepStrictEqual(proxy._mapper.field1, true)
-            assert.deepStrictEqual(proxy._mapper.fieldName, false)
+            assert.deepStrictEqual(proxy.idField, 1)
+            assert.deepStrictEqual(proxy.field1, true)
+            assert.deepStrictEqual(proxy.fieldName, false)
 
         })
 
         it('should convert an entity field to the table string convetion', () => {
             //given
             const entity = givenAnEntity()
-            const dataMapper = DataMapper.getFrom(entity)
+            const proxy = DataMapper.getProxyFrom(entity)
 
             //when
             const toEntity = proxy._mapper.toTableField('fieldName')
@@ -67,7 +67,7 @@ describe('Data Mapper', () => {
         it('should retrieve table ID from entity', () => {
             //given
             const entity = givenAnEntity()
-            const dataMapper = DataMapper.getFrom(entity, ['idField'])
+            const proxy = DataMapper.getProxyFrom(entity, ['idField'])
 
             //when
             const toEntity = proxy._mapper.getTableIDs()
@@ -127,13 +127,46 @@ describe('Data Mapper', () => {
             ]
 
             //when
-            const dataMapper = DataMapper.getFrom(entity)
+            const proxy = DataMapper.getProxyFrom(entity)
             const data = samples.map(i => { return { [i[0]]: i[2] } }).reduce((obj, i) => Object.assign(obj, i))
             proxy._mapper.load(data)
 
             //then
             samples.map(i => {
-                assert.deepStrictEqual(dataMapper[i[1]], i[2])
+                assert.deepStrictEqual(proxy[i[1]], i[2])
+            })
+
+        })
+
+        it('should return null from table to entity', () => {
+            //given
+            const entity = givenAnComplexEntity()
+            const samples = [
+                ['id', 'id', null],
+                ['name', 'name', null],
+                ['number_test', 'numberTest', null],
+                ['string_test', 'stringTest', null],
+                ['boolean_test', 'booleanTest', null],
+                ['date_test', 'dateTest', null],
+                ['object_test', 'objectTest', null],
+                // TODO
+                // ['array_test', 'arrayTest', [null]] 
+                ['numbers_test', 'numbersTest', null],
+                ['strings_test', 'stringsTest', [null, null]],
+                ['booleans_test', 'booleansTest', [null, null]],
+                ['dates_test', 'datesTest', [null, null]],
+                ['objects_test', 'objectsTest', [null, null]],
+                // ['arrays_test', 'arraysTest', [[null]]] 
+            ]
+
+            //when
+            const proxy = DataMapper.getProxyFrom(entity)
+            const data = samples.map(i => { return { [i[0]]: i[2] } }).reduce((obj, i) => Object.assign(obj, i))
+            proxy._mapper.load(data)
+
+            //then
+            samples.map(i => {
+                assert.deepStrictEqual(proxy[i[1]], i[2])
             })
 
         })
