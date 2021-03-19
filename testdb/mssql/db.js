@@ -1,9 +1,10 @@
-const  sql = require('mssql')
+const sql = require('mssql')
 const config = require('../config')
 
-module.exports =  new sql.ConnectionPool({
-    user: config.connection.user,
-    server: config.connection.host,
-    database: 'master',
-    password: config.connection.password,
-  }).connect()
+module.exports = new sql.ConnectionPool({
+  server: config.connection.host,
+  // port: config.connection.port,
+  user: config.connection.user,
+  // password: config.connection.password,
+  // database: 'master',
+}).connect()

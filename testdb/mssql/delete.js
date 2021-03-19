@@ -1,7 +1,7 @@
 const { entity, field } = require('gotu')
 const Repository = require('../../src/repository')
 const db = require('./db')
-const config = require('../config')
+const connection = require('../connection')
 const assert = require('assert')
 let pool = {}
 
@@ -85,7 +85,7 @@ describe('Delete an Entity', () => {
                 table,
                 database,
                 ids: ['id'],
-                dbConfig: config
+                knex: connection
             })
             const aModifiedInstance = givenAnModifiedEntity()
 

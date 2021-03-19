@@ -1,7 +1,7 @@
 const { entity, field } = require('gotu')
 const Repository = require('../../src/repository')
 const db = require('./db')
-const config = require('../config')
+const connection = require('../connection')
 const assert = require('assert')
 
 describe('Persist Entity', () => {
@@ -66,7 +66,7 @@ describe('Persist Entity', () => {
                 table,
                 schema,
                 ids: ['id'],
-                dbConfig: config
+                knex: connection
             })
             const aModifiedInstance = givenAnModifiedEntity()
 
@@ -75,10 +75,9 @@ describe('Persist Entity', () => {
 
             //when
             const ret = await itemRepo.insert(aModifiedInstance)
-
+            
             //then
             const retDB = await db.query(`SELECT string_test FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
-            assert.deepStrictEqual(ret, true)
             assert.deepStrictEqual(retDB.rows[0].string_test, "test")
         })
     })

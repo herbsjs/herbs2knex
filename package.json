@@ -5,8 +5,8 @@
   "main": "./src/herbs2knex.js",
   "scripts": {
     "test": "mocha --timeout 999999 --colors --recursive ./test",
-    "testdb-pg": "mocha --timeout 999999 --colors --recursive ./testdb/pg",
-    "testdb-mssql": "mocha --timeout 999999 --colors --recursive ./testdb/mssql"
+    "testdb-pg": "mocha --timeout 999999 --colors --exit --recursive ./testdb/pg",
+    "testdb-mssql": "mocha --timeout 999999 --colors --exit --recursive ./testdb/mssql"
   },
   "directories": {
     "lib": "src",

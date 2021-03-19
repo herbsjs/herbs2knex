@@ -1,7 +1,7 @@
 const { entity, field } = require('gotu')
 const Repository = require('../../src/repository')
 const db = require('./db')
-const config = require('../config')
+const connection = require('../connection')
 const assert = require('assert')
 
 describe('Query Find by ID', () => {
@@ -53,7 +53,7 @@ describe('Query Find by ID', () => {
             table,
             schema,
             ids: ['id'],
-            dbConfig: config
+            knex: connection
         })
         const injection = {}
         await db.query(`INSERT INTO ${schema}.${table} (id, string_test, boolean_test) VALUES (10, 'marie', true)`)
@@ -61,7 +61,7 @@ describe('Query Find by ID', () => {
 
         //when
         const ret = await itemRepo.findByID(10)
-
+        
         //then
         assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })
     })

@@ -1,7 +1,7 @@
 const { entity, field } = require('gotu')
 const Repository = require('../../src/repository')
 const db = require('./db')
-const config = require('../config')
+const connection = require('../connection')
 const assert = require('assert')
 let pool = {}
 
@@ -69,7 +69,7 @@ describe('Query Find By', () => {
             table,
             database,
             ids: ['id'],
-            dbConfig: config
+            knex: connection
         })
         const injection = {}
         await pool.query(`INSERT INTO ${database}..${table} (id, string_test, boolean_test) VALUES (10, 'marie', 1)`)

@@ -1,7 +1,7 @@
 const { entity, field } = require('gotu')
 const Repository = require('../../src/repository')
 const db = require('./db')
-const config = require('../config')
+const connection = require('../connection')
 const assert = require('assert')
 
 describe('Delete an Entity', () => {
@@ -67,7 +67,7 @@ describe('Delete an Entity', () => {
                 table,
                 schema,
                 ids: ['id'],
-                dbConfig: config
+                knex: connection
             })
             const aModifiedInstance = givenAnModifiedEntity()
 
@@ -79,7 +79,6 @@ describe('Delete an Entity', () => {
 
             //then
             const retDB = await db.query(`SELECT string_test FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
-            assert.deepStrictEqual(ret, true)
             assert.deepStrictEqual(retDB.rows.length, 0)
         })
     })
