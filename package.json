@@ -33,9 +33,9 @@
   "author": "Enderson Costa",
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
-  "dependencies": {
-    "gotu": "^1.0.9",
-    "knex": "^0.21.15"
+  "peerDependencies": {
+    "gotu": "^1.0.x",
+    "knex": "^0.21.x"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
