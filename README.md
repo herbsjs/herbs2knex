@@ -210,27 +210,35 @@ Database: Snake Case - ex: `product_name`
 
 An entity can define a reference for others entities but will not (and should not) define a foreign key. For instance:
 
+    +------------------+         +------------------+         +------------------+
+    |      Orders      |         |    OrderItems    |         |     Products     |
+    +------------------+         +------------------+         +------------------+
+    | id: int          |----\    | id: int          |       --| id: int          |
+    | customer_id: int |     ----| order_id: int    |  ----/  | name: string     |
+    +------------------+         | product_id: int  |-/       +------------------+
+                                +------------------+                             
+
 ```javascript
 const Product = entity('Product', {
     id: field(Number),
-    description: field(String),
+    name: field(String),
     ...
 })
 
 const OrderItem = entity('Order Items', {
     id: field(Number),
-    product: field(Product),
+    product: field(Product),    // optional
     ...
 })
 
 const Order = entity('Order', {
     id: field(Number),
-    item: field([OrderItem]),
+    item: field([OrderItem]),     // optional
     ...
 })
 ```
 
-https://en.wikipedia.org/wiki/Object%E2%80%93relational_impedance_mismatch
+More about: https://en.wikipedia.org/wiki/Object%E2%80%93relational_impedance_mismatch
 
 ## TODO
 
