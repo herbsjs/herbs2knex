@@ -1,6 +1,6 @@
 {
   "name": "herbs2knex",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Domain entities javascript library.",
   "main": "./src/herbs2knex.js",
   "scripts": {
@@ -33,6 +33,9 @@
   "author": "Enderson Costa",
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
+  "dependencies": {
+    "gotu": "^1.0.x"
+  },
   "peerDependencies": {
     "gotu": "^1.0.x",
     "knex": "^0.21.x"

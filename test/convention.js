@@ -7,7 +7,7 @@ describe('Convetion', () => {
         //given
         const entityField = "fieldName"
         //when
-        const dbField = Convetion.toTableField(entityField)
+        const dbField = Convetion.toTableFieldName(entityField)
         //then
         assert.deepStrictEqual(dbField, "field_name")
     })

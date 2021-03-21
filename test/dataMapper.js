@@ -16,49 +16,39 @@ describe('Data Mapper', () => {
 
         it('should create a data mapper', () => {
             //given
-            const entity = givenAnEntity()
+            const Entity = givenAnEntity()
 
             //when
-            const proxy = DataMapper.getProxyFrom(entity)
+            const dataMapper = new DataMapper(Entity)
 
             //then
-            assert.deepStrictEqual(proxy._mapper.data, undefined)
-        })
-
-        it('should load data from DB', () => {
-            //given
-            const entity = givenAnEntity()
-            const proxy = DataMapper.getProxyFrom(entity)
-
-            //when
-            proxy._mapper.load({ id_field: 1, field1: true, field_name: false })
-
-            //then
-            assert.deepStrictEqual(proxy._mapper.payload, { id_field: 1, field1: true, field_name: false })
+            assert.deepStrictEqual(dataMapper.entity, Entity)
         })
 
         it('should convert data from table to entity', () => {
             //given
-            const entity = givenAnEntity()
+            const Entity = givenAnEntity()
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
 
             //when
-            const proxy = DataMapper.getProxyFrom(entity)
-            proxy._mapper.load({ id_field: 1, field1: true, field_name: false })
+            const toEntity = dataMapper.toEntity({ id_field: 1, field1: true, field_name: false })
 
             //then
-            assert.deepStrictEqual(proxy.idField, 1)
-            assert.deepStrictEqual(proxy.field1, true)
-            assert.deepStrictEqual(proxy.fieldName, false)
+            assert.deepStrictEqual(toEntity.idField, 1)
+            assert.deepStrictEqual(toEntity.field1, true)
+            assert.deepStrictEqual(toEntity.fieldName, false)
 
         })
 
         it('should convert an entity field to the table string convetion', () => {
             //given
-            const entity = givenAnEntity()
-            const proxy = DataMapper.getProxyFrom(entity)
+            const Entity = givenAnEntity()
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
 
             //when
-            const toEntity = proxy._mapper.toTableField('fieldName')
+            const toEntity = dataMapper.toTableFieldName('fieldName')
 
             //then
             assert.deepStrictEqual(toEntity, 'field_name')
@@ -66,14 +56,44 @@ describe('Data Mapper', () => {
 
         it('should retrieve table ID from entity', () => {
             //given
-            const entity = givenAnEntity()
-            const proxy = DataMapper.getProxyFrom(entity, ['idField'])
+            const Entity = givenAnEntity()
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
 
             //when
-            const toEntity = proxy._mapper.getTableIDs()
+            const toEntity = dataMapper.tableIDs()
 
             //then
             assert.deepStrictEqual(toEntity, ['id_field'])
+        })
+
+        it('should retrieve table fields', () => {
+            //given
+            const Entity = givenAnEntity()
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+
+            //when
+            const toEntity = dataMapper.tableFields()
+
+            //then
+            assert.deepStrictEqual(toEntity, ['id_field', 'field1', 'field_name'])
+        })
+
+        it('should retrieve table fields with values', () => {
+            //given
+            const Entity = givenAnEntity()
+            const entityInstance = new Entity()
+            entityInstance.idField = 1
+            entityInstance.field1 = true
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+
+            //when
+            const toEntity = dataMapper.tableFieldsWithValue(entityInstance)
+
+            //then
+            assert.deepStrictEqual(toEntity, { id_field: 1, field1: true, field_name: false })
         })
     })
 
@@ -81,7 +101,7 @@ describe('Data Mapper', () => {
 
         const givenAnComplexEntity = () => {
             const ParentEntity = entity('A parent entity', {})
-            
+
             return entity('A entity', {
                 id: field(Number),
                 name: field(String, {
@@ -107,7 +127,7 @@ describe('Data Mapper', () => {
 
         it('should convert data from table to entity', () => {
             //given
-            const entity = givenAnComplexEntity()
+            const Entity = givenAnComplexEntity()
             const samples = [
                 ['id', 'id', 1],
                 ['name', 'name', "clare"],
@@ -127,20 +147,20 @@ describe('Data Mapper', () => {
             ]
 
             //when
-            const proxy = DataMapper.getProxyFrom(entity)
+            const dataMapper = new DataMapper(Entity)
             const data = samples.map(i => { return { [i[0]]: i[2] } }).reduce((obj, i) => Object.assign(obj, i))
-            proxy._mapper.load(data)
+            const toEntity = dataMapper.toEntity(data)
 
             //then
             samples.map(i => {
-                assert.deepStrictEqual(proxy[i[1]], i[2])
+                assert.deepStrictEqual(toEntity[i[1]], i[2])
             })
 
         })
 
         it('should return null from table to entity', () => {
             //given
-            const entity = givenAnComplexEntity()
+            const Entity = givenAnComplexEntity()
             const samples = [
                 ['id', 'id', null],
                 ['name', 'name', null],
@@ -160,13 +180,13 @@ describe('Data Mapper', () => {
             ]
 
             //when
-            const proxy = DataMapper.getProxyFrom(entity)
+            const dataMapper = new DataMapper(Entity)
             const data = samples.map(i => { return { [i[0]]: i[2] } }).reduce((obj, i) => Object.assign(obj, i))
-            proxy._mapper.load(data)
+            const toEntity = dataMapper.toEntity(data)
 
             //then
             samples.map(i => {
-                assert.deepStrictEqual(proxy[i[1]], i[2])
+                assert.deepStrictEqual(toEntity[i[1]], i[2])
             })
 
         })
