@@ -18,7 +18,7 @@ module.exports = class Repository {
     this.knex = options.knex
     this.runner = this.knex(this.tableQualifiedName)
     this.dataMapper = new DataMapper(this.entity, this.entityIDs, this.foreignKeys)
-  }
+  } 
 
   async findByID(ids) {
     const tableIDs = this.dataMapper.tableIDs()
@@ -28,6 +28,23 @@ module.exports = class Repository {
     const ret = await this.runner
       .select(tableFields)
       .whereIn(tableIDs[0], parsedValue)
+
+    const entities = []
+
+    for (const row of ret) {
+      if (row === undefined) continue
+      entities.push(this.dataMapper.toEntity(row))
+    }
+
+    return entities
+  }
+
+  async findAll(orderBy = []) {
+    const tableFields = this.dataMapper.tableFields()
+
+    const ret = await this.runner
+      .select(tableFields)
+      .orderBy(orderBy)
 
     const entities = []
 
@@ -102,7 +119,8 @@ module.exports = class Repository {
     const ret = await this.runner
       .where(tableIDs[0], entityInstance[tableIDs[0]])
       .delete()
-      
+
     return ret === 1
   }
+
 }

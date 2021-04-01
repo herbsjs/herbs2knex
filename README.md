@@ -134,6 +134,29 @@ class YourRepository extends Repository {
 
 ## Retrieving and Persisting Data
 
+### `findAll`
+Find all entities
+
+Format: `.findAll(orderBy)` where `orderBy` is a optional value or an array.
+
+Return: Entity array
+
+```javascript
+
+// simple get data
+const repo = new ItemRepository(injection)
+const ret = await repo.findAll()
+
+// order by collum
+const repo = new ItemRepository(injection)
+const ret = await repo.findAll('description')
+
+// order by complex query
+const repo = new ItemRepository(injection)
+const ret = await repo.findAll([{ column: 'nome', order: 'desc' }, 'email'])
+
+```
+
 ### `findByID`
 Find entities by IDs
 
@@ -264,8 +287,8 @@ Retrieving and Persist:
 - [X] find by (any field)
     - [ ] deal with entities / tables with multiples IDs
     - [ ] order by
-- [ ] find All
-    - [ ] order by
+- [X] find All
+    - [X] order by
 - [ ] find with pages
 - [ ] first
 - [ ] last
