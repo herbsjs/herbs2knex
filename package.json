@@ -1,6 +1,6 @@
 {
   "name": "herbs2knex",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Domain entities javascript library.",
   "main": "./src/herbs2knex.js",
   "scripts": {
@@ -34,11 +34,8 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "gotu": "^1.0.x"
-  },
-  "peerDependencies": {
-    "gotu": "^1.0.x",
-    "knex": "^0.21.x"
+    "gotu": "^1.0.15",
+    "knex": "^0.95.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
@@ -54,7 +51,8 @@
     "nyc": "^15.1.0",
     "prettier": "^2.2.1",
     "pg": "^8.5.1",
-    "mssql": "^6.3.0",
-    "dotenv": "^8.2.0"
+    "mssql": "^6.3.1",
+    "dotenv": "^8.2.0",
+    "tedious": "^11.0.6"
   }
 }
