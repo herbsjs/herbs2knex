@@ -18,7 +18,7 @@ module.exports = class Repository {
     this.knex = options.knex
     this.runner = this.knex(this.tableQualifiedName)
     this.dataMapper = new DataMapper(this.entity, this.entityIDs, this.foreignKeys)
-  } 
+  }
 
   async findByID(ids) {
     const tableIDs = this.dataMapper.tableIDs()
@@ -40,7 +40,10 @@ module.exports = class Repository {
   }
 
   async findAll(orderBy = []) {
+
     const tableFields = this.dataMapper.tableFields()
+
+    if (!orderBy || typeof orderBy === "object" && !Object.keys(orderBy)) throw "order by is invalid"
 
     const ret = await this.runner
       .select(tableFields)
