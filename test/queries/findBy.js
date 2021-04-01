@@ -108,7 +108,6 @@ describe('Query Find By', () => {
         try {
             //when
             const ret = await itemRepo.findBy("wrong")
-            throw "wrong value"
         } catch (error) {
             //then
             assert.deepStrictEqual(error, "search term is invalid")
@@ -129,7 +128,6 @@ describe('Query Find By', () => {
         try {
             //when
             const ret = await itemRepo.findBy({ wrong: { wrong: "wrong" } })
-            throw "wrong value"
         } catch (error) {
             //then
             assert.deepStrictEqual(error, "search value is invalid")
