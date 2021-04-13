@@ -1,5 +1,6 @@
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
+const { isEmpty } = require("./helpers/isEmpty")
 
 const dependency = { convention: Convention }
 
@@ -39,17 +40,35 @@ module.exports = class Repository {
     return entities
   }
 
-  async findAll(orderBy = []) {
+  /** 
+  *
+  * Find all method
+  * 
+  * @param {type}   object.limit Limit items to list  
+  * @param {type}   object.orderBy Order by query
+  *
+  * @return {type} List of entities
+  */
+  async findAll(options = {
+    orderBy: [],
+    limit: 0
+  }) {
+
+    options.orderBy = options.orderBy || []
+    options.limit = options.limit || 0
 
     const tableFields = this.dataMapper.tableFields()
 
-    if (!orderBy || typeof orderBy === "object" && !Object.keys(orderBy)) throw "order by is invalid"
+    if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && isEmpty(options.orderBy)) throw "order by is invalid"
 
-    const ret = await this.runner
+    let query = this.runner
       .select(tableFields)
-      .orderBy(orderBy)
+
+    if (options.limit > 0) query = query.limit(options.limit)
+    if (!isEmpty(options.orderBy)) query = query.orderBy(options.orderBy)
 
     const entities = []
+    const ret = await query
 
     for (const row of ret) {
       if (row === undefined) continue
