@@ -1,6 +1,6 @@
 {
   "name": "herbs2knex",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Domain entities javascript library.",
   "main": "./src/herbs2knex.js",
   "scripts": {
@@ -55,7 +55,8 @@
     "nyc": "^15.1.0",
     "prettier": "^2.2.1",
     "pg": "^8.5.1",
-    "mssql": "^6.3.0",
-    "dotenv": "^8.2.0"
+    "mssql": "^6.3.1",
+    "dotenv": "^8.2.0",
+    "tedious": "^11.0.6"
   }
 }

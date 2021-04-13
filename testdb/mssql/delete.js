@@ -97,7 +97,6 @@ describe('Delete an Entity', () => {
 
             //then
             const retDB = await pool.query(`SELECT string_test FROM ${database}..${table} WHERE id = ${aModifiedInstance.id}`)
-            assert.deepStrictEqual(ret, true)
             assert.deepStrictEqual(retDB.recordset.length, 0)
         })
     })

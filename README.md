@@ -1,3 +1,6 @@
+[![CI build](https://github.com/herbsjs/herbs2knex/actions/workflows/on_push.yml/badge.svg?branch=master)](https://github.com/herbsjs/herbs2knex/actions/workflows/on_push.yml)
+[![codecov](https://codecov.io/gh/herbsjs/herbs2knex/branch/master/graph/badge.svg)](https://codecov.io/gh/herbsjs/herbs2knex)
+
 # herbs2knex
 
 herbs2knex creates repositories to retrieve and store [Entities](https://github.com/herbsjs/gotu) using [Knex](http://knexjs.org).

@@ -93,7 +93,6 @@ describe('Persist Entity', () => {
 
             //then
             const retDB = await pool.query(`SELECT string_test FROM ${database}..${table} WHERE id = ${aModifiedInstance.id}`)
-            assert.deepStrictEqual(ret, true)
             assert.deepStrictEqual(retDB.recordset[0].string_test, "test")
         })
     })
