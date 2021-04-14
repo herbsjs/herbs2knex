@@ -50,8 +50,8 @@ module.exports = class Repository {
   * @return {type} List of entities
   */
   async findAll(options = {
-    orderBy: [],
-    limit: 0
+    limit: 0,
+    orderBy: []
   }) {
 
     options.orderBy = options.orderBy || []
@@ -78,7 +78,28 @@ module.exports = class Repository {
     return entities
   }
 
-  async findBy(search) {
+  /** 
+  *
+  * Find method
+  * 
+  * @param {type}   object.limit Limit items to list  
+  * @param {type}   object.offset Offset records
+  * @param {type}   object.search Where query term
+  * @param {type}   object.orderBy Order by query
+  *
+  * @return {type} List of entities
+  */
+  async find(options = {
+    limit: 0,
+    offset,
+    orderBy: [],
+    search: null
+  }) {
+
+    options.orderBy = options.orderBy || []
+    options.limit = options.limit || 0
+    options.offset = options.offset || 0
+    options.search = options.search || null
 
     const tableFields = this.dataMapper.tableFields()
     const searchTermTableField = this.dataMapper.toTableFieldName(Object.keys(search)[0])
@@ -89,19 +110,19 @@ module.exports = class Repository {
       ? search[searchTerm]
       : [search[searchTerm]]
 
-    if (
-      !search[searchTerm] ||
-      (typeof search[searchTerm] === "object" &&
-        !Array.isArray(search[searchTerm])) ||
-      (Array.isArray(search[searchTerm]) && !search[searchTerm].length)
-    )
-      throw "search value is invalid"
+    if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && isEmpty(options.orderBy)) throw "order by is invalid"
+    if (!options.search[searchTerm] || (typeof options.search[searchTerm] === "object" && !Array.isArray(options.search[searchTerm])) || (Array.isArray(options.search[searchTerm]) && !options.search[searchTerm].length)) throw "search value is invalid"
 
-    const ret = await this.runner
+    let query = this.runner
       .select(tableFields)
-      .whereIn(searchTermTableField, searchValue)
+
+    if (options.limit > 0) query = query.limit(options.limit)
+    if (options.offset > 0) query = query.offset(options.offset)
+    if (options.search) query = query.whereIn(searchTermTableField, searchValue)
+    if (!isEmpty(options.orderBy)) query = query.orderBy(options.orderBy)
 
     const entities = []
+    const ret = await query
 
     for (const row of ret) {
       if (row === undefined) continue
@@ -109,6 +130,11 @@ module.exports = class Repository {
     }
 
     return entities
+  }
+
+  async findBy(search) {
+    const entities = await this.find({ search });
+    return entities;
   }
 
   async insert(entityInstance) {
