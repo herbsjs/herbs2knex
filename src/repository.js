@@ -54,33 +54,26 @@ module.exports = class Repository {
     orderBy: []
   }) {
 
-    options.orderBy = options.orderBy || []
-    options.limit = options.limit || 0
-
-    const tableFields = this.dataMapper.tableFields()
-
-    if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && isEmpty(options.orderBy)) throw "order by is invalid"
-
-    let query = this.runner
-      .select(tableFields)
-
-    if (options.limit > 0) query = query.limit(options.limit)
-    if (!isEmpty(options.orderBy)) query = query.orderBy(options.orderBy)
-
-    const entities = []
-    const ret = await query
-
-    for (const row of ret) {
-      if (row === undefined) continue
-      entities.push(this.dataMapper.toEntity(row))
-    }
-
+    const entities = this.find({ limit, orderBy })
     return entities
   }
 
   /** 
   *
-  * Find method
+  * Find with search term
+  * 
+  * @param {type}   search Term to find entities
+  *
+  * @return {type} Single entity
+  */
+  async findBy(search) {
+    const entities = await this.find({ search });
+    return entities;
+  }
+
+  /** 
+  *
+  * Find entities
   * 
   * @param {type}   object.limit Limit items to list  
   * @param {type}   object.offset Offset records
@@ -132,11 +125,14 @@ module.exports = class Repository {
     return entities
   }
 
-  async findBy(search) {
-    const entities = await this.find({ search });
-    return entities;
-  }
-
+  /** 
+  *
+  * Create a new entity
+  * 
+  * @param {type}   entityInstance Entity instance
+  *
+  * @return {type} Current entity
+  */
   async insert(entityInstance) {
     const fields = this.dataMapper.tableFields()
     const payload = this.dataMapper.tableFieldsWithValue(entityInstance)
@@ -148,6 +144,14 @@ module.exports = class Repository {
     return this.dataMapper.toEntity(ret[0])
   }
 
+  /** 
+  *
+  * Update entity
+  * 
+  * @param {type}   entityInstance Entity instance
+  *
+  * @return {type} Current entity
+  */
   async update(entityInstance) {
     const tableIDs = this.dataMapper.tableIDs()
     const fields = this.dataMapper.tableFields()
@@ -161,6 +165,14 @@ module.exports = class Repository {
     return this.dataMapper.toEntity(ret[0])
   }
 
+  /** 
+  *
+  * Delete entity
+  * 
+  * @param {type}   entityInstance Entity instance
+  *
+  * @return {type} True when success
+  */
   async delete(entityInstance) {
     const tableIDs = this.dataMapper.tableIDs()
 
