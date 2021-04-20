@@ -51,10 +51,10 @@ module.exports = class Repository {
   */
   async findAll(options = {
     limit: 0,
-    orderBy: []
+    orderBy: null
   }) {
 
-    const entities = this.find({ limit, orderBy })
+    const entities = this.find({ limit: options.limit, orderBy: options.orderBy })
     return entities
   }
 
@@ -85,34 +85,41 @@ module.exports = class Repository {
   async find(options = {
     limit: 0,
     offset,
-    orderBy: [],
+    orderBy: null,
     search: null
   }) {
 
-    options.orderBy = options.orderBy || []
+    options.orderBy = options.orderBy || null
     options.limit = options.limit || 0
     options.offset = options.offset || 0
     options.search = options.search || null
 
     const tableFields = this.dataMapper.tableFields()
-    const searchTermTableField = this.dataMapper.toTableFieldName(Object.keys(search)[0])
-    const searchTerm = Object.keys(search)[0]
-    if (!searchTerm || searchTerm === "0") throw "search term is invalid"
-
-    const searchValue = Array.isArray(search[searchTerm])
-      ? search[searchTerm]
-      : [search[searchTerm]]
-
-    if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && isEmpty(options.orderBy)) throw "order by is invalid"
-    if (!options.search[searchTerm] || (typeof options.search[searchTerm] === "object" && !Array.isArray(options.search[searchTerm])) || (Array.isArray(options.search[searchTerm]) && !options.search[searchTerm].length)) throw "search value is invalid"
 
     let query = this.runner
       .select(tableFields)
 
     if (options.limit > 0) query = query.limit(options.limit)
     if (options.offset > 0) query = query.offset(options.offset)
-    if (options.search) query = query.whereIn(searchTermTableField, searchValue)
-    if (!isEmpty(options.orderBy)) query = query.orderBy(options.orderBy)
+
+    if (options.search) {
+      const searchTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.search)[0])
+      const searchTerm = Object.keys(options.search)[0]
+      if (!searchTerm || searchTerm === "0") throw "search term is invalid"
+
+      const searchValue = Array.isArray(options.search[searchTerm])
+        ? options.search[searchTerm]
+        : [options.search[searchTerm]]
+
+      if (!options.search[searchTerm] || (typeof options.search[searchTerm] === "object" && !Array.isArray(options.search[searchTerm])) || (Array.isArray(options.search[searchTerm]) && !options.search[searchTerm].length)) throw "search value is invalid"
+
+      query = query.whereIn(searchTermTableField, searchValue)
+    }
+
+    if (options.orderBy) {
+      if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && isEmpty(options.orderBy)) throw "order by is invalid"
+      query = query.orderBy(options.orderBy)
+    }
 
     const entities = []
     const ret = await query

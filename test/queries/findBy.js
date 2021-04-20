@@ -96,13 +96,18 @@ describe('Query Find By', () => {
 
     it('should return error because a wrong search', async () => {
         //given
+        let spy = {}
+        const retFromDeb = [
+            { id: 1, string_test: "john", boolean_test: true, fk_field: 21 },
+            { id: 2, string_test: "clare", boolean_test: false, fk_field: null }
+        ]
         const anEntity = givenAnEntity()
         const ItemRepository = givenAnRepositoryClass()
         const itemRepo = new ItemRepository({
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            knex
+            knex: knex(retFromDeb, spy)
         })
 
         try {
@@ -116,13 +121,19 @@ describe('Query Find By', () => {
 
     it('should return error because a type search', async () => {
         //given
+        let spy = {}
+        const retFromDeb = [
+            { id: 1, string_test: "john", boolean_test: true, fk_field: 21 },
+            { id: 2, string_test: "clare", boolean_test: false, fk_field: null }
+        ]
         const anEntity = givenAnEntity()
         const ItemRepository = givenAnRepositoryClass()
         const itemRepo = new ItemRepository({
             entity: anEntity,
             table: 'aTable',
             ids: ['id'],
-            knex
+            knex: knex(retFromDeb, spy)
+
         })
 
         try {
