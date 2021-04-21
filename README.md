@@ -129,7 +129,7 @@ class YourRepository extends Repository {
     foreignKeys: [{ customerId: String }]
     ```
 
-    The field names will te converted to a database names using conventions. Ex: `customer_id`
+    The field names will converted to a database names using conventions. Ex: `customer_id`
 
 - `knex` - Knex initialize instance
     
@@ -137,10 +137,10 @@ class YourRepository extends Repository {
 
 ## Retrieving and Persisting Data
 
-### `findAll`
-Find all entities
+### `find`
+Find entities
 
-Format: `.findAll(orderBy)` where `orderBy` is a optional value or an array.
+Format: `.find(options)` where `options` is a optional object containing `{ limit, offset, orderBy, conditions }`
 
 Return: Entity array
 
@@ -148,16 +148,41 @@ Return: Entity array
 
 // simple get data
 const repo = new ItemRepository(injection)
-const ret = await repo.findAll()
+const ret = await repo.find()
 
 // order by collum
 const repo = new ItemRepository(injection)
-const ret = await repo.findAll('description')
+const ret = await repo.find({ orderBy: 'description'})
 
 // order by complex query
 const repo = new ItemRepository(injection)
-const ret = await repo.findAll([{ column: 'nome', order: 'desc' }, 'email'])
+const ret = await repo.find({ orderBy: [{ column: 'nome', order: 'desc' }, 'email'] })
 
+// filter data with conditions
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ conditions: { name: ["Anne"] } })
+
+// paginate data
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ limit: 10, offset: 30 })
+```
+
+### `findAll`
+Find all entities
+
+Format: `.findAll(options)` is a wrapper of `find` method where `options` is a optional object containing `{ limit, offset, orderBy }`
+
+Return: Entity array
+
+```javascript
+
+// get all data
+const repo = new ItemRepository(injection)
+const ret = await repo.findAll()
+
+// paginate data
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ limit: 10, offset: 30 })
 ```
 
 ### `findByID`
@@ -170,19 +195,6 @@ Return: Entity array
 ```javascript
 const repo = new ItemRepository(injection)
 const ret = await repo.findByID(10)
-```
-
-### `findBy`
-
-Find entities by any Entity field.
-
-Format: `.findBy(where)` where `where` is a object containing `{fieldName1: value1, fieldName2: value2, ...}`
-
-Return: Entity array
-
-```javascript
-const repo = new ItemRepository(injection)
-const ret = await repo.findBy({ name: ["Anne"] })
 ```
 
 ### `insert`
@@ -289,10 +301,10 @@ Retrieving and Persist:
     - [ ] deal with entities / tables with multiples IDs
 - [X] find by (any field)
     - [ ] deal with entities / tables with multiples IDs
-    - [ ] order by
+    - [X] order by
 - [X] find All
     - [X] order by
-- [ ] find with pages
+- [X] find with pages
 - [ ] first
 - [ ] last
 

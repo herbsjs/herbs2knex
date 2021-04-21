@@ -46,37 +46,26 @@ module.exports = class Repository {
   * 
   * @param {type}   object.limit Limit items to list  
   * @param {type}   object.orderBy Order by query
+  * @param {type}   object.offset Rows that will be skipped from the resultset
   *
   * @return {type} List of entities
   */
-  async findAll(options = {
+   async findAll(options = {
     limit: 0,
+    offset: 0,
     orderBy: null
   }) {
 
-    const entities = this.find({ limit: options.limit, orderBy: options.orderBy })
+    const entities = this.find({ limit: options.limit, offset: options.offset, orderBy: options.orderBy })
     return entities
   }
-
-  /** 
-  *
-  * Find with search term
-  * 
-  * @param {type}   search Term to find entities
-  *
-  * @return {type} Single entity
-  */
-  async findBy(search) {
-    const entities = await this.find({ search });
-    return entities;
-  }
-
+  
   /** 
   *
   * Find entities
   * 
   * @param {type}   object.limit Limit items to list  
-  * @param {type}   object.offset Offset records
+  * @param {type}   object.offset Rows that will be skipped from the resultset
   * @param {type}   object.search Where query term
   * @param {type}   object.orderBy Order by query
   *
@@ -84,15 +73,15 @@ module.exports = class Repository {
   */
   async find(options = {
     limit: 0,
-    offset,
+    offset: 0,
     orderBy: null,
-    search: null
+    conditions: null
   }) {
 
     options.orderBy = options.orderBy || null
     options.limit = options.limit || 0
     options.offset = options.offset || 0
-    options.search = options.search || null
+    options.conditions = options.conditions || null
 
     const tableFields = this.dataMapper.tableFields()
 
@@ -102,16 +91,16 @@ module.exports = class Repository {
     if (options.limit > 0) query = query.limit(options.limit)
     if (options.offset > 0) query = query.offset(options.offset)
 
-    if (options.search) {
-      const searchTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.search)[0])
-      const searchTerm = Object.keys(options.search)[0]
+    if (options.conditions) {
+      const searchTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.conditions)[0])
+      const searchTerm = Object.keys(options.conditions)[0]
       if (!searchTerm || searchTerm === "0") throw "search term is invalid"
 
-      const searchValue = Array.isArray(options.search[searchTerm])
-        ? options.search[searchTerm]
-        : [options.search[searchTerm]]
+      const searchValue = Array.isArray(options.conditions[searchTerm])
+        ? options.conditions[searchTerm]
+        : [options.conditions[searchTerm]]
 
-      if (!options.search[searchTerm] || (typeof options.search[searchTerm] === "object" && !Array.isArray(options.search[searchTerm])) || (Array.isArray(options.search[searchTerm]) && !options.search[searchTerm].length)) throw "search value is invalid"
+      if (!options.conditions[searchTerm] || (typeof options.conditions[searchTerm] === "object" && !Array.isArray(options.conditions[searchTerm])) || (Array.isArray(options.conditions[searchTerm]) && !options.conditions[searchTerm].length)) throw "search value is invalid"
 
       query = query.whereIn(searchTermTableField, searchValue)
     }

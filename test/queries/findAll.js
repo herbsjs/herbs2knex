@@ -45,6 +45,10 @@ describe('Query Find All', () => {
                     limit: (o) => {
                         spy.limit = o
                         return ret.slice(0, o)
+                    },
+                    offset: (o) => {
+                        spy.offset = o
+                        return ret
                     }
                 }
             }
@@ -148,6 +152,31 @@ describe('Query Find All', () => {
         assert.deepStrictEqual(spy.select, ['id', 'string_test', 'boolean_test'])
     })
 
+    it('should return data with offset', async () => {
+        //given
+        let spy = {}
+        const retFromDeb = [
+            { id: 1, string_test: "john", boolean_test: true },
+            { id: 2, string_test: "clare", boolean_test: false }
+        ]
+        const anEntity = givenAnEntity()
+        const ItemRepository = givenAnRepositoryClass()
+        const itemRepo = new ItemRepository({
+            entity: anEntity,
+            table: 'aTable',
+            ids: ['id'],
+            knex: knex(retFromDeb, spy)
+        })
+
+        //when
+        const ret = await itemRepo.findAll({ offset: 10 })
+
+        //then
+        assert.strictEqual(ret.length, 2)
+        assert.deepStrictEqual(spy.select, ['id', 'string_test', 'boolean_test'])
+        assert.deepStrictEqual(spy.offset, 10)
+    })
+
     it('should return entities with complex order by', async () => {
         //given
         let spy = {}
@@ -171,7 +200,7 @@ describe('Query Find All', () => {
         assert.strictEqual(ret.length, 2)
         assert.deepStrictEqual(spy.select, ['id', 'string_test', 'boolean_test'])
         assert.deepStrictEqual(spy.orderBy, [{ column: 'nome', order: 'desc' }, 'email'])
-    })  
+    })
 
     it('should return error when order by is a empty object', async () => {
         //given
