@@ -340,7 +340,7 @@ describe('Query Find', () => {
                 const ret = await itemRepo.find({ conditions: "wrong" })
             } catch (error) {
                 //then
-                assert.deepStrictEqual(error, "search term is invalid")
+                assert.deepStrictEqual(error, "condition term is invalid")
             }
         })
 
@@ -366,7 +366,7 @@ describe('Query Find', () => {
                 const ret = await itemRepo.find({ conditions: { wrong: { wrong: "wrong" } } })
             } catch (error) {
                 //then
-                assert.deepStrictEqual(error, "search value is invalid")
+                assert.deepStrictEqual(error, "condition value is invalid")
             }
         })
     })

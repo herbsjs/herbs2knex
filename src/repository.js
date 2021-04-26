@@ -92,20 +92,20 @@ module.exports = class Repository {
     if (options.offset > 0) query = query.offset(options.offset)
 
     if (options.conditions) {
-      const searchTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.conditions)[0])
-      const searchTerm = Object.keys(options.conditions)[0]
-      if (!searchTerm || searchTerm === "0") throw "search term is invalid"
+      const conditionTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.conditions)[0])
+      const conditionTerm = Object.keys(options.conditions)[0]
+      if (!conditionTerm || conditionTerm === "0") throw "condition term is invalid"
 
-      const searchValue = Array.isArray(options.conditions[searchTerm])
-        ? options.conditions[searchTerm]
-        : [options.conditions[searchTerm]]
+      const conditionValue = Array.isArray(options.conditions[conditionTerm])
+        ? options.conditions[conditionTerm]
+        : [options.conditions[conditionTerm]]
 
-      if (!options.conditions[searchTerm] ||
-        (typeof options.conditions[searchTerm] === "object" && !Array.isArray(options.conditions[searchTerm])) ||
-        (Array.isArray(options.conditions[searchTerm]) && !options.conditions[searchTerm].length))
-        throw "search value is invalid"
+      if (!options.conditions[conditionTerm] ||
+        (typeof options.conditions[conditionTerm] === "object" && !Array.isArray(options.conditions[conditionTerm])) ||
+        (Array.isArray(options.conditions[conditionTerm]) && !options.conditions[conditionTerm].length))
+        throw "condition value is invalid"
 
-      query = query.whereIn(searchTermTableField, searchValue)
+      query = query.whereIn(conditionTermTableField, conditionValue)
     }
 
     if (options.orderBy) {
