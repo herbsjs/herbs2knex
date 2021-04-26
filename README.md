@@ -145,11 +145,32 @@ Format: `.find(options)` where `options` is a optional object containing `{ limi
 Return: Entity array
 
 ```javascript
-
-// simple get data
 const repo = new ItemRepository(injection)
 const ret = await repo.find()
+```
 
+Options:
+
+#### `limit`
+Adds a limit clause to the query.
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ limit: 10 })
+```
+
+#### `offset`
+Adds an offset clause to the query.
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ offset: 5 })
+```
+
+#### `orderBy`
+Adds an order by clause to the query. Column can be string, or list mixed with string and object.
+
+```javascript
 // order by collum
 const repo = new ItemRepository(injection)
 const ret = await repo.find({ orderBy: 'description'})
@@ -157,32 +178,14 @@ const ret = await repo.find({ orderBy: 'description'})
 // order by complex query
 const repo = new ItemRepository(injection)
 const ret = await repo.find({ orderBy: [{ column: 'nome', order: 'desc' }, 'email'] })
-
-// filter data with conditions
-const repo = new ItemRepository(injection)
-const ret = await repo.find({ conditions: { name: ["Anne"] } })
-
-// paginate data
-const repo = new ItemRepository(injection)
-const ret = await repo.find({ limit: 10, offset: 30 })
 ```
 
-### `findAll`
-Find all entities
-
-Format: `.findAll(options)` is a wrapper of `find` method where `options` is a optional object containing `{ limit, offset, orderBy }`
-
-Return: Entity array
+#### `conditions`
+Adds a filter to the query with given values.
 
 ```javascript
-
-// get all data
 const repo = new ItemRepository(injection)
-const ret = await repo.findAll()
-
-// paginate data
-const repo = new ItemRepository(injection)
-const ret = await repo.find({ limit: 10, offset: 30 })
+const ret = await repo.find({ conditions: { name: ["Anne"] } })
 ```
 
 ### `findByID`

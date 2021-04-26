@@ -50,7 +50,7 @@ module.exports = class Repository {
   *
   * @return {type} List of entities
   */
-   async findAll(options = {
+  async findAll(options = {
     limit: 0,
     offset: 0,
     orderBy: null
@@ -59,7 +59,7 @@ module.exports = class Repository {
     const entities = this.find({ limit: options.limit, offset: options.offset, orderBy: options.orderBy })
     return entities
   }
-  
+
   /** 
   *
   * Find entities
@@ -100,7 +100,10 @@ module.exports = class Repository {
         ? options.conditions[searchTerm]
         : [options.conditions[searchTerm]]
 
-      if (!options.conditions[searchTerm] || (typeof options.conditions[searchTerm] === "object" && !Array.isArray(options.conditions[searchTerm])) || (Array.isArray(options.conditions[searchTerm]) && !options.conditions[searchTerm].length)) throw "search value is invalid"
+      if (!options.conditions[searchTerm] ||
+        (typeof options.conditions[searchTerm] === "object" && !Array.isArray(options.conditions[searchTerm])) ||
+        (Array.isArray(options.conditions[searchTerm]) && !options.conditions[searchTerm].length))
+        throw "search value is invalid"
 
       query = query.whereIn(searchTermTableField, searchValue)
     }
@@ -111,7 +114,7 @@ module.exports = class Repository {
     }
 
     const entities = []
-    const ret = await query
+    const ret = await query    
 
     for (const row of ret) {
       if (row === undefined) continue
