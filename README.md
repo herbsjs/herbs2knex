@@ -151,7 +151,7 @@ const ret = await repo.find()
 
 Options:
 
-#### `limit`
+- `limit`
 Adds a limit clause to the query.
 
 ```javascript
@@ -159,7 +159,7 @@ const repo = new ItemRepository(injection)
 const ret = await repo.find({ limit: 10 })
 ```
 
-#### `offset`
+- `offset`
 Adds an offset clause to the query.
 
 ```javascript
@@ -167,7 +167,7 @@ const repo = new ItemRepository(injection)
 const ret = await repo.find({ offset: 5 })
 ```
 
-#### `orderBy`
+- `orderBy`
 Adds an order by clause to the query. Column can be string, or list mixed with string and object.
 
 ```javascript
@@ -180,7 +180,7 @@ const repo = new ItemRepository(injection)
 const ret = await repo.find({ orderBy: [{ column: 'nome', order: 'desc' }, 'email'] })
 ```
 
-#### `conditions`
+- `conditions`
 Adds a filter to the query with given values.
 
 ```javascript
