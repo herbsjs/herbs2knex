@@ -122,6 +122,7 @@ describe('Data Mapper', () => {
                 objectsTest: field([Object]),
                 // arraysTest:field([Array]),
                 entitiesTest: field([ParentEntity]),
+                functionTest() { return 1 }
             })
         }
 
