@@ -28,6 +28,7 @@ class DataMapper {
 
         const fields = Object.keys(schema)
             .map((field) => {
+                if (typeof schema[field] === 'function') return { type: Function }
                 const isArray = Array.isArray(schema[field].type)
                 const type = fieldType(schema[field].type)
                 const isEntity = entity.isEntity(type)
@@ -46,7 +47,7 @@ class DataMapper {
             })
         })
 
-        const allFields = fields.concat(fkFields)
+        const allFields = fields.concat(fkFields).filter((f) => f.type !== Function)
 
         return allFields
     }
