@@ -75,13 +75,13 @@ module.exports = class Repository {
     limit: 0,
     offset: 0,
     orderBy: null,
-    conditions: null
+    where: null
   }) {
 
     options.orderBy = options.orderBy || null
     options.limit = options.limit || 0
     options.offset = options.offset || 0
-    options.conditions = options.conditions || null
+    options.where = options.where || null
 
     const tableFields = this.dataMapper.tableFields()
 
@@ -91,18 +91,18 @@ module.exports = class Repository {
     if (options.limit > 0) query = query.limit(options.limit)
     if (options.offset > 0) query = query.offset(options.offset)
 
-    if (options.conditions) {
-      const conditionTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.conditions)[0])
-      const conditionTerm = Object.keys(options.conditions)[0]
+    if (options.where) {
+      const conditionTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.where)[0])
+      const conditionTerm = Object.keys(options.where)[0]
       if (!conditionTerm || conditionTerm === "0") throw "condition term is invalid"
 
-      const conditionValue = Array.isArray(options.conditions[conditionTerm])
-        ? options.conditions[conditionTerm]
-        : [options.conditions[conditionTerm]]
+      const conditionValue = Array.isArray(options.where[conditionTerm])
+        ? options.where[conditionTerm]
+        : [options.where[conditionTerm]]
 
-      if (!options.conditions[conditionTerm] ||
-        (typeof options.conditions[conditionTerm] === "object" && !Array.isArray(options.conditions[conditionTerm])) ||
-        (Array.isArray(options.conditions[conditionTerm]) && !options.conditions[conditionTerm].length))
+      if (!options.where[conditionTerm] ||
+        (typeof options.where[conditionTerm] === "object" && !Array.isArray(options.where[conditionTerm])) ||
+        (Array.isArray(options.where[conditionTerm]) && !options.where[conditionTerm].length))
         throw "condition value is invalid"
 
       query = query.whereIn(conditionTermTableField, conditionValue)

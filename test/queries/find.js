@@ -281,7 +281,7 @@ describe('Query Find', () => {
             })
 
             //when
-            const ret = await itemRepo.find({ conditions: { stringTest: ["john"] } })
+            const ret = await itemRepo.find({ where: { stringTest: ["john"] } })
 
             //then
             assert.deepStrictEqual(ret[0].toJSON(), { id: 1, stringTest: 'john', booleanTest: true, entityTest: undefined, entitiesTest: undefined })
@@ -308,7 +308,7 @@ describe('Query Find', () => {
             })
 
             //when
-            const ret = await itemRepo.find({ conditions: { fkField: 1 } })
+            const ret = await itemRepo.find({ where: { fkField: 1 } })
 
             //then
             assert.deepStrictEqual(ret[0].toJSON({ allowExtraKeys: true }), { id: 1, stringTest: 'john', booleanTest: true, entityTest: undefined, entitiesTest: undefined, fkField: "21" })
@@ -337,7 +337,7 @@ describe('Query Find', () => {
 
             try {
                 //when
-                const ret = await itemRepo.find({ conditions: "wrong" })
+                const ret = await itemRepo.find({ where: "wrong" })
             } catch (error) {
                 //then
                 assert.deepStrictEqual(error, "condition term is invalid")
@@ -363,7 +363,7 @@ describe('Query Find', () => {
 
             try {
                 //when
-                const ret = await itemRepo.find({ conditions: { wrong: { wrong: "wrong" } } })
+                const ret = await itemRepo.find({ where: { wrong: { wrong: "wrong" } } })
             } catch (error) {
                 //then
                 assert.deepStrictEqual(error, "condition value is invalid")
