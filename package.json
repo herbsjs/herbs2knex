@@ -34,8 +34,12 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "gotu": "^1.0.15",
+    "gotu": "^1.0.x",
     "knex": "^0.95.4"
+  },
+  "peerDependencies": {
+    "gotu": "^1.0.x",
+    "knex": "^0.21.x"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

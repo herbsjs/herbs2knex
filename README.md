@@ -129,13 +129,64 @@ class YourRepository extends Repository {
     foreignKeys: [{ customerId: String }]
     ```
 
-    The field names will te converted to a database names using conventions. Ex: `customer_id`
+    The field names will converted to a database names using conventions. Ex: `customer_id`
 
 - `knex` - Knex initialize instance
     
     Check Knex [documentation](http://knexjs.org/#Installation-client)
 
 ## Retrieving and Persisting Data
+
+### `find`
+Find entities
+
+Format: `.find(options)` where `options` is a optional object containing `{ limit, offset, orderBy, conditions }`
+
+Return: Entity array
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.find()
+```
+
+Options:
+
+- `limit`
+Adds a limit clause to the query.
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ limit: 10 })
+```
+
+- `offset`
+Adds an offset clause to the query.
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ offset: 5 })
+```
+
+- `orderBy`
+Adds an order by clause to the query. Column can be string, or list mixed with string and object.
+
+```javascript
+// order by collum
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ orderBy: 'description'})
+
+// order by complex query
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ orderBy: [{ column: 'nome', order: 'desc' }, 'email'] })
+```
+
+- `conditions`
+Adds a filter to the query with given values.
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ conditions: { name: ["Anne"] } })
+```
 
 ### `findByID`
 Find entities by IDs
@@ -147,19 +198,6 @@ Return: Entity array
 ```javascript
 const repo = new ItemRepository(injection)
 const ret = await repo.findByID(10)
-```
-
-### `findBy`
-
-Find entities by any Entity field.
-
-Format: `.findBy(where)` where `where` is a object containing `{fieldName1: value1, fieldName2: value2, ...}`
-
-Return: Entity array
-
-```javascript
-const repo = new ItemRepository(injection)
-const ret = await repo.findBy({ name: ["Anne"] })
 ```
 
 ### `insert`
@@ -266,10 +304,10 @@ Retrieving and Persist:
     - [ ] deal with entities / tables with multiples IDs
 - [X] find by (any field)
     - [ ] deal with entities / tables with multiples IDs
-    - [ ] order by
-- [ ] find All
-    - [ ] order by
-- [ ] find with pages
+    - [X] order by
+- [X] find All
+    - [X] order by
+- [X] find with pages
 - [ ] first
 - [ ] last
 

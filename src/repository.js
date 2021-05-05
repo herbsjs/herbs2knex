@@ -1,5 +1,6 @@
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
+const { isEmpty } = require("./helpers/isEmpty")
 
 const dependency = { convention: Convention }
 
@@ -39,30 +40,81 @@ module.exports = class Repository {
     return entities
   }
 
-  async findBy(search) {
+  /** 
+  *
+  * Find all method
+  * 
+  * @param {type}   object.limit Limit items to list  
+  * @param {type}   object.orderBy Order by query
+  * @param {type}   object.offset Rows that will be skipped from the resultset
+  *
+  * @return {type} List of entities
+  */
+  async findAll(options = {
+    limit: 0,
+    offset: 0,
+    orderBy: null
+  }) {
+
+    const entities = this.find({ limit: options.limit, offset: options.offset, orderBy: options.orderBy })
+    return entities
+  }
+
+  /** 
+  *
+  * Find entities
+  * 
+  * @param {type}   object.limit Limit items to list  
+  * @param {type}   object.offset Rows that will be skipped from the resultset
+  * @param {type}   object.search Where query term
+  * @param {type}   object.orderBy Order by query
+  *
+  * @return {type} List of entities
+  */
+  async find(options = {
+    limit: 0,
+    offset: 0,
+    orderBy: null,
+    where: null
+  }) {
+
+    options.orderBy = options.orderBy || null
+    options.limit = options.limit || 0
+    options.offset = options.offset || 0
+    options.where = options.where || null
 
     const tableFields = this.dataMapper.tableFields()
-    const searchTermTableField = this.dataMapper.toTableFieldName(Object.keys(search)[0])
-    const searchTerm = Object.keys(search)[0]
-    if (!searchTerm || searchTerm === "0") throw "search term is invalid"
 
-    const searchValue = Array.isArray(search[searchTerm])
-      ? search[searchTerm]
-      : [search[searchTerm]]
-
-    if (
-      !search[searchTerm] ||
-      (typeof search[searchTerm] === "object" &&
-        !Array.isArray(search[searchTerm])) ||
-      (Array.isArray(search[searchTerm]) && !search[searchTerm].length)
-    )
-      throw "search value is invalid"
-
-    const ret = await this.runner
+    let query = this.runner
       .select(tableFields)
-      .whereIn(searchTermTableField, searchValue)
+
+    if (options.limit > 0) query = query.limit(options.limit)
+    if (options.offset > 0) query = query.offset(options.offset)
+
+    if (options.where) {
+      const conditionTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.where)[0])
+      const conditionTerm = Object.keys(options.where)[0]
+      if (!conditionTerm || conditionTerm === "0") throw "condition term is invalid"
+
+      const conditionValue = Array.isArray(options.where[conditionTerm])
+        ? options.where[conditionTerm]
+        : [options.where[conditionTerm]]
+
+      if (!options.where[conditionTerm] ||
+        (typeof options.where[conditionTerm] === "object" && !Array.isArray(options.where[conditionTerm])) ||
+        (Array.isArray(options.where[conditionTerm]) && !options.where[conditionTerm].length))
+        throw "condition value is invalid"
+
+      query = query.whereIn(conditionTermTableField, conditionValue)
+    }
+
+    if (options.orderBy) {
+      if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && isEmpty(options.orderBy)) throw "order by is invalid"
+      query = query.orderBy(options.orderBy)
+    }
 
     const entities = []
+    const ret = await query    
 
     for (const row of ret) {
       if (row === undefined) continue
@@ -72,6 +124,14 @@ module.exports = class Repository {
     return entities
   }
 
+  /** 
+  *
+  * Create a new entity
+  * 
+  * @param {type}   entityInstance Entity instance
+  *
+  * @return {type} Current entity
+  */
   async insert(entityInstance) {
     const fields = this.dataMapper.tableFields()
     const payload = this.dataMapper.tableFieldsWithValue(entityInstance)
@@ -83,6 +143,14 @@ module.exports = class Repository {
     return this.dataMapper.toEntity(ret[0])
   }
 
+  /** 
+  *
+  * Update entity
+  * 
+  * @param {type}   entityInstance Entity instance
+  *
+  * @return {type} Current entity
+  */
   async update(entityInstance) {
     const tableIDs = this.dataMapper.tableIDs()
     const fields = this.dataMapper.tableFields()
@@ -96,13 +164,22 @@ module.exports = class Repository {
     return this.dataMapper.toEntity(ret[0])
   }
 
+  /** 
+  *
+  * Delete entity
+  * 
+  * @param {type}   entityInstance Entity instance
+  *
+  * @return {type} True when success
+  */
   async delete(entityInstance) {
     const tableIDs = this.dataMapper.tableIDs()
 
     const ret = await this.runner
       .where(tableIDs[0], entityInstance[tableIDs[0]])
       .delete()
-      
+
     return ret === 1
   }
+
 }
