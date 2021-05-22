@@ -1,6 +1,6 @@
 {
   "name": "herbs2knex",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Domain entities javascript library.",
   "main": "./src/herbs2knex.js",
   "scripts": {
