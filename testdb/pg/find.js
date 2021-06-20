@@ -4,7 +4,7 @@ const db = require('./db')
 const connection = require('../connection')
 const assert = require('assert')
 
-describe('Query Find By', () => {
+describe('Query Find', () => {
 
     const table = 'test_repository'
     const schema = 'herbs2knex_testdb'
@@ -60,7 +60,7 @@ describe('Query Find By', () => {
         const itemRepo = new ItemRepository(injection)
 
         //when
-        const ret = await itemRepo.findBy({ stringTest: ["marie"] })
+        const ret = await itemRepo.find({ where: { stringTest: ["marie"] } })
 
         //then
         assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })

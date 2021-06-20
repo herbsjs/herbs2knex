@@ -86,6 +86,7 @@ describe('Data Mapper', () => {
             const entityInstance = new Entity()
             entityInstance.idField = 1
             entityInstance.field1 = true
+            entityInstance.fieldName = false
             const entityIDs = ['idField']
             const dataMapper = new DataMapper(Entity, entityIDs)
 
