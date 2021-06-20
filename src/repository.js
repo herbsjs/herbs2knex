@@ -1,6 +1,6 @@
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
-const { isEmpty } = require("./helpers/isEmpty")
+const { checker } = require('suma')
 
 const dependency = { convention: Convention }
 
@@ -112,7 +112,7 @@ module.exports = class Repository {
     }
 
     if (options.orderBy) {
-      if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && isEmpty(options.orderBy)) throw "order by is invalid"
+      if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && checker.isEmpty(options.orderBy)) throw "order by is invalid"
       query = query.orderBy(options.orderBy)
     }
 

@@ -7,4 +7,7 @@ module.exports = new sql.ConnectionPool({
   user: config.connection.user,
   password: config.connection.password,
   database: 'master',
+  options: {
+    trustServerCertificate: true
+  }
 }).connect()
