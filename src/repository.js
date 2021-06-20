@@ -17,8 +17,11 @@ module.exports = class Repository {
     this.entityIDs = options.ids
     this.foreignKeys = options.foreignKeys
     this.knex = options.knex
-    this.runner = this.knex(this.tableQualifiedName)
     this.dataMapper = new DataMapper(this.entity, this.entityIDs, this.foreignKeys)
+  }
+
+  runner(){
+    return this.knex(this.tableQualifiedName)
   }
 
   async findByID(ids) {
@@ -26,7 +29,7 @@ module.exports = class Repository {
     const tableFields = this.dataMapper.tableFields()
 
     const parsedValue = Array.isArray(ids) ? ids : [ids]
-    const ret = await this.runner
+    const ret = await this.runner()
       .select(tableFields)
       .whereIn(tableIDs[0], parsedValue)
 
@@ -85,7 +88,7 @@ module.exports = class Repository {
 
     const tableFields = this.dataMapper.tableFields()
 
-    let query = this.runner
+    let query = this.runner()
       .select(tableFields)
 
     if (options.limit > 0) query = query.limit(options.limit)
@@ -136,7 +139,7 @@ module.exports = class Repository {
     const fields = this.dataMapper.tableFields()
     const payload = this.dataMapper.tableFieldsWithValue(entityInstance)
 
-    const ret = await this.runner
+    const ret = await this.runner()
       .returning(fields)
       .insert(payload)
 
@@ -156,7 +159,7 @@ module.exports = class Repository {
     const fields = this.dataMapper.tableFields()
     const payload = this.dataMapper.tableFieldsWithValue(entityInstance)
 
-    const ret = await this.runner
+    const ret = await this.runner()
       .where(tableIDs[0], entityInstance[tableIDs[0]])
       .returning(fields)
       .update(payload)
@@ -175,7 +178,7 @@ module.exports = class Repository {
   async delete(entityInstance) {
     const tableIDs = this.dataMapper.tableIDs()
 
-    const ret = await this.runner
+    const ret = await this.runner()
       .where(tableIDs[0], entityInstance[tableIDs[0]])
       .delete()
 
