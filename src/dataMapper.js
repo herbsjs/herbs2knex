@@ -1,5 +1,5 @@
 const Convention = require('./convention')
-const { entity } = require('gotu')
+const { entity } = require('@herbsjs/gotu')
 const dependency = { convention: Convention }
 
 class DataMapper {

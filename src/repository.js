@@ -1,6 +1,6 @@
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
-const { checker } = require('suma')
+const { checker } = require('@herbsjs/suma')
 
 const dependency = { convention: Convention }
 

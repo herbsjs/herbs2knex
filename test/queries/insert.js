@@ -1,4 +1,4 @@
-const { entity, field } = require("gotu")
+const { entity, field } = require("@herbsjs/gotu")
 const Repository = require("../../src/repository")
 const assert = require("assert")
 
