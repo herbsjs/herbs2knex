@@ -6,8 +6,9 @@
 herbs2knex creates repositories to retrieve and store [Entities](https://github.com/herbsjs/gotu) using [Knex](http://knexjs.org).
 
 ### Installing
-
-    $ npm install herbs2knex
+```
+    $ npm install @herbsjs/herbs2knex
+```
 
 ### Using
 
@@ -20,7 +21,7 @@ module.exports = knex(config)
 
 `itemRepository.js`:
 ```javascript
-const { Repository } = require('herbs2knex')
+const { Repository } = require('@herbsjs/herbs2knex')
 const connection = require('connection')
 const { Item } = require('../domain/entities/item')
 
@@ -67,7 +68,7 @@ The advantage of using Knex is that is a simple and flexible SQL query builder. 
 ### Repository setup
 
 ```javascript
-const { Repository } = require('herbs2knex')
+const { Repository } = require('@herbsjs/herbs2knex')
 const connection = require('connection')  // Knex initialize instance
 const { ProductItem } = require('../domain/entities/productItem')
 
