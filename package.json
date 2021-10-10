@@ -38,7 +38,7 @@
   "dependencies": {
     "@herbsjs/gotu": "^1.0.0",
     "knex": "^0.95.6",
-    "@herbsjs/suma": "^1.0.0"
+    "@herbsjs/suma": "^1.1.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",

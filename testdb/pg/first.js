@@ -3,46 +3,30 @@ const Repository = require('../../src/repository')
 const db = require('./db')
 const connection = require('../connection')
 const assert = require('assert')
-let pool = {}
 
-describe('Query Find', () => {
+describe('Query First', () => {
 
     const table = 'test_repository'
-    const database = 'herbs2knex_testdb'
+    const schema = 'herbs2knex_testdb'
 
     before(async () => {
-        pool = await db
-
-        sql = `
-        DROP DATABASE IF EXISTS ${database}`
-
-        await pool.query(sql)
-
-        sql = `CREATE DATABASE ${database}`
-        
-        await pool.query(sql)
-
-        sql = `
-        CREATE TABLE ${database}..${table} (
+        const sql = `
+        DROP SCHEMA IF EXISTS ${schema} CASCADE;
+        CREATE SCHEMA ${schema};
+        DROP TABLE IF EXISTS ${schema}.${table} CASCADE; 
+        CREATE TABLE ${schema}.${table} (
             id INT,
-            string_test VARCHAR(400),
-            boolean_test BIT,
-            PRIMARY KEY (id)
+            string_test TEXT,
+            boolean_test BOOL
         )`
-
-        await pool.query(sql)
+        await db.query(sql)
     })
 
     after(async () => {
-        
-        let sql = `alter database ${database} set single_user with rollback immediate`
-        await pool.query(sql)
-
-        sql = `
-        DROP DATABASE IF EXISTS ${database};
+        const sql = `
+            DROP SCHEMA IF EXISTS ${schema} CASCADE;
         `
-        await pool.query(sql)
-
+        await db.query(sql)
     })
 
     const givenAnRepositoryClass = (options) => {
@@ -67,19 +51,19 @@ describe('Query Find', () => {
         const ItemRepository = givenAnRepositoryClass({
             entity: anEntity,
             table,
-            database,
+            schema,
             ids: ['id'],
             knex: connection
         })
         const injection = {}
-        await pool.query(`INSERT INTO ${database}..${table} (id, string_test, boolean_test) VALUES (10, 'marie', 1),(20, 'marie', 1)`)
+        await db.query(`INSERT INTO ${schema}.${table} (id, string_test, boolean_test) VALUES (10, 'marie', true),(20, 'amelia', false)`)
         const itemRepo = new ItemRepository(injection)
 
-
         //when
-        const ret = await itemRepo.find({ limit: 1, orderBy: 'id' , where: { stringTest: ["marie"] } })
+        const ret = await itemRepo.first({ where: { stringTest: ["marie"] } })
 
         //then
+        assert.strictEqual(ret.length, 1)
         assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })
     })
 })

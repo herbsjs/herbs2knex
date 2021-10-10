@@ -5,7 +5,7 @@ const connection = require('../connection')
 const assert = require('assert')
 let pool = {}
 
-describe('Query Find', () => {
+describe('Query First', () => {
 
     const table = 'test_repository'
     const database = 'herbs2knex_testdb'
@@ -72,14 +72,15 @@ describe('Query Find', () => {
             knex: connection
         })
         const injection = {}
-        await pool.query(`INSERT INTO ${database}..${table} (id, string_test, boolean_test) VALUES (10, 'marie', 1),(20, 'marie', 1)`)
+        await pool.query(`INSERT INTO ${database}..${table} (id, string_test, boolean_test) VALUES (10, 'marie', 1),(20, 'amelia', 1)`)
         const itemRepo = new ItemRepository(injection)
 
 
         //when
-        const ret = await itemRepo.find({ limit: 1, orderBy: 'id' , where: { stringTest: ["marie"] } })
+        const ret = await itemRepo.first({ orderBy: 'string_test' })
 
         //then
-        assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })
+        assert.strictEqual(ret.length, 1)
+        assert.deepStrictEqual(ret[0].toJSON(), { id: 20, stringTest: 'amelia', booleanTest: true })
     })
 })
