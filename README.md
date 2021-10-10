@@ -141,7 +141,7 @@ class YourRepository extends Repository {
 ### `find`
 Find entities
 
-Format: `.find(options)` where `options` is a optional object containing `{ limit, offset, orderBy, conditions }`
+Format: `.find(options)` where `options` is a optional object containing `{ limit, offset, orderBy, where }`
 
 Return: Entity array
 
@@ -181,12 +181,12 @@ const repo = new ItemRepository(injection)
 const ret = await repo.find({ orderBy: [{ column: 'nome', order: 'desc' }, 'email'] })
 ```
 
-- `conditions`
+- `where`
 Adds a filter to the query with given values.
 
 ```javascript
 const repo = new ItemRepository(injection)
-const ret = await repo.find({ conditions: { name: ["Anne"] } })
+const ret = await repo.find({ where: { name: ["Anne"] } })
 ```
 
 ### `findByID`
@@ -199,6 +199,20 @@ Return: Entity array
 ```javascript
 const repo = new ItemRepository(injection)
 const ret = await repo.findByID(10)
+```
+
+### `first`
+Find first entitiy by filters - limited to one register 
+
+Format: `.first(options)` where `options` is a optional object containing `{ orderBy, where }`
+
+**Important:** First method does not support complex orderBy, use only orderBy collumns 
+
+Return: Entity
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.first({ orderBy: 'description'})
 ```
 
 ### `insert`
