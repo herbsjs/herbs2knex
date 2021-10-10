@@ -30,7 +30,7 @@ describe('Query First', () => {
             () => ({
                 first: (s) => {
                     spy.first = s
-                    return ret.slice(0, 1)
+                    return ret
                 }
             })
         )
@@ -50,10 +50,9 @@ describe('Query First', () => {
         it('should return entity using table field', async () => {
             //given
             let spy = {}
-            const retFromDeb = [
-                { id: 1, string_test: "john", boolean_test: true },
-                { id: 2, string_test: "clare", boolean_test: false }
-            ]
+            const retFromDeb = 
+                { id: 1, string_test: "john", boolean_test: true }
+            
             const anEntity = givenAnEntity()
             const ItemRepository = givenAnRepositoryClass()
             const itemRepo = new ItemRepository({
