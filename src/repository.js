@@ -127,7 +127,7 @@ module.exports = class Repository {
 
   /** 
   *
-  * Find all method.
+  * Find all entities
   * 
   * @param {type}   object.limit Limit items to list  
   * @param {type}   object.orderBy Order by query
