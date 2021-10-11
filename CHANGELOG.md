@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/herbsjs/herbs2knex/compare/v1.0.0...v1.1.0) (2021-10-11)
+
+
+### Features
+
+* **first:** add first method feature ([0bfe46e](https://github.com/herbsjs/herbs2knex/commit/0bfe46e7a45a48eca9f16f07536187e9c64ba7c0)), closes [#26](https://github.com/herbsjs/herbs2knex/issues/26)
+
 # 1.0.0 (2021-06-23)
 
 
