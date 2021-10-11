@@ -26,7 +26,7 @@ module.exports = class Repository {
 
   /** 
   *
-  * Find by id method
+  * Finds entities matching the ID condition.
   * 
   * @param {type}   ids The id or the array of id's to search
   * @return {type} List of entities
@@ -50,7 +50,7 @@ module.exports = class Repository {
     return entities
   }
 
-  async #findQuery(query, options) {
+  async #executeFindQuery(query, options) {
 
 
     if (options.where) {
@@ -78,15 +78,16 @@ module.exports = class Repository {
     const entities = []
     const ret = await query
 
-    if (checker.isIterable(ret)) {
-      for (const row of ret) {
-        if (row === undefined) continue
-        entities.push(this.dataMapper.toEntity(row))
+    if (checker.isDefined(ret)) {
+      if (checker.isIterable(ret)) {
+        for (const row of ret) {
+          if (row === undefined) continue
+          entities.push(this.dataMapper.toEntity(row))
+        }
       }
+      else
+        entities.push(this.dataMapper.toEntity(ret))
     }
-    else
-      entities.push(this.dataMapper.toEntity(ret))
-
     return entities
   }
 
@@ -121,12 +122,12 @@ module.exports = class Repository {
     if (options.limit > 0) query = query.limit(options.limit)
     if (options.offset > 0) query = query.offset(options.offset)
 
-    return this.#findQuery(query, options)
+    return this.#executeFindQuery(query, options)
   }
 
   /** 
   *
-  * Find all method matching the conditions.
+  * Find all method.
   * 
   * @param {type}   object.limit Limit items to list  
   * @param {type}   object.orderBy Order by query
@@ -168,7 +169,7 @@ module.exports = class Repository {
 
     let query = this.runner().first(tableFields)
 
-    return this.#findQuery(query, options)
+    return this.#executeFindQuery(query, options)
   }
 
   /** 

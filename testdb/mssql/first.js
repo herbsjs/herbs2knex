@@ -83,4 +83,25 @@ describe('Query First', () => {
         assert.strictEqual(ret.length, 1)
         assert.deepStrictEqual(ret[0].toJSON(), { id: 20, stringTest: 'amelia', booleanTest: true })
     })
+
+    it('should return empty array if there is no match', async () => {
+        //given
+        const anEntity = givenAnEntity()
+        const ItemRepository = givenAnRepositoryClass({
+            entity: anEntity,
+            table,
+            database,
+            ids: ['id'],
+            knex: connection
+        })
+        const injection = {}        
+        const itemRepo = new ItemRepository(injection)
+
+
+        //when
+        const ret = await itemRepo.first({ where: { stringTest: ["jhon"] } })
+
+        //then
+        assert.strictEqual(ret.length, 0)
+    })
 })

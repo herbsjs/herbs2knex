@@ -139,7 +139,7 @@ class YourRepository extends Repository {
 ## Retrieving and Persisting Data
 
 ### `find`
-Find entities
+Find entities matched by the filter, or empty array `[]` if there is no matching entity.
 
 Format: `.find(options)` where `options` is a optional object containing `{ limit, offset, orderBy, where }`
 
@@ -202,11 +202,11 @@ const ret = await repo.findByID(10)
 ```
 
 ### `first`
-Find first entitiy by filters - limited to one register 
+Finds the first entity matched by the filter, or empty array `[]` if there is no matching entity.
 
 Format: `.first(options)` where `options` is a optional object containing `{ orderBy, where }`
 
-**Important:** First method does not support complex orderBy, use only orderBy collumns 
+**Important:** First method does not support complex orderBy like `{ orderBy: { column: 'description', order: 'desc'  }}` so you cannot explicit `asc` or `desc` queries, use only orderBy collumns like `{ orderBy: 'description'}`
 
 Return: Entity
 
