@@ -158,10 +158,6 @@ module.exports = class Repository {
     where: null
   }) {
 
-    if (options.orderBy) {
-      if (!options.orderBy || (typeof options.orderBy === "object" && checker.isArray(options.orderBy)) || !checker.isString(options.orderBy)) throw "order by is invalid"
-    }
-
     options.orderBy = options.orderBy || null
     options.where = options.where || null
 

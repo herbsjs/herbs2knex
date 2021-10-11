@@ -206,8 +206,6 @@ Finds the first entity matched by the filter, or empty array `[]` if there is no
 
 Format: `.first(options)` where `options` is a optional object containing `{ orderBy, where }`
 
-**Important:** First method does not support complex orderBy like `{ orderBy: { column: 'description', order: 'desc'  }}` so you cannot explicit `asc` or `desc` queries, use only orderBy collumns like `{ orderBy: 'description'}`
-
 Return: Entity
 
 ```javascript

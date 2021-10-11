@@ -50,9 +50,9 @@ describe('Query First', () => {
         it('should return entity using table field', async () => {
             //given
             let spy = {}
-            const retFromDeb = 
+            const retFromDeb =
                 { id: 1, string_test: "john", boolean_test: true }
-            
+
             const anEntity = givenAnEntity()
             const ItemRepository = givenAnRepositoryClass()
             const itemRepo = new ItemRepository({
@@ -95,6 +95,34 @@ describe('Query First', () => {
             assert.deepStrictEqual(spy.orderBy, 'stringTest')
         })
 
+        it('should return when order by is complex', async () => {
+            //given
+            let spy = {}
+            const retFromDeb = [
+                { id: 1, string_test: "john", boolean_test: true },
+                { id: 2, string_test: "clare", boolean_test: false }
+            ]
+            const anEntity = givenAnEntity()
+            const ItemRepository = givenAnRepositoryClass()
+            const itemRepo = new ItemRepository({
+                entity: anEntity,
+                table: 'aTable',
+                ids: ['id'],
+                knex: knex(retFromDeb, spy)
+            })
+
+
+            //when
+            const ret = await itemRepo.first({ orderBy: [{ column: 'string_test', order: 'desc' }, 'id'] })
+
+            //then
+            assert.strictEqual(ret.length, 1)
+            assert.deepStrictEqual(spy.first, ['id', 'string_test', 'boolean_test'])
+            assert.deepStrictEqual(spy.orderBy[0], { column: 'string_test', order: 'desc' })
+            assert.deepStrictEqual(spy.orderBy[1], 'id')
+
+        })
+
         it('should return error when order by is a empty object', async () => {
             //given
             let spy = {}
@@ -120,30 +148,7 @@ describe('Query First', () => {
             }
         })
 
-        it('should return error when order by is complex', async () => {
-            //given
-            let spy = {}
-            const retFromDeb = [
-                { id: 1, string_test: "john", boolean_test: true },
-                { id: 2, string_test: "clare", boolean_test: false }
-            ]
-            const anEntity = givenAnEntity()
-            const ItemRepository = givenAnRepositoryClass()
-            const itemRepo = new ItemRepository({
-                entity: anEntity,
-                table: 'aTable',
-                ids: ['id'],
-                knex: knex(retFromDeb, spy)
-            })
 
-            try {
-                //when
-                const ret = await itemRepo.first({ orderBy: [{ column: 'nome', order: 'desc' }, 'email'] })
-            } catch (error) {
-                //then
-                assert.deepStrictEqual(error, 'order by is invalid')
-            }
-        })
     })
 
     context('Find with conditions', () => {
