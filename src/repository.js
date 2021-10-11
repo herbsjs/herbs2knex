@@ -92,11 +92,11 @@ module.exports = class Repository {
 
   /** 
 *
-* Find entities
+* Finds entities matching the conditions.
 * 
 * @param {type}   object.limit Limit items to list  
 * @param {type}   object.offset Rows that will be skipped from the resultset
-* @param {type}   object.search Where query term
+* @param {type}   object.where Where query term
 * @param {type}   object.orderBy Order by query
 *
 * @return {type} List of entities
@@ -126,7 +126,7 @@ module.exports = class Repository {
 
   /** 
   *
-  * Find all method
+  * Find all method matching the conditions.
   * 
   * @param {type}   object.limit Limit items to list  
   * @param {type}   object.orderBy Order by query
@@ -146,7 +146,7 @@ module.exports = class Repository {
 
   /** 
  *
- * First method
+ * Finds the first entity matching the conditions.
  * 
  * @param {type}   object.orderBy Order by query to get the first element of, if null will return the first element without order
  *
