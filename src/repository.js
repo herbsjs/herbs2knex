@@ -20,10 +20,17 @@ module.exports = class Repository {
     this.dataMapper = new DataMapper(this.entity, this.entityIDs, this.foreignKeys)
   }
 
-  runner(){
+  runner() {
     return this.knex(this.tableQualifiedName)
   }
 
+  /** 
+  *
+  * Finds entities matching the ID condition.
+  * 
+  * @param {type}   ids The id or the array of id's to search
+  * @return {type} List of entities
+  */
   async findByID(ids) {
     const tableIDs = this.dataMapper.tableIDs()
     const tableFields = this.dataMapper.tableFields()
@@ -43,56 +50,8 @@ module.exports = class Repository {
     return entities
   }
 
-  /** 
-  *
-  * Find all method
-  * 
-  * @param {type}   object.limit Limit items to list  
-  * @param {type}   object.orderBy Order by query
-  * @param {type}   object.offset Rows that will be skipped from the resultset
-  *
-  * @return {type} List of entities
-  */
-  async findAll(options = {
-    limit: 0,
-    offset: 0,
-    orderBy: null
-  }) {
+  async #executeFindQuery(query, options) {
 
-    const entities = this.find({ limit: options.limit, offset: options.offset, orderBy: options.orderBy })
-    return entities
-  }
-
-  /** 
-  *
-  * Find entities
-  * 
-  * @param {type}   object.limit Limit items to list  
-  * @param {type}   object.offset Rows that will be skipped from the resultset
-  * @param {type}   object.search Where query term
-  * @param {type}   object.orderBy Order by query
-  *
-  * @return {type} List of entities
-  */
-  async find(options = {
-    limit: 0,
-    offset: 0,
-    orderBy: null,
-    where: null
-  }) {
-
-    options.orderBy = options.orderBy || null
-    options.limit = options.limit || 0
-    options.offset = options.offset || 0
-    options.where = options.where || null
-
-    const tableFields = this.dataMapper.tableFields()
-
-    let query = this.runner()
-      .select(tableFields)
-
-    if (options.limit > 0) query = query.limit(options.limit)
-    if (options.offset > 0) query = query.offset(options.offset)
 
     if (options.where) {
       const conditionTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.where)[0])
@@ -117,14 +76,96 @@ module.exports = class Repository {
     }
 
     const entities = []
-    const ret = await query    
+    const ret = await query
 
-    for (const row of ret) {
-      if (row === undefined) continue
-      entities.push(this.dataMapper.toEntity(row))
+    if (checker.isDefined(ret)) {
+      if (checker.isIterable(ret)) {
+        for (const row of ret) {
+          if (row === undefined) continue
+          entities.push(this.dataMapper.toEntity(row))
+        }
+      }
+      else
+        entities.push(this.dataMapper.toEntity(ret))
     }
-
     return entities
+  }
+
+  /** 
+*
+* Finds entities matching the conditions.
+* 
+* @param {type}   object.limit Limit items to list  
+* @param {type}   object.offset Rows that will be skipped from the resultset
+* @param {type}   object.where Where query term
+* @param {type}   object.orderBy Order by query
+*
+* @return {type} List of entities
+*/
+  async find(options = {
+    limit: 0,
+    offset: 0,
+    orderBy: null,
+    where: null
+  }) {
+
+    options.orderBy = options.orderBy || null
+    options.limit = options.limit || 0
+    options.offset = options.offset || 0
+    options.where = options.where || null
+
+    const tableFields = this.dataMapper.tableFields()
+
+    let query = this.runner()
+      .select(tableFields)
+
+    if (options.limit > 0) query = query.limit(options.limit)
+    if (options.offset > 0) query = query.offset(options.offset)
+
+    return this.#executeFindQuery(query, options)
+  }
+
+  /** 
+  *
+  * Find all entities
+  * 
+  * @param {type}   object.limit Limit items to list  
+  * @param {type}   object.orderBy Order by query
+  * @param {type}   object.offset Rows that will be skipped from the resultset
+  *
+  * @return {type} List of entities
+  */
+  async findAll(options = {
+    limit: 0,
+    offset: 0,
+    orderBy: null
+  }) {
+
+    const entities = this.find({ limit: options.limit, offset: options.offset, orderBy: options.orderBy })
+    return entities
+  }
+
+  /** 
+ *
+ * Finds the first entity matching the conditions.
+ * 
+ * @param {type}   object.orderBy Order by query to get the first element of, if null will return the first element without order
+ *
+ * @return {type} Entity
+ */
+  async first(options = {
+    orderBy: null,
+    where: null
+  }) {
+
+    options.orderBy = options.orderBy || null
+    options.where = options.where || null
+
+    const tableFields = this.dataMapper.tableFields()
+
+    let query = this.runner().first(tableFields)
+
+    return this.#executeFindQuery(query, options)
   }
 
   /** 
@@ -171,7 +212,7 @@ module.exports = class Repository {
   *
   * Delete entity
   * 
-  * @param {type}   entityInstance Entity instance
+  * @param {type} entityInstance Entity instance
   *
   * @return {type} True when success
   */
@@ -185,4 +226,9 @@ module.exports = class Repository {
     return ret === 1
   }
 
+
+
 }
+
+
+

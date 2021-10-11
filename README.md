@@ -139,9 +139,9 @@ class YourRepository extends Repository {
 ## Retrieving and Persisting Data
 
 ### `find`
-Find entities
+Find entities matched by the filter, or empty array `[]` if there is no matching entity.
 
-Format: `.find(options)` where `options` is a optional object containing `{ limit, offset, orderBy, conditions }`
+Format: `.find(options)` where `options` is a optional object containing `{ limit, offset, orderBy, where }`
 
 Return: Entity array
 
@@ -181,12 +181,12 @@ const repo = new ItemRepository(injection)
 const ret = await repo.find({ orderBy: [{ column: 'nome', order: 'desc' }, 'email'] })
 ```
 
-- `conditions`
+- `where`
 Adds a filter to the query with given values.
 
 ```javascript
 const repo = new ItemRepository(injection)
-const ret = await repo.find({ conditions: { name: ["Anne"] } })
+const ret = await repo.find({ where: { name: ["Anne"] } })
 ```
 
 ### `findByID`
@@ -199,6 +199,18 @@ Return: Entity array
 ```javascript
 const repo = new ItemRepository(injection)
 const ret = await repo.findByID(10)
+```
+
+### `first`
+Finds the first entity matched by the filter, or empty array `[]` if there is no matching entity.
+
+Format: `.first(options)` where `options` is a optional object containing `{ orderBy, where }`
+
+Return: Entity
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.first({ orderBy: 'description'})
 ```
 
 ### `insert`
