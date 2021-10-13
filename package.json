@@ -69,6 +69,14 @@
     "mssql": "^7.2.1",
     "tedious": "^13.1.0"
   },
+  "peerDependenciesMeta": {
+    "pg": {
+      "optional": true
+    },
+    "mssql": {
+      "optional": true
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/herbsjs/herbs2knex.git"
