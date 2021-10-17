@@ -321,10 +321,24 @@ Retrieving and Persist:
 - [X] find All
     - [X] order by
 - [X] find with pages
-- [ ] first
+- [X] first
 - [ ] last
 
 Tests:
 - [X] Pure JS
 - [X] Postgress
 - [X] Sql Server
+
+
+### Contribute
+
+Come with us to make an awesome *herbs2knex*.
+
+Now, if you do not have technical knowledge and also have intend to help us, do not feel shy, [click here](https://github.com/herbsjs/herbs2knex/issues) to open an issue and collaborate their ideas, the contribution may be a criticism or a compliment (why not?)
+
+If you would like to help contribute to this repository, please see [CONTRIBUTING](https://github.com/herbsjs/herbs2knex/blob/master/.github/CONTRIBUTING.md)
+
+### License
+
+**herbs2knex** is released under the
+[MIT license](https://github.com/herbsjs/herbs2knex/blob/master/LICENSE.md).
