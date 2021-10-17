@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/herbsjs/herbs2knex/compare/v1.1.0...v1.1.1) (2021-10-17)
+
+
+### Bug Fixes
+
+* update dependency of db libraries ([ee0f054](https://github.com/herbsjs/herbs2knex/commit/ee0f0547748ff9a75506b9e825957957fe93f982))
+
 # [1.1.0](https://github.com/herbsjs/herbs2knex/compare/v1.0.0...v1.1.0) (2021-10-11)
 
 
