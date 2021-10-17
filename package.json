@@ -75,6 +75,9 @@
     },
     "mssql": {
       "optional": true
+    },
+    "tedious": {
+      "optional": true
     }
   },
   "repository": {
