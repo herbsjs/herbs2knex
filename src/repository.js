@@ -206,7 +206,7 @@ module.exports = class Repository {
       .update(payload)
 
     //.returning() is not supported by mysql or mysql2 and will not have any effect, update only return 1 to true or 0 to false
-    if(this.knex.client.driverName.includes('mysql'))
+    if(this.knex.client && this.knex.client.driverName && this.knex.client.driverName.includes('mysql'))
       return ret === 1
 
     return this.dataMapper.toEntity(ret[0])
