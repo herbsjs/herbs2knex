@@ -7,6 +7,7 @@
     "test": "mocha --timeout 999999 --colors --recursive ./test",
     "testdb-pg": "mocha --timeout 999999 --colors --exit --recursive ./testdb/pg",
     "testdb-mssql": "mocha --timeout 999999 --colors --exit --recursive ./testdb/mssql",
+    "testdb-mysql": "mocha --timeout 999999 --colors --exit --recursive ./testdb/mysql",
     "coverage-report": "nyc --reporter=html --reporter=text mocha --recursive ./test --timeout 10000",
     "coverage": "nyc --reporter=text mocha --recursive ./test --timeout 10000",
     "semantic-release": "semantic-release",
@@ -67,13 +68,17 @@
   "peerDependencies": {
     "pg": "^8.7.1",
     "mssql": "^7.2.1",
-    "tedious": "^13.1.0"
+    "tedious": "^13.1.0",
+    "mysql2": "^2.3.2"
   },
   "peerDependenciesMeta": {
     "pg": {
       "optional": true
     },
     "mssql": {
+      "optional": true
+    },    
+    "mysql2": {
       "optional": true
     },
     "tedious": {
