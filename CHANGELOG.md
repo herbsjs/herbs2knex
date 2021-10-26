@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/herbsjs/herbs2knex/compare/v1.1.1...v1.1.2) (2021-10-26)
+
+
+### Bug Fixes
+
+* **mysql:** fix mysql update ([d3250c4](https://github.com/herbsjs/herbs2knex/commit/d3250c4b3c16de8edd73263ab38527d1d46e740a)), closes [#32](https://github.com/herbsjs/herbs2knex/issues/32)
+
 ## [1.1.1](https://github.com/herbsjs/herbs2knex/compare/v1.1.0...v1.1.1) (2021-10-17)
 
 
