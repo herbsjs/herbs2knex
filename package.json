@@ -52,6 +52,7 @@
     "@semantic-release/release-notes-generator": "^9.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^10.0.0",
+    "bluebird": "^3.7.2",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
@@ -73,7 +74,8 @@
     "pg": "^8.7.1",
     "mssql": "^7.2.1",
     "tedious": "^13.1.0",
-    "mysql2": "^2.3.2"
+    "mysql2": "^2.3.2",
+    "bluebird": "^3.7.2"
   },
   "peerDependenciesMeta": {
     "pg": {
@@ -83,6 +85,9 @@
       "optional": true
     },
     "mysql2": {
+      "optional": true
+    },
+    "bluebird": {
       "optional": true
     },
     "tedious": {
