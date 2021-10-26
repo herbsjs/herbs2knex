@@ -205,6 +205,10 @@ module.exports = class Repository {
       .returning(fields)
       .update(payload)
 
+    //.returning() is not supported by mysql or mysql2 and will not have any effect, update only return 1 to true or 0 to false
+    if(this.runner().client && this.runner().client.driverName && this.runner().client.driverName.includes('mysql'))
+      return ret === 1
+
     return this.dataMapper.toEntity(ret[0])
   }
 

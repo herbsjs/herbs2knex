@@ -328,7 +328,7 @@ Tests:
 - [X] Pure JS
 - [X] Postgress
 - [X] Sql Server
-
+- [X] MySQL
 
 ### Contribute
 
