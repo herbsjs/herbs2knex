@@ -1,5 +1,5 @@
 const { entity, field } = require("@herbsjs/gotu")
-const Repository = require("../../src/repository")
+const Repository = require("../../../src/repository")
 const assert = require("assert")
 
 describe("Delete an Entity", () => {

@@ -1,4 +1,4 @@
-const DataMapper = require('../src/dataMapper')
+const DataMapper = require('../../src/dataMapper')
 const { entity, field } = require('@herbsjs/gotu')
 const assert = require('assert')
 
