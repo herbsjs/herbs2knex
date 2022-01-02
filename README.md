@@ -269,8 +269,8 @@ You can use the custom convention to configure the way herbs2knex creates your q
 ```javascript
 const toCamelCase = value => camelCase(value)
 
-const ItemRepository = UserRepository({
-    entity: anEntity,
+const UserRepository = new UserRepository({
+    entity: User,
     table,
     schema,
     ids: ['id'],
