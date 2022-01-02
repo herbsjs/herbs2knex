@@ -9,7 +9,7 @@ class DataMapper {
         this.convention = di.convention
         this.entity = entity
         const schema = entity.prototype.meta.schema
-        this.allFields = DataMapper.buildAllFields(schema, entityIDs, foreignKeys, this.convention)
+        this.allFields = DataMapper.buildAllFields(schema, entityIDs, foreignKeys, this.convention)        
         this._proxy === undefined
     }
 
