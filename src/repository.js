@@ -2,11 +2,9 @@ const Convention = require('./convention')
 const DataMapper = require('./dataMapper')
 const { checker } = require('@herbsjs/suma')
 
-const dependency = { convention: Convention }
-
 module.exports = class Repository {
-  constructor (options) {
-    this.convention = Object.assign(dependency.convention, options.convention)
+  constructor (options) {    
+    this.convention = Object.assign(new Convention(), options.convention)
     this.table = options.table
     this.schema = options.schema
     this.tableQualifiedName = this.schema

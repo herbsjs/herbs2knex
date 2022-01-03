@@ -1,6 +1,7 @@
 const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../../../src/repository')
 const assert = require('assert')
+const { RequestTokenHandler } = require('tedious/lib/token/handler')
 
 describe('Query Find', () => {
 
@@ -91,7 +92,7 @@ describe('Query Find', () => {
                 entity: anEntity,
                 table: 'aTable',
                 ids: ['id'],
-                knex: knex(retFromDeb, spy)
+                knex: knex(retFromDeb, spy),
             })
 
             //when
