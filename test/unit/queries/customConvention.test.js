@@ -2,8 +2,8 @@ const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../../../src/repository')
 const assert = require('assert')
 
-describe('Custom Convention', () => {
-  context('Find all with custom convention', () => {
+describe('Custom Convention Repository', () => {
+  context('Find all data with custom convention', () => {
     const retFromDeb = [
       { id: 1, string_test: 'john', boolean_test: true },
       { id: 2, string_test: 'clare', boolean_test: false }
@@ -21,7 +21,7 @@ describe('Custom Convention', () => {
       })
     }
 
-    const givenAnRepositoryClass = () => {
+    const givenAnRepositoryClass = (_) => {
       return class ItemRepositoryBase extends Repository {
         constructor (options) {
           super(options)
@@ -29,33 +29,39 @@ describe('Custom Convention', () => {
       }
     }
 
-    const knex = ret => () => ({
+    const knexCustomConvention = ret => () => ({
       select: () => {
         return ret
       }
     })
 
-    it('should return entities using custom conventions', async () => {
-      //given
+    it('should return entities using custom conventions in repository', async () => {
+      // given
       let spy = []
       const anEntity = givenAnEntity()
       const ItemRepository = givenAnRepositoryClass()
+
       const itemRepo = new ItemRepository({
         entity: anEntity,
         table: 'aTable',
         ids: ['id'],
-        knex: knex(retFromDeb),
+        knex: knexCustomConvention(retFromDeb),
         convention: {
-          toTableFieldName: fieldName => spy.push(`${fieldName}_custom`)
+          toTableFieldName: fieldName => {
+            spy.push(`${fieldName}_custom`)
+            return fieldName
+          }
         }
       })
 
-      //when
+      // when
       const ret = await itemRepo.find()
 
-      //then
+      // then
+      assert.strictEqual(true, true)
+
       assert.strictEqual(ret.length, 2)
-      assert.deepEqual(spy, [
+      assert.deepStrictEqual(spy, [
         'id_custom',
         'stringTest_custom',
         'booleanTest_custom',

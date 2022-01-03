@@ -3,29 +3,29 @@ const Repository = require('../../src/repository')
 const assert = require('assert')
 const Convention = require('../../src/convention')
 
-describe('Repository', () => {
+describe.only('Repository', () => {
   const EmptyEntity = entity('Empty', {})
-  const DataMapper = function () {}
 
   context('Repository constructor', () => {
     it('should use the default convention when no convention is specified', () => {
       const repositoryInstance = new Repository({
         entity: EmptyEntity,
-        injection: { DataMapper },
       })
 
-      assert.equal(repositoryInstance.convention, Convention)
+      assert.deepEqual(repositoryInstance.convention, new Convention())
     })
 
-    it('should use the specified convention', () => {
-      const FakeConvention = function () {}
+    it('should use custom convention when it is specified', () => {
+      const customConvention = {
+        doSomething() {},
+      }
 
       const repositoryInstance = new Repository({
         entity: EmptyEntity,
-        injection: { DataMapper, convention: FakeConvention },
+        convention: customConvention
       })
 
-      assert.equal(repositoryInstance.convention, FakeConvention)
+      assert.equal(repositoryInstance.convention.doSomething, customConvention.doSomething)
     })
 
     it('should use the specified table', () => {
@@ -34,7 +34,6 @@ describe('Repository', () => {
       const repositoryInstance = new Repository({
         entity: EmptyEntity,
         table: tableName,
-        injection: { DataMapper },
       })
 
       assert.equal(repositoryInstance.table, tableName)
@@ -46,7 +45,6 @@ describe('Repository', () => {
       const repositoryInstance = new Repository({
         entity: EmptyEntity,
         table: tableName,
-        injection: { DataMapper },
       })
 
       assert.equal(repositoryInstance.tableQualifiedName, tableName)
@@ -60,7 +58,6 @@ describe('Repository', () => {
         entity: EmptyEntity,
         table: tableName,
         schema,
-        injection: { DataMapper },
       })
 
       const tableQualifiedName = `${schema}.${tableName}`
@@ -71,7 +68,6 @@ describe('Repository', () => {
     it('should use the specified entity', () => {
       const repositoryInstance = new Repository({
         entity: EmptyEntity,
-        injection: { DataMapper },
       })
 
       assert.equal(repositoryInstance.entity, EmptyEntity)
@@ -83,7 +79,6 @@ describe('Repository', () => {
       const repositoryInstance = new Repository({
         entity: EmptyEntity,
         ids,
-        injection: { DataMapper },
       })
 
       assert.equal(repositoryInstance.entityIDs, ids)
@@ -97,7 +92,6 @@ describe('Repository', () => {
 
       const repositoryInstance = new Repository({
         entity: EntityWithIds,
-        injection: { DataMapper },
       })
 
       assert.deepEqual(repositoryInstance.entityIDs, ['first', 'second'])
@@ -110,7 +104,6 @@ describe('Repository', () => {
 
       const repositoryInstance = new Repository({
         entity: EntityWithoutIds,
-        injection: { DataMapper },
       })
 
       assert.deepEqual(repositoryInstance.entityIDs, [])
@@ -122,7 +115,6 @@ describe('Repository', () => {
       const repositoryInstance = new Repository({
         entity: EmptyEntity,
         foreignKeys,
-        injection: { DataMapper },
       })
 
       assert.equal(repositoryInstance.foreignKeys, foreignKeys)
@@ -134,22 +126,9 @@ describe('Repository', () => {
       const repositoryInstance = new Repository({
         entity: EmptyEntity,
         knex,
-        injection: { DataMapper },
       })
 
       assert.equal(repositoryInstance.knex, knex)
-    })
-
-    it('should create a DataMapper', () => {
-      const tracker = new assert.CallTracker()
-      const wrappedMapper = tracker.calls(DataMapper)
-
-      new Repository({
-        entity: EmptyEntity,
-        injection: { DataMapper: wrappedMapper },
-      })
-
-      tracker.verify()
     })
   })
 })

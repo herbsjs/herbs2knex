@@ -5,7 +5,7 @@ const connection = require('../connection')
 const assert = require('assert')
 const { camelCase } = require('lodash')
 
-describe.only('Query Find with Conventions', () => {
+describe('Query Find with Conventions', () => {
   const table = 'testRepository'
   const schema = 'herbs2knex_testdb'
 

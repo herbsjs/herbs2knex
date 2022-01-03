@@ -1,6 +1,7 @@
 const { entity, field, id } = require('@herbsjs/gotu')
 const Repository = require('../../../src/repository')
 const assert = require('assert')
+const { RequestTokenHandler } = require('tedious/lib/token/handler')
 
 describe('Query Find', () => {
 

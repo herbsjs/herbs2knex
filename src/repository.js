@@ -1,16 +1,11 @@
-const Convention = require('./convention')
-const DataMapper = require('./dataMapper')
 const { checker } = require('@herbsjs/suma')
 const { BaseEntity } = require("@herbsjs/gotu/src/baseEntity")
-
-const dependency = { 
-  convention: Convention,
-  DataMapper
- }
+const Convention = require('./convention')
+const DataMapper = require('./dataMapper')
 
 module.exports = class Repository {
-  constructor (options) {
-    this.convention = Object.assign(dependency.convention, options.convention)
+  constructor (options) {    
+    this.convention = Object.assign(new Convention(), options.convention)
     this.table = options.table
     this.schema = options.schema
     this.tableQualifiedName = this.schema
@@ -20,16 +15,12 @@ module.exports = class Repository {
     this.entityIDs = this.#getEntityIds(options)
     this.foreignKeys = options.foreignKeys
     this.knex = options.knex
-<<<<<<< HEAD
-    this.dataMapper = new di.DataMapper(this.entity, this.entityIDs, this.foreignKeys)
-=======
     this.dataMapper = new DataMapper(
       this.entity,
       this.entityIDs,
       this.foreignKeys,
       options
     )
->>>>>>> 6ea3118 (feat: include custom convention to read database fields)
   }
 
   runner () {
@@ -260,7 +251,6 @@ module.exports = class Repository {
 
     return ret === 1
   }
-<<<<<<< HEAD
 
   #getEntityIds({ entity, ids }) {
     if (ids) return ids
@@ -275,6 +265,4 @@ module.exports = class Repository {
 
     return []
   }
-=======
->>>>>>> 6ea3118 (feat: include custom convention to read database fields)
 }
