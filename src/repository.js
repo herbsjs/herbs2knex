@@ -3,7 +3,7 @@ const DataMapper = require('./dataMapper')
 const { checker } = require('@herbsjs/suma')
 
 module.exports = class Repository {
-  constructor (options) {    
+  constructor(options) {
     this.convention = Object.assign(new Convention(), options.convention)
     this.table = options.table
     this.schema = options.schema
@@ -22,18 +22,18 @@ module.exports = class Repository {
     )
   }
 
-  runner () {
+  runner() {
     return this.knex(this.tableQualifiedName)
   }
 
-  /**
-   *
-   * Finds entities matching the ID condition.
-   *
-   * @param {type}   ids The id or the array of id's to search
-   * @return {type} List of entities
-   */
-  async findByID (ids) {
+  /** 
+  *
+  * Finds entities matching the ID condition.
+  * 
+  * @param {type}   ids The id or the array of id's to search
+  * @return {type} List of entities
+  */
+  async findByID(ids) {
     const tableIDs = this.dataMapper.tableIDs()
     const tableFields = this.dataMapper.tableFields()
 
@@ -52,39 +52,28 @@ module.exports = class Repository {
     return entities
   }
 
-  async #executeFindQuery (query, options) {
+  async #executeFindQuery(query, options) {
+
+
     if (options.where) {
-      const conditionTermTableField = this.dataMapper.toTableFieldName(
-        Object.keys(options.where)[0]
-      )
+      const conditionTermTableField = this.dataMapper.toTableFieldName(Object.keys(options.where)[0])
       const conditionTerm = Object.keys(options.where)[0]
-      if (!conditionTerm || conditionTerm === '0')
-        throw 'condition term is invalid'
+      if (!conditionTerm || conditionTerm === "0") throw "condition term is invalid"
 
       const conditionValue = Array.isArray(options.where[conditionTerm])
         ? options.where[conditionTerm]
         : [options.where[conditionTerm]]
 
-      if (
-        !options.where[conditionTerm] ||
-        (typeof options.where[conditionTerm] === 'object' &&
-          !Array.isArray(options.where[conditionTerm])) ||
-        (Array.isArray(options.where[conditionTerm]) &&
-          !options.where[conditionTerm].length)
-      )
-        throw 'condition value is invalid'
+      if (!options.where[conditionTerm] ||
+        (typeof options.where[conditionTerm] === "object" && !Array.isArray(options.where[conditionTerm])) ||
+        (Array.isArray(options.where[conditionTerm]) && !options.where[conditionTerm].length))
+        throw "condition value is invalid"
 
       query = query.whereIn(conditionTermTableField, conditionValue)
     }
 
     if (options.orderBy) {
-      if (
-        !options.orderBy ||
-        (typeof options.orderBy === 'object' &&
-          !Array.isArray(options.orderBy) &&
-          checker.isEmpty(options.orderBy))
-      )
-        throw 'order by is invalid'
+      if (!options.orderBy || typeof options.orderBy === "object" && !Array.isArray(options.orderBy) && checker.isEmpty(options.orderBy)) throw "order by is invalid"
       query = query.orderBy(options.orderBy)
     }
 
@@ -97,30 +86,31 @@ module.exports = class Repository {
           if (row === undefined) continue
           entities.push(this.dataMapper.toEntity(row))
         }
-      } else entities.push(this.dataMapper.toEntity(ret))
+      }
+      else
+        entities.push(this.dataMapper.toEntity(ret))
     }
     return entities
   }
 
-  /**
-   *
-   * Finds entities matching the conditions.
-   *
-   * @param {type}   object.limit Limit items to list
-   * @param {type}   object.offset Rows that will be skipped from the resultset
-   * @param {type}   object.where Where query term
-   * @param {type}   object.orderBy Order by query
-   *
-   * @return {type} List of entities
-   */
-  async find (
-    options = {
-      limit: 0,
-      offset: 0,
-      orderBy: null,
-      where: null
-    }
-  ) {
+  /** 
+*
+* Finds entities matching the conditions.
+* 
+* @param {type}   object.limit Limit items to list  
+* @param {type}   object.offset Rows that will be skipped from the resultset
+* @param {type}   object.where Where query term
+* @param {type}   object.orderBy Order by query
+*
+* @return {type} List of entities
+*/
+  async find(options = {
+    limit: 0,
+    offset: 0,
+    orderBy: null,
+    where: null
+  }) {
+
     options.orderBy = options.orderBy || null
     options.limit = options.limit || 0
     options.offset = options.offset || 0
@@ -128,7 +118,8 @@ module.exports = class Repository {
 
     const tableFields = this.dataMapper.tableFields()
 
-    let query = this.runner().select(tableFields)
+    let query = this.runner()
+      .select(tableFields)
 
     if (options.limit > 0) query = query.limit(options.limit)
     if (options.offset > 0) query = query.offset(options.offset)
@@ -136,45 +127,39 @@ module.exports = class Repository {
     return this.#executeFindQuery(query, options)
   }
 
-  /**
-   *
-   * Find all entities
-   *
-   * @param {type}   object.limit Limit items to list
-   * @param {type}   object.orderBy Order by query
-   * @param {type}   object.offset Rows that will be skipped from the resultset
-   *
-   * @return {type} List of entities
-   */
-  async findAll (
-    options = {
-      limit: 0,
-      offset: 0,
-      orderBy: null
-    }
-  ) {
-    const entities = this.find({
-      limit: options.limit,
-      offset: options.offset,
-      orderBy: options.orderBy
-    })
+  /** 
+  *
+  * Find all entities
+  * 
+  * @param {type}   object.limit Limit items to list  
+  * @param {type}   object.orderBy Order by query
+  * @param {type}   object.offset Rows that will be skipped from the resultset
+  *
+  * @return {type} List of entities
+  */
+  async findAll(options = {
+    limit: 0,
+    offset: 0,
+    orderBy: null
+  }) {
+
+    const entities = this.find({ limit: options.limit, offset: options.offset, orderBy: options.orderBy })
     return entities
   }
 
-  /**
-   *
-   * Finds the first entity matching the conditions.
-   *
-   * @param {type}   object.orderBy Order by query to get the first element of, if null will return the first element without order
-   *
-   * @return {type} Entity
-   */
-  async first (
-    options = {
-      orderBy: null,
-      where: null
-    }
-  ) {
+  /** 
+ *
+ * Finds the first entity matching the conditions.
+ * 
+ * @param {type}   object.orderBy Order by query to get the first element of, if null will return the first element without order
+ *
+ * @return {type} Entity
+ */
+  async first(options = {
+    orderBy: null,
+    where: null
+  }) {
+
     options.orderBy = options.orderBy || null
     options.where = options.where || null
 
@@ -185,15 +170,15 @@ module.exports = class Repository {
     return this.#executeFindQuery(query, options)
   }
 
-  /**
-   *
-   * Create a new entity
-   *
-   * @param {type}   entityInstance Entity instance
-   *
-   * @return {type} Current entity
-   */
-  async insert (entityInstance) {
+  /** 
+  *
+  * Create a new entity
+  * 
+  * @param {type}   entityInstance Entity instance
+  *
+  * @return {type} Current entity
+  */
+  async insert(entityInstance) {
     const fields = this.dataMapper.tableFields()
     const payload = this.dataMapper.tableFieldsWithValue(entityInstance)
 
@@ -204,15 +189,15 @@ module.exports = class Repository {
     return this.dataMapper.toEntity(ret[0])
   }
 
-  /**
-   *
-   * Update entity
-   *
-   * @param {type}   entityInstance Entity instance
-   *
-   * @return {type} Current entity
-   */
-  async update (entityInstance) {
+  /** 
+  *
+  * Update entity
+  * 
+  * @param {type}   entityInstance Entity instance
+  *
+  * @return {type} Current entity
+  */
+  async update(entityInstance) {
     const tableIDs = this.dataMapper.tableIDs()
     const fields = this.dataMapper.tableFields()
     const payload = this.dataMapper.tableFieldsWithValue(entityInstance)
@@ -223,25 +208,21 @@ module.exports = class Repository {
       .update(payload)
 
     //.returning() is not supported by mysql or mysql2 and will not have any effect, update only return 1 to true or 0 to false
-    if (
-      this.runner().client &&
-      this.runner().client.driverName &&
-      this.runner().client.driverName.includes('mysql')
-    )
+    if(this.runner().client && this.runner().client.driverName && this.runner().client.driverName.includes('mysql'))
       return ret === 1
 
     return this.dataMapper.toEntity(ret[0])
   }
 
-  /**
-   *
-   * Delete entity
-   *
-   * @param {type} entityInstance Entity instance
-   *
-   * @return {type} True when success
-   */
-  async delete (entityInstance) {
+  /** 
+  *
+  * Delete entity
+  * 
+  * @param {type} entityInstance Entity instance
+  *
+  * @return {type} True when success
+  */
+  async delete(entityInstance) {
     const tableIDs = this.dataMapper.tableIDs()
 
     const ret = await this.runner()
@@ -250,4 +231,7 @@ module.exports = class Repository {
 
     return ret === 1
   }
+
+
+
 }
