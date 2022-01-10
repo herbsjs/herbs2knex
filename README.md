@@ -254,7 +254,7 @@ const ret = await repo.delete(entity)
 
 ## Conventions 
 
-### Defaul implementation
+### Default implementation
 
 #### Fields
 
