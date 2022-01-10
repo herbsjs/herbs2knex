@@ -1,10 +1,10 @@
 const { entity, field } = require('@herbsjs/gotu')
-const Repository = require('../../src/repository')
+const Repository = require('../../../src/repository')
 const db = require('./db')
 const connection = require('../connection')
 const assert = require('assert')
 
-describe('Query First', () => {
+describe('Query Find', () => {
 
     const table = 'test_repository'
     const schema = 'herbs2knex_testdb'
@@ -56,35 +56,13 @@ describe('Query First', () => {
             knex: connection
         })
         const injection = {}
-        await db.query(`INSERT INTO ${schema}.${table} (id, string_test, boolean_test) VALUES (10, 'marie', true),(20, 'amelia', false)`)
+        await db.query(`INSERT INTO ${schema}.${table} (id, string_test, boolean_test) VALUES (10, 'marie', true)`)
         const itemRepo = new ItemRepository(injection)
 
         //when
-        const ret = await itemRepo.first({ where: { stringTest: ["marie"] } })
+        const ret = await itemRepo.find({ where: { stringTest: ["marie"] } })
 
         //then
-        assert.strictEqual(ret.length, 1)
         assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })
-    })
-
-    it('should return empty array if there is no match', async () => {
-        //given
-        const anEntity = givenAnEntity()
-        const ItemRepository = givenAnRepositoryClass({
-            entity: anEntity,
-            table,
-            schema,
-            ids: ['id'],
-            knex: connection
-        })
-        const injection = {}        
-        const itemRepo = new ItemRepository(injection)
-
-
-        //when
-        const ret = await itemRepo.first({ where: { stringTest: ["jhon"] } })
-
-        //then
-        assert.strictEqual(ret.length, 0)
     })
 })

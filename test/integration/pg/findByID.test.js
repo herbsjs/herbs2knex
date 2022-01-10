@@ -1,10 +1,10 @@
 const { entity, field } = require('@herbsjs/gotu')
-const Repository = require('../../src/repository')
+const Repository = require('../../../src/repository')
 const db = require('./db')
 const connection = require('../connection')
 const assert = require('assert')
 
-describe('Query Find', () => {
+describe('Query Find by ID', () => {
 
     const table = 'test_repository'
     const schema = 'herbs2knex_testdb'
@@ -24,7 +24,7 @@ describe('Query Find', () => {
 
     after(async () => {
         const sql = `
-            DROP SCHEMA IF EXISTS ${schema} CASCADE;
+        DROP SCHEMA IF EXISTS ${schema} CASCADE;
         `
         await db.query(sql)
     })
@@ -60,8 +60,8 @@ describe('Query Find', () => {
         const itemRepo = new ItemRepository(injection)
 
         //when
-        const ret = await itemRepo.find({ where: { stringTest: ["marie"] } })
-
+        const ret = await itemRepo.findByID(10)
+        
         //then
         assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })
     })

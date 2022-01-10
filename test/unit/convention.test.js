@@ -1,4 +1,4 @@
-const Convetion = require('../src/convention')
+const Convetion = require('../../src/convention')
 const assert = require('assert')
 
 describe('Convetion', () => {

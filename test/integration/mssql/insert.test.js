@@ -1,34 +1,48 @@
 const { entity, field } = require('@herbsjs/gotu')
-const Repository = require('../../src/repository')
+const Repository = require('../../../src/repository')
 const db = require('./db')
 const connection = require('../connection')
 const assert = require('assert')
+let pool = {}
 
-describe('Delete an Entity', () => {
+describe('Persist Entity', () => {
 
     const table = 'test_repository'
-    const schema = 'herbs2knex_testdb'
+    const database = 'herbs2knex_testdb'
 
     before(async () => {
-        const sql = `
-        DROP SCHEMA IF EXISTS ${schema} CASCADE;
-        CREATE SCHEMA ${schema};
-        DROP TABLE IF EXISTS ${schema}.${table} CASCADE; 
-        CREATE TABLE ${schema}.${table} (
+        pool = await db
+
+        sql = `
+        DROP DATABASE IF EXISTS ${database}`
+
+        await pool.query(sql)
+
+        sql = `CREATE DATABASE ${database}`
+        
+        await pool.query(sql)
+
+        sql = `
+        CREATE TABLE ${database}..${table} (
             id INT,
-            string_test TEXT,
-            boolean_test BOOL,
+            string_test VARCHAR(400),
+            boolean_test BIT,
             PRIMARY KEY (id)
-        );
-        INSERT INTO ${schema}.${table} values (1, 'created', true)`
-        await db.query(sql)
+        )`
+
+        await pool.query(sql)
+   
     })
 
     after(async () => {
-        const sql = `
-        DROP SCHEMA IF EXISTS ${schema} CASCADE;
+
+        let sql = `alter database ${database} set single_user with rollback immediate`
+        await pool.query(sql)
+
+        sql = `
+        DROP DATABASE IF EXISTS ${database};
         `
-        await db.query(sql)
+        await pool.query(sql)
     })
 
     const givenAnRepositoryClass = (options) => {
@@ -58,14 +72,14 @@ describe('Delete an Entity', () => {
             return anEntityInstance
         }
 
-        it('should delete an existing item', async () => {
+        it('should insert a new item', async () => {
 
             //given
             const anEntity = givenAnEntity()
             const ItemRepository = givenAnRepositoryClass({
                 entity: anEntity,
                 table,
-                schema,
+                database,
                 ids: ['id'],
                 knex: connection
             })
@@ -75,11 +89,11 @@ describe('Delete an Entity', () => {
             const itemRepo = new ItemRepository(injection)
 
             //when
-            const ret = await itemRepo.delete(aModifiedInstance)
+            const ret = await itemRepo.insert(aModifiedInstance)
 
             //then
-            const retDB = await db.query(`SELECT string_test FROM ${schema}.${table} WHERE id = ${aModifiedInstance.id}`)
-            assert.deepStrictEqual(retDB.rows.length, 0)
+            const retDB = await pool.query(`SELECT string_test FROM ${database}..${table} WHERE id = ${aModifiedInstance.id}`)
+            assert.deepStrictEqual(retDB.recordset[0].string_test, "test")
         })
     })
 })

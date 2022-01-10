@@ -1,10 +1,10 @@
 const { entity, field } = require('@herbsjs/gotu')
-const Repository = require('../../src/repository')
+const Repository = require('../../../src/repository')
 const db = require('./db')
 const connection = require('../connection')
 const assert = require('assert')
 
-describe('Query Find by ID', () => {
+describe('Query First', () => {
 
     const table = 'test_repository'
     const schema = 'herbs2knex_testdb'
@@ -24,7 +24,7 @@ describe('Query Find by ID', () => {
 
     after(async () => {
         const sql = `
-        DROP SCHEMA IF EXISTS ${schema} CASCADE;
+            DROP SCHEMA IF EXISTS ${schema} CASCADE;
         `
         await db.query(sql)
     })
@@ -56,13 +56,35 @@ describe('Query Find by ID', () => {
             knex: connection
         })
         const injection = {}
-        await db.query(`INSERT INTO ${schema}.${table} (id, string_test, boolean_test) VALUES (10, 'marie', true)`)
+        await db.query(`INSERT INTO ${schema}.${table} (id, string_test, boolean_test) VALUES (10, 'marie', true),(20, 'amelia', false)`)
         const itemRepo = new ItemRepository(injection)
 
         //when
-        const ret = await itemRepo.findByID(10)
-        
+        const ret = await itemRepo.first({ where: { stringTest: ["marie"] } })
+
         //then
+        assert.strictEqual(ret.length, 1)
         assert.deepStrictEqual(ret[0].toJSON(), { id: 10, stringTest: 'marie', booleanTest: true })
+    })
+
+    it('should return empty array if there is no match', async () => {
+        //given
+        const anEntity = givenAnEntity()
+        const ItemRepository = givenAnRepositoryClass({
+            entity: anEntity,
+            table,
+            schema,
+            ids: ['id'],
+            knex: connection
+        })
+        const injection = {}        
+        const itemRepo = new ItemRepository(injection)
+
+
+        //when
+        const ret = await itemRepo.first({ where: { stringTest: ["jhon"] } })
+
+        //then
+        assert.strictEqual(ret.length, 0)
     })
 })
