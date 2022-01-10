@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/herbsjs/herbs2knex/compare/v1.1.2...v1.2.0) (2022-01-10)
+
+
+### Features
+
+* include integration and unit folders to segregate tests ([22c5260](https://github.com/herbsjs/herbs2knex/commit/22c52602d3b4fb04759ae5f172b58b8afb1e26bd))
+
 ## [1.1.2](https://github.com/herbsjs/herbs2knex/compare/v1.1.1...v1.1.2) (2021-10-26)
 
 
