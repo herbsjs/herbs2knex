@@ -1,8 +1,12 @@
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
 const { checker } = require('@herbsjs/suma')
+const { BaseEntity } = require("@herbsjs/gotu/src/baseEntity")
 
-const dependency = { convention: Convention }
+const dependency = { 
+  convention: Convention,
+  DataMapper
+ }
 
 module.exports = class Repository {
   constructor(options) {
@@ -14,10 +18,10 @@ module.exports = class Repository {
       ? `${this.schema}.${this.table}`
       : `${this.table}`
     this.entity = options.entity
-    this.entityIDs = options.ids
+    this.entityIDs = this.#getEntityIds(options)
     this.foreignKeys = options.foreignKeys
     this.knex = options.knex
-    this.dataMapper = new DataMapper(this.entity, this.entityIDs, this.foreignKeys)
+    this.dataMapper = new di.DataMapper(this.entity, this.entityIDs, this.foreignKeys)
   }
 
   runner() {
@@ -230,9 +234,17 @@ module.exports = class Repository {
     return ret === 1
   }
 
+  #getEntityIds({ entity, ids }) {
+    if (ids) return ids
 
+    if (entity && entity.prototype instanceof BaseEntity) {
+      const fields = Object.values(entity.prototype.meta.schema)
+      const idFields = fields.filter(({ options }) => options.isId)
+      const idFieldsNames = idFields.map(({ name }) => name)
 
+      return idFieldsNames
+    }
+
+    return []
+  }
 }
-
-
-

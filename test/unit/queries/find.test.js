@@ -1,4 +1,4 @@
-const { entity, field } = require('@herbsjs/gotu')
+const { entity, field, id } = require('@herbsjs/gotu')
 const Repository = require('../../../src/repository')
 const assert = require('assert')
 
@@ -10,7 +10,7 @@ describe('Query Find', () => {
             const ParentEntity = entity('A Parent Entity', {})
 
             return entity('A entity', {
-                id: field(Number),
+                id: id(Number),
                 stringTest: field(String),
                 booleanTest: field(Boolean),
                 entityTest: field(ParentEntity),
@@ -67,7 +67,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knexNoFilter(retFromDeb, spy)
             })
 
@@ -90,7 +89,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knex(retFromDeb, spy)
             })
 
@@ -115,7 +113,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knex(retFromDeb, spy)
             })
 
@@ -140,7 +137,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knexNoFilter(retFromDeb, spy)
             })
 
@@ -164,7 +160,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knex(retFromDeb, spy)
             })
 
@@ -189,7 +184,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knex(retFromDeb, spy)
             })
 
@@ -214,7 +208,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knex(retFromDeb, spy)
             })
 
@@ -233,7 +226,7 @@ describe('Query Find', () => {
             const ParentEntity = entity('A Parent Entity', {})
 
             return entity('A entity', {
-                id: field(Number),
+                id: id(Number),
                 stringTest: field(String),
                 booleanTest: field(Boolean),
                 entityTest: field(ParentEntity),
@@ -276,7 +269,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knex(retFromDeb, spy)
             })
 
@@ -302,7 +294,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 foreignKeys: [{ fkField: String }],
                 knex: knex(retFromDeb, spy)
             })
@@ -331,7 +322,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knex(retFromDeb, spy)
             })
 
@@ -356,7 +346,6 @@ describe('Query Find', () => {
             const itemRepo = new ItemRepository({
                 entity: anEntity,
                 table: 'aTable',
-                ids: ['id'],
                 knex: knex(retFromDeb, spy)
 
             })

@@ -37,9 +37,9 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "@herbsjs/gotu": "^1.0.0",
-    "@herbsjs/suma": "^1.1.0",
-    "knex": "^0.95.11"
+    "@herbsjs/gotu": "^1.1.0",
+    "@herbsjs/suma": "^1.2.0",
+    "knex": "^0.95.15"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

@@ -1,5 +1,5 @@
-const { entity, field } = require('@herbsjs/gotu')
-const Repository = require('../../src/repository')
+const { entity, field, id } = require('@herbsjs/gotu')
+const Repository = require('../../../src/repository')
 const db = require('./db')
 const connection = require('../connection')
 const assert = require('assert')
@@ -74,7 +74,6 @@ describe('Persist Entity', () => {
                 entity: anEntity,
                 table,
                 database,
-                ids: ['id'],
                 knex: connection
             })
             const aModifiedInstance = givenAnModifiedEntity()
