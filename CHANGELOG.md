@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/herbsjs/herbs2knex/compare/v1.3.1...v1.4.0) (2022-01-15)
+
+
+### Features
+
+* **repository:** adds support to identify entity ids automatically ([d6e2fd2](https://github.com/herbsjs/herbs2knex/commit/d6e2fd2e0f579741a94a94c607b1de3d7023eed3)), closes [#35](https://github.com/herbsjs/herbs2knex/issues/35)
+
 ## [1.3.1](https://github.com/herbsjs/herbs2knex/compare/v1.3.0...v1.3.1) (2022-01-15)
 
 
