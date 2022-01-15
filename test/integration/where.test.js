@@ -1,4 +1,4 @@
-const { entity, field } = require('@herbsjs/gotu')
+const { entity, field, id } = require('@herbsjs/gotu')
 const Repository = require('../src/repository')
 const db = require('./db')
 const config = require('./config')
@@ -41,7 +41,7 @@ describe('Query Find By', () => {
 
     const givenAnEntity = () => {
         return entity('A entity', {
-            id: field(Number),
+            id: id(Number),
             stringTest: field(String),
             booleanTest: field(Boolean)
         })
@@ -54,7 +54,6 @@ describe('Query Find By', () => {
             entity: anEntity,
             table,
             schema,
-            ids: ['id'],
             dbConfig: config
         })
         const injection = {}
@@ -76,7 +75,6 @@ describe('Query Find By', () => {
             entity: anEntity,
             table,
             schema,
-            ids: ['id'],
             dbConfig: config
         })
         const injection = {}

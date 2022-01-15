@@ -1,11 +1,11 @@
-const { entity, field } = require("@herbsjs/gotu")
+const { entity, field, id } = require("@herbsjs/gotu")
 const Repository = require("../../../src/repository")
 const assert = require("assert")
 
 describe("Delete an Entity", () => {
   const givenAnEntity = () => {
     return entity("An entity", {
-      id: field(Number),
+      id: id(Number),
       stringTest: field(String),
       booleanTest: field(Boolean),
     })
@@ -32,7 +32,6 @@ describe("Delete an Entity", () => {
     const itemRepo = new ItemRepository({
       entity: anEntity,
       table: "aTable",
-      ids: ["id"],
       knex
     })
 
