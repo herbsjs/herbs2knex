@@ -1,12 +1,9 @@
 const Convention = require('./convention')
 const { entity } = require('@herbsjs/gotu')
-const dependency = { convention: Convention }
 
 class DataMapper {
-
     constructor(entity, entityIDs = [], foreignKeys = [], options = {}) {
-        const di = Object.assign({}, dependency, options.injection)
-        this.convention = di.convention
+        this.convention = Object.assign(new Convention(), options.convention)
         this.entity = entity
         const schema = entity.prototype.meta.schema
         this.allFields = DataMapper.buildAllFields(schema, entityIDs, foreignKeys, this.convention)

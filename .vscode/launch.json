@@ -14,7 +14,7 @@
                 "999999",
                 "--colors",
                 "--recursive",
-                "${workspaceFolder}/test"
+                "${workspaceFolder}/test/unit"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [
@@ -32,7 +32,7 @@
                 "999999",
                 "--colors",
                 "--recursive",
-                "${workspaceFolder}/testdb/mssql"
+                "${workspaceFolder}/test/integration/mssql"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [
@@ -51,7 +51,7 @@
                 "999999",
                 "--colors",
                 "--recursive",
-                "${workspaceFolder}/testdb/mysql"
+                "${workspaceFolder}/test/integration/mysql"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [
@@ -70,7 +70,7 @@
                 "999999",
                 "--colors",
                 "--recursive",
-                "${workspaceFolder}/testdb/pg"
+                "${workspaceFolder}/test/integration/pg"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [

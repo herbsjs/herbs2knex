@@ -252,13 +252,34 @@ const repo = new ItemRepository(injection)
 const ret = await repo.delete(entity)
 ```
 
-### Conventions - Defaul implementation
+## Conventions 
+
+### Default implementation
 
 #### Fields
 
 Code: Camel Case - ex: `productName`
 
 Database: Snake Case - ex: `product_name`
+
+### Custom Convention
+
+You can use the custom convention to configure the way herbs2knex creates your queries to read fields from your database. When using this option, the `ids` property must respect the format convention.
+
+```javascript
+const toCamelCase = value => camelCase(value)
+
+const userRepository = new UserRepository({
+    entity: User,
+    table,
+    schema,
+    ids: ['id'],
+    knex: connection,
+    convention: {
+        toTableFieldName: field => toCamelCase(field)
+    }
+})
+```
 
 ### Object-Oriented versus Relational models - Relationships
 
@@ -300,7 +321,7 @@ More about: https://en.wikipedia.org/wiki/Object%E2%80%93relational_impedance_mi
 - [ ] Allow to ommit schema's name
 
 Features:
-- [ ] Be able to change the conventions (injection)
+- [X] Be able to change the conventions (injection)
 - [ ] Exclude / ignore fields on a sql statement
 - [ ] Awareness of created/updated at/by fields
 - [X] Plug-and-play knex

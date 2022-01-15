@@ -1,13 +1,10 @@
-const Convention = require("./convention")
-const DataMapper = require("./dataMapper")
+const Convention = require('./convention')
+const DataMapper = require('./dataMapper')
 const { checker } = require('@herbsjs/suma')
-
-const dependency = { convention: Convention }
 
 module.exports = class Repository {
   constructor(options) {
-    const di = Object.assign({}, dependency, options.injection)
-    this.convention = di.convention
+    this.convention = Object.assign(new Convention(), options.convention)
     this.table = options.table
     this.schema = options.schema
     this.tableQualifiedName = this.schema
@@ -17,7 +14,12 @@ module.exports = class Repository {
     this.entityIDs = options.ids
     this.foreignKeys = options.foreignKeys
     this.knex = options.knex
-    this.dataMapper = new DataMapper(this.entity, this.entityIDs, this.foreignKeys)
+    this.dataMapper = new DataMapper(
+      this.entity,
+      this.entityIDs,
+      this.foreignKeys,
+      options
+    )
   }
 
   runner() {
@@ -233,6 +235,3 @@ module.exports = class Repository {
 
 
 }
-
-
-
