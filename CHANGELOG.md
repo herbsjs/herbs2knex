@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/herbsjs/herbs2knex/compare/v1.4.0...v1.4.1) (2022-01-15)
+
+
+### Bug Fixes
+
+* **dependency version update:** fixed the version of the package `tedious` ([0fed5f0](https://github.com/herbsjs/herbs2knex/commit/0fed5f0e0636f8251fd6ad506787663e23d35f7f))
+
 # [1.4.0](https://github.com/herbsjs/herbs2knex/compare/v1.3.1...v1.4.0) (2022-01-15)
 
 
