@@ -1,4 +1,4 @@
-const { entity, field } = require('@herbsjs/gotu')
+const { entity, field, id } = require('@herbsjs/gotu')
 const Repository = require('../../../src/repository')
 const assert = require('assert')
 
@@ -8,7 +8,7 @@ describe('Query Find by ID', () => {
         const ParentEntity = entity('A Parent Entity', {})
 
         return entity('A entity', {
-            anId: field(Number),
+            anId: id(Number),
             stringTest: field(String),
             booleanTest: field(Boolean),
             entityTest: field(ParentEntity),
@@ -51,7 +51,6 @@ describe('Query Find by ID', () => {
         const itemRepo = new ItemRepository({
             entity: anEntity,
             table: 'aTable',
-            ids: ['anId'],
             knex: knex(retFromDeb, spy)
         })
 
@@ -78,7 +77,6 @@ describe('Query Find by ID', () => {
         const itemRepo = new ItemRepository({
             entity: anEntity,
             table: 'aTable',
-            ids: ['anId'],
             foreignKeys: [{ fkField: String }],
             knex: knex(retFromDeb, spy)
         })

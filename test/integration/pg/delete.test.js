@@ -1,4 +1,4 @@
-const { entity, field } = require('@herbsjs/gotu')
+const { entity, field, id } = require('@herbsjs/gotu')
 const Repository = require('../../../src/repository')
 const db = require('./db')
 const connection = require('../connection')
@@ -43,7 +43,7 @@ describe('Delete an Entity', () => {
 
         const givenAnEntity = () => {
             return entity('A entity', {
-                id: field(Number),
+                id: id(Number),
                 stringTest: field(String),
                 booleanTest: field(Boolean)
             })
@@ -66,7 +66,6 @@ describe('Delete an Entity', () => {
                 entity: anEntity,
                 table,
                 schema,
-                ids: ['id'],
                 knex: connection
             })
             const aModifiedInstance = givenAnModifiedEntity()
