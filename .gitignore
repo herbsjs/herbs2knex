@@ -159,4 +159,6 @@ public
 .dynamodb/
 .editorconfig
 .prettierrc
-
+.vscode/*
+.history/
+*.vsix
