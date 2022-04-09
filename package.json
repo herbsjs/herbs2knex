@@ -69,7 +69,7 @@
   },
   "peerDependencies": {
     "pg": "^8.7.3",
-    "mssql": "^7.2.1",
+    "mssql": "^8.1.0",
     "tedious": "^14.4.0",
     "mysql2": "^2.3.2",
     "bluebird": "^3.7.2"
