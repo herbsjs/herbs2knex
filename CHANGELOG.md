@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/herbsjs/herbs2knex/compare/v1.4.1...v1.4.2) (2022-04-09)
+
+
+### Bug Fixes
+
+* 🐛 update knex and database packages dependencies ([5bea990](https://github.com/herbsjs/herbs2knex/commit/5bea9905f6823d7bfa5a04ce1149297bfd62b376))
+
 ## [1.4.1](https://github.com/herbsjs/herbs2knex/compare/v1.4.0...v1.4.1) (2022-01-15)
 
 
