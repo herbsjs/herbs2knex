@@ -37,7 +37,7 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "@herbsjs/gotu": "^1.1.0",
+    "@herbsjs/gotu": "^1.1.1",
     "@herbsjs/suma": "^1.3.0",
     "knex": "^1.0.7"
   },
@@ -64,7 +64,7 @@
     "nyc": "^15.1.0",
     "pg": "^8.7.3",
     "prettier": "^2.6.2",
-    "semantic-release": "^18.0.1",
+    "semantic-release": "^19.0.2",
     "tedious": "^14.4.0"
   },
   "peerDependencies": {
