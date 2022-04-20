@@ -64,7 +64,7 @@
     "nyc": "^15.1.0",
     "pg": "^8.7.3",
     "prettier": "^2.6.2",
-    "semantic-release": "^18.0.1",
+    "semantic-release": "^19.0.2",
     "tedious": "^14.4.0"
   },
   "peerDependencies": {
