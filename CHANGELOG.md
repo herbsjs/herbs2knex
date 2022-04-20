@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/herbsjs/herbs2knex/compare/v1.4.3...v1.4.4) (2022-04-20)
+
+
+### Bug Fixes
+
+* update gotu version ([ef48f49](https://github.com/herbsjs/herbs2knex/commit/ef48f49782eb35f9c2a454504a7a562883de6837))
+
 ## [1.4.3](https://github.com/herbsjs/herbs2knex/compare/v1.4.2...v1.4.3) (2022-04-14)
 
 
