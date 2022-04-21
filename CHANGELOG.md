@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/herbsjs/herbs2knex/compare/v1.4.4...v1.4.5) (2022-04-21)
+
+
+### Bug Fixes
+
+* **deps:** bump ansi-regex from 3.0.0 to 3.0.1 ([c048c16](https://github.com/herbsjs/herbs2knex/commit/c048c165b7e64933b87ae052b2cdb1c22f53f8ed))
+
 ## [1.4.4](https://github.com/herbsjs/herbs2knex/compare/v1.4.3...v1.4.4) (2022-04-20)
 
 
