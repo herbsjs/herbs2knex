@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/herbsjs/herbs2knex/compare/v1.4.5...v1.4.6) (2022-04-22)
+
+
+### Bug Fixes
+
+* **deps:** bump @herbsjs/gotu from 1.1.1 to 1.1.2 ([07009d4](https://github.com/herbsjs/herbs2knex/commit/07009d4b9688d0c457a1f6fa0e779e81f26492ba))
+
 ## [1.4.5](https://github.com/herbsjs/herbs2knex/compare/v1.4.4...v1.4.5) (2022-04-21)
 
 
