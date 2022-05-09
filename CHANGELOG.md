@@ -1,3 +1,10 @@
+## [1.4.7](https://github.com/herbsjs/herbs2knex/compare/v1.4.6...v1.4.7) (2022-05-09)
+
+
+### Bug Fixes
+
+* **deps:** bump @herbsjs/suma from 1.3.0 to 1.3.1 ([8e6ac82](https://github.com/herbsjs/herbs2knex/commit/8e6ac82963b44c2822354a032d30ed20fc1b1b8d))
+
 ## [1.4.6](https://github.com/herbsjs/herbs2knex/compare/v1.4.5...v1.4.6) (2022-04-22)
 
 
