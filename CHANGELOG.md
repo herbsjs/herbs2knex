@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/herbsjs/herbs2knex/compare/v1.4.7...v1.5.0) (2022-05-19)
+
+
+### Features
+
+* add support for new version of knex ([7bbe395](https://github.com/herbsjs/herbs2knex/commit/7bbe39514256257d2b64fb8d4984c20d15e78764))
+
 ## [1.4.7](https://github.com/herbsjs/herbs2knex/compare/v1.4.6...v1.4.7) (2022-05-09)
 
 
