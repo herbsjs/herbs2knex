@@ -1,3 +1,31 @@
+## [1.4.7](https://github.com/herbsjs/herbs2knex/compare/v1.4.6...v1.4.7) (2022-05-09)
+
+
+### Bug Fixes
+
+* **deps:** bump @herbsjs/suma from 1.3.0 to 1.3.1 ([8e6ac82](https://github.com/herbsjs/herbs2knex/commit/8e6ac82963b44c2822354a032d30ed20fc1b1b8d))
+
+## [1.4.6](https://github.com/herbsjs/herbs2knex/compare/v1.4.5...v1.4.6) (2022-04-22)
+
+
+### Bug Fixes
+
+* **deps:** bump @herbsjs/gotu from 1.1.1 to 1.1.2 ([07009d4](https://github.com/herbsjs/herbs2knex/commit/07009d4b9688d0c457a1f6fa0e779e81f26492ba))
+
+## [1.4.5](https://github.com/herbsjs/herbs2knex/compare/v1.4.4...v1.4.5) (2022-04-21)
+
+
+### Bug Fixes
+
+* **deps:** bump ansi-regex from 3.0.0 to 3.0.1 ([c048c16](https://github.com/herbsjs/herbs2knex/commit/c048c165b7e64933b87ae052b2cdb1c22f53f8ed))
+
+## [1.4.4](https://github.com/herbsjs/herbs2knex/compare/v1.4.3...v1.4.4) (2022-04-20)
+
+
+### Bug Fixes
+
+* update gotu version ([ef48f49](https://github.com/herbsjs/herbs2knex/commit/ef48f49782eb35f9c2a454504a7a562883de6837))
+
 ## [1.4.3](https://github.com/herbsjs/herbs2knex/compare/v1.4.2...v1.4.3) (2022-04-14)
 
 
