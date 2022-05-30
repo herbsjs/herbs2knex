@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/herbsjs/herbs2knex/compare/v1.5.0...v1.5.1) (2022-05-30)
+
+
+### Bug Fixes
+
+* **deps:** bump knex from 2.0.0 to 2.1.0 ([90530f6](https://github.com/herbsjs/herbs2knex/commit/90530f6fd5b0c26cebc4524f8a28f46387c57e05))
+
 # [1.5.0](https://github.com/herbsjs/herbs2knex/compare/v1.4.7...v1.5.0) (2022-05-19)
 
 
