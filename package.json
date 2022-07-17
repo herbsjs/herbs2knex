@@ -8,7 +8,8 @@
     "test:integration:pg": "mocha --timeout 999999 --colors --exit --recursive ./test/integration/pg",
     "test:integration:mssql": "mocha --timeout 999999 --colors --exit --recursive ./test/integration/mssql",
     "test:integration:mysql": "mocha --timeout 999999 --colors --exit --recursive ./test/integration/mysql",
-    "coverage-report": "nyc --reporter=html --reporter=text mocha --recursive ./test --timeout 10000",
+    "test:integration:sqlite": "mocha --timeout 999999 --colors --exit --recursive ./test/integration/sqlite",
+    "coverage-report": "nyc --reporter=html --reporter=text mocha --recursive ./test/unit --timeout 10000",
     "coverage": "nyc --reporter=text mocha --recursive ./test --timeout 10000",
     "semantic-release": "semantic-release",
     "lint": "npx eslint \"**/*.{js,jsx}\" --quiet",
@@ -62,6 +63,7 @@
     "mssql": "^8.1.2",
     "mysql2": "^2.3.3",
     "nyc": "^15.1.0",
+    "sqlite3": "^5.0.8",
     "pg": "^8.7.3",
     "prettier": "^2.7.1",
     "semantic-release": "^19.0.3",
@@ -72,10 +74,14 @@
     "mssql": "^8.1.2",
     "tedious": "^14.6.0",
     "mysql2": "^2.3.2",
-    "bluebird": "^3.7.2"
+    "bluebird": "^3.7.2",
+    "sqlite3": "^5.0.8"
   },
   "peerDependenciesMeta": {
     "pg": {
+      "optional": true
+    },
+    "sqlite3": {
       "optional": true
     },
     "mssql": {
