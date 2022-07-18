@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/herbsjs/herbs2knex/compare/v1.5.3...v1.5.4) (2022-07-18)
+
+
+### Bug Fixes
+
+* **sqlite:** fix error-prone last inserted id ([8103193](https://github.com/herbsjs/herbs2knex/commit/81031934fd7af577f7a8fc2ff5a1a09a52f26f48))
+
 ## [1.5.3](https://github.com/herbsjs/herbs2knex/compare/v1.5.2...v1.5.3) (2022-07-18)
 
 
