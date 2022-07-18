@@ -44,6 +44,27 @@ describe("Update an Entity", () => {
     })
   )
 
+  const knexSqlite = (ret, spy = {}) => (
+    () => ({
+      client: { "driverName": "sqlite3"},
+      where: (w, v) => {
+        spy.where = w
+        spy.value = v
+        return {
+          returning: (f) => {
+            spy.fields = f
+            return {
+              update: (p) => {
+                spy.payload = p
+                return 1
+              }
+            }
+          }
+        }
+      }
+    })
+  )
+
   const knex = (ret, spy = {}) => (
     () => ({
       where: (w, v) => {
@@ -103,6 +124,33 @@ describe("Update an Entity", () => {
       entity: anEntity,
       table: "aTable",
       knex: knexMySQL(retFromDeb, spy)
+    })
+
+    anEntity.id = 1
+    anEntity.stringTest = "test"
+    anEntity.booleanTest = true
+
+    //when
+    const ret = await itemRepo.update(anEntity)
+
+    //then
+    assert.deepStrictEqual(ret, true)
+    assert.deepStrictEqual(spy.where, 'id')
+    assert.deepStrictEqual(spy.value, 1)
+    assert.deepStrictEqual(spy.fields, ['id', 'string_test', 'boolean_test'])
+    assert.deepStrictEqual(spy.payload, { id: 1, string_test: 'test', boolean_test: true })
+  })
+
+  it("should update an entity when driver is sqlite", async () => {
+    //given
+    let spy = {}
+    const retFromDeb = [{ id: 3 }]
+    const anEntity = givenAnEntity()
+    const ItemRepository = givenAnRepositoryClass()
+    const itemRepo = new ItemRepository({
+      entity: anEntity,
+      table: "aTable",
+      knex: knexSqlite(retFromDeb, spy)
     })
 
     anEntity.id = 1

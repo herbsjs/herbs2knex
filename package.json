@@ -8,7 +8,8 @@
     "test:integration:pg": "mocha --timeout 999999 --colors --exit --recursive ./test/integration/pg",
     "test:integration:mssql": "mocha --timeout 999999 --colors --exit --recursive ./test/integration/mssql",
     "test:integration:mysql": "mocha --timeout 999999 --colors --exit --recursive ./test/integration/mysql",
-    "coverage-report": "nyc --reporter=html --reporter=text mocha --recursive ./test --timeout 10000",
+    "test:integration:sqlite": "mocha --timeout 999999 --colors --exit --recursive ./test/integration/sqlite",
+    "coverage-report": "nyc --reporter=html --reporter=text mocha --recursive ./test/unit --timeout 10000",
     "coverage": "nyc --reporter=text mocha --recursive ./test --timeout 10000",
     "semantic-release": "semantic-release",
     "lint": "npx eslint \"**/*.{js,jsx}\" --quiet",
@@ -37,8 +38,6 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "@herbsjs/gotu": "^1.1.2",
-    "@herbsjs/suma": "^1.3.1",
     "knex": "^2.1.0"
   },
   "devDependencies": {
@@ -62,20 +61,32 @@
     "mssql": "^8.1.2",
     "mysql2": "^2.3.3",
     "nyc": "^15.1.0",
+    "sqlite3": "^5.0.8",
     "pg": "^8.7.3",
+    "@herbsjs/gotu": "^1.1.3",
+    "@herbsjs/suma": "^1.3.1",
     "prettier": "^2.7.1",
     "semantic-release": "^19.0.3",
     "tedious": "^14.6.0"
   },
   "peerDependencies": {
     "pg": "^8.7.3",
+    "@herbsjs/gotu": "^1.1.3",
+    "@herbsjs/suma": "^1.3.1",
     "mssql": "^8.1.2",
     "tedious": "^14.6.0",
     "mysql2": "^2.3.2",
-    "bluebird": "^3.7.2"
+    "bluebird": "^3.7.2",
+    "sqlite3": "^5.0.8"
   },
   "peerDependenciesMeta": {
+    "@herbsjs/herbs": {
+      "optional": false
+    },
     "pg": {
+      "optional": true
+    },
+    "sqlite3": {
       "optional": true
     },
     "mssql": {

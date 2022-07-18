@@ -162,3 +162,4 @@ public
 .vscode/*
 .history/
 *.vsix
+file.sqlite

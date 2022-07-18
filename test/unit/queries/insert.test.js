@@ -37,7 +37,6 @@ describe("Insert an Entity", () => {
     })
   )
 
-
   it("should insert an entity", async () => {
     //given
     let spy = {}
@@ -62,6 +61,7 @@ describe("Insert an Entity", () => {
     assert.deepStrictEqual(spy.fields, ['id', 'string_test', 'boolean_test'])
     assert.deepStrictEqual(spy.payload, { id: 2, string_test: 'test', boolean_test: true })
   })
+
 
   it("should insert an entity with foreign key", async () => {
     //given

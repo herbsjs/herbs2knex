@@ -343,13 +343,13 @@ Retrieving and Persist:
     - [X] order by
 - [X] find with pages
 - [X] first
-- [ ] last
 
 Tests:
 - [X] Pure JS
 - [X] Postgress
 - [X] Sql Server
 - [X] MySQL
+- [X] Sqlite
 
 ### Contribute
 

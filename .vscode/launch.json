@@ -63,6 +63,25 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "DB Tests sqlite3",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "--timeout",
+                "999999",
+                "--colors",
+                "--recursive",
+                "${workspaceFolder}/test/integration/sqlite"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ]
+        }
+        ,
+        {
+            "type": "node",
+            "request": "launch",
             "name": "DB Tests pg",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
