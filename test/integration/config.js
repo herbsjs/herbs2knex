@@ -5,6 +5,7 @@ if (result.error) { throw result.error }
 
 module.exports = {
     client: process.env.DB_CLIENT,
+    useNullAsDefault:true,
     connection: {
       user: process.env.DB_USER,
       host: process.env.DB_HOST,

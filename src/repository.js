@@ -189,8 +189,10 @@ module.exports = class Repository {
 
     //.returning() is not supported by sqlite3 and will not have any effect, so we have to get last inserted row
     if (this.runner().client && this.runner().client.driverName && (this.runner().client.driverName.includes('sqlite3'))) {
-      const lastInsertedID = await this.knex.raw(`SELECT last_insert_rowid();`)
-      return await this.findByID(lastInsertedID[0]["last_insert_rowid()"])
+      const tableIDs = this.dataMapper.tableIDs()
+      let searchId = payload[tableIDs[0]]
+      if(!searchId) searchId = (await this.knex.raw(`SELECT last_insert_rowid();`))[0]['last_insert_rowid()']
+      return (await this.findByID(searchId))[0]
     }
 
     return this.dataMapper.toEntity(ret[0])
