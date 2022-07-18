@@ -1,3 +1,11 @@
+## [1.5.3](https://github.com/herbsjs/herbs2knex/compare/v1.5.2...v1.5.3) (2022-07-18)
+
+
+### Bug Fixes
+
+* **herbs:** change gotu and suma to peerDependencies ([9caa5e4](https://github.com/herbsjs/herbs2knex/commit/9caa5e48acb8816d3158a5b83ffe74518dc2a73c))
+* **sqlite:** fix returning sqlite and add tests for support sqlite ([74240b4](https://github.com/herbsjs/herbs2knex/commit/74240b490f5bf6764cc80e9cd6a93bb089c948ba)), closes [#58](https://github.com/herbsjs/herbs2knex/issues/58)
+
 ## [1.5.2](https://github.com/herbsjs/herbs2knex/compare/v1.5.1...v1.5.2) (2022-06-17)
 
 
