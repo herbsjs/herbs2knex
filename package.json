@@ -38,8 +38,6 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "@herbsjs/gotu": "^1.1.2",
-    "@herbsjs/suma": "^1.3.1",
     "knex": "^2.1.0"
   },
   "devDependencies": {
@@ -65,12 +63,16 @@
     "nyc": "^15.1.0",
     "sqlite3": "^5.0.8",
     "pg": "^8.7.3",
+    "@herbsjs/gotu": "^1.1.3",
+    "@herbsjs/suma": "^1.3.1",
     "prettier": "^2.7.1",
     "semantic-release": "^19.0.3",
     "tedious": "^14.6.0"
   },
   "peerDependencies": {
     "pg": "^8.7.3",
+    "@herbsjs/gotu": "^1.1.3",
+    "@herbsjs/suma": "^1.3.1",
     "mssql": "^8.1.2",
     "tedious": "^14.6.0",
     "mysql2": "^2.3.2",
@@ -78,6 +80,9 @@
     "sqlite3": "^5.0.8"
   },
   "peerDependenciesMeta": {
+    "@herbsjs/herbs": {
+      "optional": false
+    },
     "pg": {
       "optional": true
     },
