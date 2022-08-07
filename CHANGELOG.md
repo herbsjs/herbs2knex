@@ -1,3 +1,10 @@
+## [1.5.6](https://github.com/herbsjs/herbs2knex/compare/v1.5.5...v1.5.6) (2022-08-07)
+
+
+### Bug Fixes
+
+* **depencency:** remove gotu and suma dependency. move all to herbs lib ([d844119](https://github.com/herbsjs/herbs2knex/commit/d844119b66bc64ed7237726f0704d72dd5bfe9b3))
+
 ## [1.5.5](https://github.com/herbsjs/herbs2knex/compare/v1.5.4...v1.5.5) (2022-07-24)
 
 
