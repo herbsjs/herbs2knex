@@ -1,7 +1,7 @@
 const Convention = require('./convention')
 const DataMapper = require('./dataMapper')
-const { checker } = require('@herbsjs/suma')
-const { BaseEntity } = require("@herbsjs/gotu/src/baseEntity")
+const { checker } = require('@herbsjs/herbs')
+const herbs = require("@herbsjs/herbs")
 
 module.exports = class Repository {
   constructor(options) {
@@ -244,7 +244,7 @@ module.exports = class Repository {
   #getEntityIds({ entity, ids }) {
     if (ids) return ids
 
-    if (entity && entity.prototype instanceof BaseEntity) {
+    if (herbs.entity.isEntity(entity)) {
       const fields = Object.values(entity.prototype.meta.schema)
       const idFields = fields.filter(({ options }) => options.isId)
       const idFieldsNames = idFields.map(({ name }) => name)

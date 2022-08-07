@@ -1,5 +1,5 @@
 const Convention = require('./convention')
-const { entity } = require('@herbsjs/gotu')
+const { entity } = require('@herbsjs/herbs')
 
 class DataMapper {
     constructor(entity, entityIDs = [], foreignKeys = [], options = {}) {
