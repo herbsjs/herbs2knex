@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/herbsjs/herbs2knex/compare/v1.5.6...v1.5.7) (2022-08-15)
+
+
+### Bug Fixes
+
+* **herbs:** update herbs dependency ([5b68e71](https://github.com/herbsjs/herbs2knex/commit/5b68e7124a51c8d55a727bec952799a7898c6462))
+
 ## [1.5.6](https://github.com/herbsjs/herbs2knex/compare/v1.5.5...v1.5.6) (2022-08-07)
 
 
