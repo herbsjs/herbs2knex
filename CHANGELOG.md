@@ -1,3 +1,10 @@
+## [1.5.8](https://github.com/herbsjs/herbs2knex/compare/v1.5.7...v1.5.8) (2022-09-16)
+
+
+### Bug Fixes
+
+* **sqlite:** update sqlite version, knex version and herbs version ([95c14e6](https://github.com/herbsjs/herbs2knex/commit/95c14e6bc13d8c92843932558e8692beaa4ffdcd))
+
 ## [1.5.7](https://github.com/herbsjs/herbs2knex/compare/v1.5.6...v1.5.7) (2022-08-15)
 
 
