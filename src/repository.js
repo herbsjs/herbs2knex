@@ -186,15 +186,6 @@ module.exports = class Repository {
     const ret = await this.runner()
       .returning(fields)
       .insert(payload)
-
-    //.returning() is not supported by sqlite3 and will not have any effect, so we have to get last inserted row
-    if (this.runner().client && this.runner().client.driverName && (this.runner().client.driverName.includes('sqlite3'))) {
-      const tableIDs = this.dataMapper.tableIDs()
-      let searchId = payload[tableIDs[0]]
-      if(!searchId) searchId = (await this.knex.raw(`SELECT last_insert_rowid();`))[0]['last_insert_rowid()']
-      return (await this.findByID(searchId))[0]
-    }
-
     return this.dataMapper.toEntity(ret[0])
   }
 
@@ -217,7 +208,7 @@ module.exports = class Repository {
       .update(payload)
 
     //.returning() is not supported by mysql or mysql2 and will not have any effect, update only return 1 to true or 0 to false
-    if (this.runner().client && this.runner().client.driverName && (this.runner().client.driverName.includes('mysql') || this.runner().client.driverName.includes('sqlite3')))
+    if (this.runner().client && this.runner().client.driverName && (this.runner().client.driverName.includes('mysql')))
       return ret === 1
 
     return this.dataMapper.toEntity(ret[0])
