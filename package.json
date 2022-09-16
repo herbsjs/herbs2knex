@@ -38,44 +38,44 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "knex": "^2.2.0"
+    "knex": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.10",
-    "@babel/eslint-parser": "^7.18.9",
+    "@babel/core": "^7.19.1",
+    "@babel/eslint-parser": "^7.19.1",
     "@herbsjs/herbs": "^1.6.2",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.0.5",
+    "@semantic-release/github": "^8.0.6",
     "@semantic-release/npm": "^9.0.1",
     "@semantic-release/release-notes-generator": "^10.0.3",
     "bluebird": "^3.7.2",
     "cz-conventional-changelog": "^3.3.0",
-    "dotenv": "^16.0.1",
-    "eslint": "^8.22.0",
+    "dotenv": "^16.0.2",
+    "eslint": "^8.23.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "lodash": "^4.17.21",
     "mocha": "^10.0.0",
-    "mssql": "^8.1.2",
+    "mssql": "^9.0.1",
     "mysql2": "^2.3.3",
     "nyc": "^15.1.0",
-    "pg": "^8.7.3",
+    "pg": "^8.8.0",
     "prettier": "^2.7.1",
-    "semantic-release": "^19.0.3",
-    "sqlite3": "^5.0.11",
-    "tedious": "^14.6.0"
+    "semantic-release": "^19.0.5",
+    "sqlite3": "^5.1.1",
+    "tedious": "^15.1.0"
   },
   "peerDependencies": {
     "@herbsjs/herbs": "^1.6.2",
     "bluebird": "^3.7.2",
-    "mssql": "^8.1.2",
+    "mssql": "^9.0.1",
     "mysql2": "^2.3.2",
-    "pg": "^8.7.3",
-    "sqlite3": "^5.0.11",
-    "tedious": "^14.6.0"
+    "pg": "^8.8.0",
+    "sqlite3": "^5.1.1",
+    "tedious": "^15.1.0"
   },
   "peerDependenciesMeta": {
     "@herbsjs/herbs": {

@@ -44,27 +44,6 @@ describe("Update an Entity", () => {
     })
   )
 
-  const knexSqlite = (ret, spy = {}) => (
-    () => ({
-      client: { "driverName": "sqlite3"},
-      where: (w, v) => {
-        spy.where = w
-        spy.value = v
-        return {
-          returning: (f) => {
-            spy.fields = f
-            return {
-              update: (p) => {
-                spy.payload = p
-                return 1
-              }
-            }
-          }
-        }
-      }
-    })
-  )
-
   const knex = (ret, spy = {}) => (
     () => ({
       where: (w, v) => {
@@ -150,7 +129,7 @@ describe("Update an Entity", () => {
     const itemRepo = new ItemRepository({
       entity: anEntity,
       table: "aTable",
-      knex: knexSqlite(retFromDeb, spy)
+      knex: knex(retFromDeb, spy)
     })
 
     anEntity.id = 1
@@ -161,7 +140,7 @@ describe("Update an Entity", () => {
     const ret = await itemRepo.update(anEntity)
 
     //then
-    assert.deepStrictEqual(ret, true)
+    assert.deepStrictEqual(ret.id, 3)
     assert.deepStrictEqual(spy.where, 'id')
     assert.deepStrictEqual(spy.value, 1)
     assert.deepStrictEqual(spy.fields, ['id', 'string_test', 'boolean_test'])
