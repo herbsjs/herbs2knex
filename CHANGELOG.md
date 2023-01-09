@@ -1,3 +1,10 @@
+## [1.5.9](https://github.com/herbsjs/herbs2knex/compare/v1.5.8...v1.5.9) (2023-01-09)
+
+
+### Performance Improvements
+
+* **knex:** upgrade knex and dependencies ([2b9474c](https://github.com/herbsjs/herbs2knex/commit/2b9474c671f5e2561bd0d1807ff3cec8cf6fdf07))
+
 ## [1.5.8](https://github.com/herbsjs/herbs2knex/compare/v1.5.7...v1.5.8) (2022-09-16)
 
 
