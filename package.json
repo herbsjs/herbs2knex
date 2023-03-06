@@ -43,7 +43,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/eslint-parser": "^7.19.1",
-    "@herbsjs/herbs": "^1.6.2",
+    "@herbsjs/herbs": "^2.0.0",
     "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
@@ -69,7 +69,7 @@
     "tedious": "^15.1.2"
   },
   "peerDependencies": {
-    "@herbsjs/herbs": "^1.6.2",
+    "@herbsjs/herbs": "^2.0.0",
     "bluebird": "^3.7.2",
     "mssql": "^9.0.1",
     "mysql2": "^2.3.2",
