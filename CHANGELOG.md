@@ -1,3 +1,20 @@
+# [2.0.0](https://github.com/herbsjs/herbs2knex/compare/v1.5.10...v2.0.0) (2023-03-07)
+
+
+### Bug Fixes
+
+* **package.json:** up herbs version ([483131b](https://github.com/herbsjs/herbs2knex/commit/483131bd4358b845f571e197f27b4339ebfdea8b))
+
+
+### Continuous Integration
+
+* fix cd ([c656951](https://github.com/herbsjs/herbs2knex/commit/c6569515f26ba8e64e61da35816db8c84de11515))
+
+
+### BREAKING CHANGES
+
+* upgrade buchu to 2.0
+
 ## [1.5.10](https://github.com/herbsjs/herbs2knex/compare/v1.5.9...v1.5.10) (2023-01-23)
 
 
