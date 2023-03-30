@@ -1,3 +1,11 @@
+## [2.1.1-beta.1](https://github.com/herbsjs/herbs2knex/compare/v2.1.0...v2.1.1-beta.1) (2023-03-30)
+
+
+### Reverts
+
+* Revert "Revert "ci(semantic release): improve version to release (beta, alpha, etc)"" ([dbc370a](https://github.com/herbsjs/herbs2knex/commit/dbc370af1eede681348a7973af6cef8d2a9705ee))
+* Revert "revert(node): bump node version to 16x" ([4ee8ed8](https://github.com/herbsjs/herbs2knex/commit/4ee8ed8df1f46c27c5991c604dfeb5529301de35))
+
 # [2.1.0](https://github.com/herbsjs/herbs2knex/compare/v2.0.0...v2.1.0) (2023-03-30)
 
 
