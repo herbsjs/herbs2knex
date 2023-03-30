@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/herbsjs/herbs2knex/compare/v2.0.0...v2.1.0) (2023-03-30)
+
+
+### Features
+
+* **depencency:** bump herbs version ([dd3eac6](https://github.com/herbsjs/herbs2knex/commit/dd3eac6bab39b2eaa7250a87463c390c165548e9))
+
 # [2.0.0](https://github.com/herbsjs/herbs2knex/compare/v1.5.10...v2.0.0) (2023-03-07)
 
 
