@@ -1,6 +1,6 @@
 module.exports = class Convention {
   camelToSnake (string) {
-    return string.replace(/([A-Z])/g, '_$1').toLowerCase()
+    return string.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '')
   }
 
   toTableFieldName (entityField) {
