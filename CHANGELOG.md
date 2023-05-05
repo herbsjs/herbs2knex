@@ -1,3 +1,12 @@
+## [2.1.1-beta.2](https://github.com/herbsjs/herbs2knex/compare/v2.1.1-beta.1...v2.1.1-beta.2) (2023-05-05)
+
+
+### Bug Fixes
+
+* **convention:** fix camel to snake case for FK ([33a673a](https://github.com/herbsjs/herbs2knex/commit/33a673aa4ca1b20cd62bd0ff5d560734006447fc))
+* **convention:** fix camel to snake for complex names ([a1c7f4c](https://github.com/herbsjs/herbs2knex/commit/a1c7f4c51f79837e9c8e9ea03ee0edfe1291c235))
+* **lint:** semicolon ([4384453](https://github.com/herbsjs/herbs2knex/commit/4384453125d96c04e856bb3e82cfd5ceb22b4dc1))
+
 ## [2.1.1-beta.1](https://github.com/herbsjs/herbs2knex/compare/v2.1.0...v2.1.1-beta.1) (2023-03-30)
 
 
