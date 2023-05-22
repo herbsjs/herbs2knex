@@ -1,3 +1,10 @@
+## [2.1.1-beta.3](https://github.com/herbsjs/herbs2knex/compare/v2.1.1-beta.2...v2.1.1-beta.3) (2023-05-22)
+
+
+### Bug Fixes
+
+* fix bug with entities with methods ([d74749c](https://github.com/herbsjs/herbs2knex/commit/d74749c6cbafcef4a25ffaeb8ac07dd8507ae9a9))
+
 ## [2.1.1-beta.2](https://github.com/herbsjs/herbs2knex/compare/v2.1.1-beta.1...v2.1.1-beta.2) (2023-05-05)
 
 
