@@ -14,13 +14,13 @@ module.exports = class Repository {
     this.entity = options.entity
     this.entityIDs = this.#getEntityIds(options)
     this.foreignKeys = options.foreignKeys
-    this.knex = options.knex
     this.dataMapper = new DataMapper(
       this.entity,
       this.entityIDs,
       this.foreignKeys,
       options
     )
+    this.knex = options.knex
   }
 
   runner() {
@@ -237,7 +237,7 @@ module.exports = class Repository {
 
     if (herbs.entity.isEntity(entity)) {
       const fields = Object.values(entity.prototype.meta.schema)
-      const idFields = fields.filter(({ options }) => options.isId)
+      const idFields = fields.filter(({ options }) => options?.isId)
       const idFieldsNames = idFields.map(({ name }) => name)
 
       return idFieldsNames

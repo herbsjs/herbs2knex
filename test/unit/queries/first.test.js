@@ -15,6 +15,7 @@ describe('Query First', () => {
                 booleanTest: field(Boolean),
                 entityTest: field(ParentEntity),
                 entitiesTest: field([ParentEntity]),
+                aMethod: () => { },
             })
         }
 

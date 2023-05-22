@@ -8,6 +8,7 @@ describe("Delete an Entity", () => {
       id: id(Number),
       stringTest: field(String),
       booleanTest: field(Boolean),
+      aMethod: () => { },
     })
   }
 

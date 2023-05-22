@@ -12,6 +12,7 @@ describe("Update an Entity", () => {
       booleanTest: field(Boolean),
       entityTest: field(ParentEntity),
       entitiesTest: field([ParentEntity]),
+      aMethod: () => { },
     })
   }
 

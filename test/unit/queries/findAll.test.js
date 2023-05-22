@@ -13,6 +13,7 @@ describe('Query Find All', () => {
             booleanTest: field(Boolean),
             entityTest: field(ParentEntity),
             entitiesTest: field([ParentEntity]),
+            aMethod: () => { },
         })
     }
 

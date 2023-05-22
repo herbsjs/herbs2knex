@@ -1,6 +1,6 @@
 const { entity, field, id } = require('@herbsjs/gotu')
 const Repository = require('../../src/repository')
-const assert = require('assert')
+const assert = require('assert').strict
 const Convention = require('../../src/convention')
 
 describe('Repository', () => {
@@ -17,7 +17,7 @@ describe('Repository', () => {
 
     it('should use custom convention when it is specified', () => {
       const customConvention = {
-        doSomething() {}
+        doSomething() { }
       }
 
       const repositoryInstance = new Repository({
