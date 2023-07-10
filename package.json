@@ -38,7 +38,7 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2knex#readme",
   "dependencies": {
-    "knex": "^2.4.2"
+    "knex": "^2.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
